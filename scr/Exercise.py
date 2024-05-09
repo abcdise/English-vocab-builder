@@ -135,23 +135,26 @@ class Exercise(ABC):
     
 
 class Definition(Exercise):
+    '''
+    Definiton together with review exercises.
+    '''
     def __init__(self, word_list: list):
         super().__init__(word_list)
         self.definition = None
         self.definition_dict = dict()
 
     def create_prompt(self):
-        self.generation_prompt = f'Define the terms in the list: {self.word_list}'
+        # self.generation_prompt = f'Define the terms in the list: {self.word_list}'
+        None
 
-
-    def import_definition(self, dictionary_path:str):
-        dictionary_json = Path(dictionary_path)
-        if Path.exists(dictionary_json):
-            with open(dictionary_json) as json_file:
-                self.definition_dict = json.load(json_file)
-        else:
-            print('The json file does not exist.')
-            self.definition_dict = dict()
+    # def import_definition(self, dictionary_path:str):
+    #     dictionary_json = Path(dictionary_path)
+    #     if Path.exists(dictionary_json):
+    #         with open(dictionary_json) as json_file:
+    #             self.definition_dict = json.load(json_file)
+    #     else:
+    #         print('The json file does not exist.')
+    #         self.definition_dict = dict()
 
 
     def import_definition_from_dictionary(self, dictionary_path:str='../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Dictionary/Collins.json'):
@@ -218,49 +221,48 @@ class Definition(Exercise):
         self.exercise_dict['solution'] = self.solution
 
 
-    def __write_definition_latex(self, def_dict:dict):
-        def_text = ''
-        ex_text = r'\begin{enumerate}' + '\n'
-        sol_text = ex_text
-        americanize_word_list = [get_american_spelling(word) for word in self.word_list]
-        exercise_list = []
-        for word in americanize_word_list:
-            if word in def_dict.keys():
-                def_text += r'\vocabulary{' + word + r'}'
-                def_text += r'{' + def_dict[word][0] + r'}' + '\n'
-                for entry in def_dict[word][1]:
-                    def_text += r'\defitem{' + entry['part_of_speech'] + r'}'
-                    definition = entry['definition']
-                    definition = self._string_processing(definition)
-                    def_text += r'{' + definition + r'}'
-                    if entry['example_sentences']:
-                        sentence = entry['example_sentences'][0]
-                        sentence = self._string_processing(sentence)
-                        def_text += r'{' + sentence + r'}' + '\n'
-                        sentence_with_gap, solution_list = replace_term(original_string=sentence, 
-                                                         old_value=word, 
-                                                         new_value=r'\ldots')
-                        if sentence_with_gap != sentence and sentence_with_gap and solution_list:
-                            sentence_with_gap = sentence_with_gap.replace('...', r'{[\ldots] }')
-                            solution = ', '.join(solution_list)
-                            exercise_list.append((sentence_with_gap, solution))
-                    else:
-                        # If there is no example sentence, we still need a `{}` for the LaTeX command.
-                        def_text += r'{}' + '\n'
-            else:
-                print(f'The word {word} does not exist in the dictionary.')
-        random.shuffle(exercise_list)
-        for pair in exercise_list:
-            sentence_with_gap = self._string_processing(pair[0])
-            solution = self._string_processing(pair[1])
-            ex_text += r'\item ' + sentence_with_gap + '\n'
-            sol_text += r'\item ' + solution + '\n'
-        ex_text += r'\end{enumerate}'
-        sol_text += r'\end{enumerate}'
-        self.definition = def_text # No need to preprocess the string because it has be done in the for loop
-        self.exercise = ex_text
-        self.solution = sol_text
-
+    # def __write_definition_latex(self, def_dict:dict):
+    #     def_text = ''
+    #     ex_text = r'\begin{enumerate}' + '\n'
+    #     sol_text = ex_text
+    #     americanize_word_list = [get_american_spelling(word) for word in self.word_list]
+    #     exercise_list = []
+    #     for word in americanize_word_list:
+    #         if word in def_dict.keys():
+    #             def_text += r'\vocabulary{' + word + r'}'
+    #             def_text += r'{' + def_dict[word][0] + r'}' + '\n'
+    #             for entry in def_dict[word][1]:
+    #                 def_text += r'\defitem{' + entry['part_of_speech'] + r'}'
+    #                 definition = entry['definition']
+    #                 definition = self._string_processing(definition)
+    #                 def_text += r'{' + definition + r'}'
+    #                 if entry['example_sentences']:
+    #                     sentence = entry['example_sentences'][0]
+    #                     sentence = self._string_processing(sentence)
+    #                     def_text += r'{' + sentence + r'}' + '\n'
+    #                     sentence_with_gap, solution_list = replace_term(original_string=sentence, 
+    #                                                      old_value=word, 
+    #                                                      new_value=r'\ldots')
+    #                     if sentence_with_gap != sentence and sentence_with_gap and solution_list:
+    #                         sentence_with_gap = sentence_with_gap.replace('...', r'{[\ldots] }')
+    #                         solution = ', '.join(solution_list)
+    #                         exercise_list.append((sentence_with_gap, solution))
+    #                 else:
+    #                     # If there is no example sentence, we still need a `{}` for the LaTeX command.
+    #                     def_text += r'{}' + '\n'
+    #         else:
+    #             print(f'The word {word} does not exist in the dictionary.')
+    #     random.shuffle(exercise_list)
+    #     for pair in exercise_list:
+    #         sentence_with_gap = self._string_processing(pair[0])
+    #         solution = self._string_processing(pair[1])
+    #         ex_text += r'\item ' + sentence_with_gap + '\n'
+    #         sol_text += r'\item ' + solution + '\n'
+    #     ex_text += r'\end{enumerate}'
+    #     sol_text += r'\end{enumerate}'
+    #     self.definition = def_text # No need to preprocess the string because it has be done in the for loop
+    #     self.exercise = ex_text
+    #     self.solution = sol_text
 
 
 class ReadingExercise(Exercise):
@@ -399,7 +401,7 @@ class FillInTheGapExercise(Exercise):
 
 
     def generate_solution(self, aug_dict: dict):
-        return ''
+        None
     
 
 class CompleteDefinitionsAndExamples(Exercise):
@@ -561,16 +563,64 @@ class ParaphraseExercise(Exercise):
 class DialogueExercise(Exercise):
     def __init__(self, word_list: list):
         super().__init__(word_list=word_list)
-    
-    def create_prompt(self):
-        return None
+        self.phrase_dict = dict()
+        self.abridged_phrase_dict = dict()
+        self.import_dictionary()
+        self.box = self._write_box(word_list=word_list)
+        self.exercise = None
+        self.solution = None
 
+    
+    def import_dictionary(self, dictionary_path:str='../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Dictionary/Phrase.json'):
+        with open(dictionary_path) as file:
+            self.phrase_dict = json.dump(file)
+        for word in self.word_list:
+            if word in self.phrase_dict.keys():
+                self.abridged_phrase_dict[word] = self.phrase_dict[word][1][0]['definition']
+            else:
+                print(f'The term {word} does not exist in the reference dictionary.')
+    
+
+    def create_prompt(self):
+        prompt = prompts.dialogue_exercise_prompt
+        prompt += 'Create the JSON file based on the following inputs'
+        prompt += json.dumps(self.abridged_phrase_dict, ensure_ascii=False)
+        self.generation_prompt = prompt
+
+
+    def generate_exercise(self, dialogue_dict:dict):
+        ex = ''
+        sol = r'\begin{enumerate}' + '\n'
+        index = 1
+        for _, dialogue in dialogue_dict.items():
+            ex += r'\noindent \textbf{Dialogue ' + index + '}\n'
+            ex += r'\vspace{-1ex}' + '\n'
+            ex += r'\begin{dialogue}' '\n'
+            ex += r'\speak{A} ' + dialogue['A'] + '\n'
+            ex += r'\speak{B} ' + dialogue['Paraphrase'] + '\n'
+            ex += r'\vspace{1ex}' + '\n'
+            ex += r"\speak{B'}" + '\n'
+            ex += r'\vspace{1ex}' + '\n'
+            ex += r'\end{dialogue}' + '\n'
+            sol += r'\item ' + dialogue['B']  + '\n'
+            index += 1
+
+        sol += r'\end{enumerate}' + '\n'
+        self.exercise = ex
+        self.solution = sol
+
+    
+    def finish_import(self):
+        self.exercise_dict['exercise'] = self.exercise
+        self.exercise_dict['box'] = self.box
+        self.exercise_dict['solution'] = self.solution
+        
 
 class ExerciseFactory:
     def create_exercise(self, exercise_type:str, word_list:list, example_sentences: ExampleSentences=None):
         '''
             Create exercises.
-            Available inputs: `Reading`, `Fill in the gap`, `Paraphrase`, `Definition and Example Completion`
+            Available inputs: `Reading`, `Fill in the gap`, `Paraphrase`, `Definition and Example Completion`, `Dialogue`
         '''
         if exercise_type == 'Reading':
             return ReadingExercise(word_list=word_list)
@@ -582,6 +632,8 @@ class ExerciseFactory:
             return Definition(word_list=word_list)
         elif exercise_type == 'Definition and Example Completion':
             return CompleteDefinitionsAndExamples(word_list=word_list)
+        elif exercise_type == 'Dialogue':
+            return DialogueExercise(word_list=word_list)
         raise ValueError('Invalid exercise type!')
     
 
