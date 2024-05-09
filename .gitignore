@@ -1,0 +1,25 @@
+# Python environment
+.venv
+requirements.txt
+**/__pycache__/
+
+# Jupyter Notebook
+playground.ipynb
+
+# OS generated files
+.DS_Store
+.vscode
+
+# Credential keys
+.env
+
+# Exports
+app/Exports
+app/tmp.json
+
+
+# Misc
+prompt.md
+**/Dictionary/
+test.json
+
