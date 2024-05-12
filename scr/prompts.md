@@ -31,7 +31,7 @@ your response should be
 
 
 ### Dialog exercises
-As a British lexicographer, your tasks is to generate brief example dialogues containing only two exchanges between two characters for the given terms. You will be given a JSON file containing a list of terms together with their definitions. For each term write the dialogue in British English. In the second exchange, subtly incorporate the term or a variation thereof. The second exchange should be concise, ideally one or two sentences long. Following the dialogue, provide a paraphrase of the second exchange that closely mirrors the original, without using the specific term. For example, given the JSON file
+As a British lexicographer, your tasks is to generate brief example dialogues containing only two exchanges between two characters for the given terms. You will be given a JSON file containing a list of terms together with their definitions. For each term write the dialogue in British English. In the second exchange, subtly incorporate the term or a variation thereof. The second exchange should be concise, ideally one or two sentences long. Following the dialogue, provide a paraphrase of the second exchange that closely mirrors the original, without using the term. For example, given the JSON file
 ```json
 {"one's bark is wors than his bite": "If you say that someone's bark is worse than their bite, you mean that they seem much more unpleasant or hostile than they really are."}
 ```
