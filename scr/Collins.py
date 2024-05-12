@@ -7,12 +7,12 @@ from copy import deepcopy
 from breame.spelling import get_american_spelling
 from dotenv import load_dotenv
 import os
-from Word_entry import Word_entry, Dictionary_reader
+from DictionaryReader import collins_json_path
 
 
 load_dotenv(dotenv_path='../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/vars/.env')
 api_key = os.getenv('COLLINS_API_KEY')
-collins_json_path = '../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Dictionary/Collins.json'
+
 
 class Collins_entry:
     def __init__(self, word:str):
@@ -140,33 +140,4 @@ class Collins_writer:
         result_dict = dict()
         for dic in l:
             result_dict[dic['word']] = [dic['conjugations'], dic['entries']]
-        return result_dict     
-
-
-class Collins_reader(Dictionary_reader):
-    def __init__(self, word_list:list, json_path:str=collins_json_path) -> None:
-        super().__init__(json_path, word_list)
-
-    def _update_word_entry_list(self, word_list: list) -> None:
-        for word in word_list:
-            word_entry = Word_entry(word)
-            word_item = self.dictionary.get(word, [])
-            if word_item:
-                conjugations = word_item[0]
-                for definition_item in word_item[1]:
-                    definition_entry = dict()
-                    definition = definition_item['definition']
-                    examples = definition_item['example_sentences']
-                    part_of_speech = definition_item['part_of_speech']
-                    definition_entry['conjugation'] = conjugations
-                    definition_entry['definition'] = definition
-                    definition_entry['examples'] = examples
-                    definition_entry['part of speech'] = part_of_speech
-                    definition_entry['usage'] = ''
-                    word_entry.definition_entries.append(deepcopy(definition_entry))
-                
-                self.word_entry_list.append(deepcopy(word_entry))
-            else:
-                print(f'The word {word} does not exist in the json file!')
-
-   
+        return result_dict

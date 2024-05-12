@@ -54,9 +54,6 @@ Following the definition, craft an example sentence for the term using British E
 Format your response in a JSON code block
 ```json
 {
-    "term": {
-        "Definition": "Definition of the term",
-        "Example": "Example sentence"
-    }
+    "term": {"Definition": "Definition of the term", "Example": "Example sentence"}
 }
 ```

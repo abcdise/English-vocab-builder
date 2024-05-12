@@ -565,15 +565,16 @@ class DialogueExercise(Exercise):
         super().__init__(word_list=word_list)
         self.phrase_dict = dict()
         self.abridged_phrase_dict = dict()
-        self.import_dictionary()
+        self.__import_dictionary()
+        self.create_prompt()
         self.box = self._write_box(word_list=word_list)
         self.exercise = None
         self.solution = None
 
     
-    def import_dictionary(self, dictionary_path:str='../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Dictionary/Phrase.json'):
+    def __import_dictionary(self, dictionary_path:str='../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Dictionary/Phrase.json'):
         with open(dictionary_path) as file:
-            self.phrase_dict = json.dump(file)
+            self.phrase_dict = json.load(file)
         for word in self.word_list:
             if word in self.phrase_dict.keys():
                 self.abridged_phrase_dict[word] = self.phrase_dict[word][1][0]['definition']
@@ -593,14 +594,12 @@ class DialogueExercise(Exercise):
         sol = r'\begin{enumerate}' + '\n'
         index = 1
         for _, dialogue in dialogue_dict.items():
-            ex += r'\noindent \textbf{Dialogue ' + index + '}\n'
+            ex += r'\noindent \textbf{Dialogue ' + str(index) + '}\n'
             ex += r'\vspace{-1ex}' + '\n'
             ex += r'\begin{dialogue}' '\n'
             ex += r'\speak{A} ' + dialogue['A'] + '\n'
             ex += r'\speak{B} ' + dialogue['Paraphrase'] + '\n'
-            ex += r'\vspace{1ex}' + '\n'
-            ex += r"\speak{B'}" + '\n'
-            ex += r'\vspace{1ex}' + '\n'
+            ex += r'\vspace{3ex}' + '\n'
             ex += r'\end{dialogue}' + '\n'
             sol += r'\item ' + dialogue['B']  + '\n'
             index += 1
