@@ -127,6 +127,8 @@ class Collins_writer:
                 entry = collins_entry.look_up()
                 if entry:
                     entry_list.append(deepcopy(entry))
+                else:
+                    print(f'The word {word} has empty entries.')
             self.new_entries = self.__list_to_dict(entry_list)
             self.__refresh_dictionary()
     
