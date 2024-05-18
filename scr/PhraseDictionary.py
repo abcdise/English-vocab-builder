@@ -1,6 +1,7 @@
 import json
 import prompts
 import pyperclip
+import itertools
 from copy import deepcopy
 from DictionaryReader import phrase_json_path
 
@@ -28,17 +29,16 @@ class PhraseDictionary:
             if word not in seen:
                 old_config['new'].append(word)
                 old_config['all'].append(word)
-            else:
-                print(f'The word {word} has been in the config file.')
         with open(phrase_json_config_path, 'w') as file:
             json.dump(old_config, file, ensure_ascii=False, indent=4)
 
 
 
-    def get_prompt(self):
+    def get_prompt(self, start_index:int, end_index:int):
+        dict_in_the_prompt = dict(itertools.islice(self.init_phrase_dict.items(), start_index, end_index))
         prompt = prompts.phrase_def_prompt
         prompt += '\n' + 'Please use Structure 1 or 2 to define the follwoing terms and write example sentences for each.' + '\n'
-        prompt += json.dumps(self.init_phrase_dict)
+        prompt += json.dumps(dict_in_the_prompt)
         pyperclip.copy(prompt)
         print('Please go to Chat GPT to generate the JSON file.')
 
