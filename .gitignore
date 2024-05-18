@@ -22,5 +22,6 @@ app/tmp.json
 prompt.md
 **/Dictionary/
 test.json
-Notes.json
+phrase notes.json
+vocab notes.csv
 
