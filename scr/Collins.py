@@ -22,28 +22,28 @@ class Collins_entry:
         print(f'Looking up the word {self.word}...')
 
     
-    def look_up(self, api_key=api_key):
+    def look_up(self, api_key=api_key) -> dict:
         time.sleep(3)
         self.__get_raw_entry(api_key=api_key)
-        self.__parse_headword()
+        self.__parse_headword(raw_entry=self.raw_entry)
         return self.dictionary
     
 
-    def __get_raw_entry(self, api_key=api_key):
+    def __get_raw_entry(self, api_key=api_key) -> None:
         base_url = 'https://api.collinsdictionary.com/api/v1'
         api = API(baseUrl=base_url, accessKey=api_key)
-        search_word = get_american_spelling(search_word)
+        search_word = get_american_spelling(self.word)
         response = api.searchFirst(dictionaryCode='english-learner', 
                                             searchWord=search_word, 
                                             entryFormat='html')
         self.raw_entry = json.loads(response.decode())
 
 
-    def __parse_headword(self):
-        if 'errorCode' in self.raw_entry.keys():
+    def __parse_headword(self, raw_entry:dict) -> None:
+        if 'errorCode' in raw_entry.keys():
             print(f'The word {self.word} can not be found.')
         else:
-            html_content = self.dictionary['entryContent']
+            html_content = raw_entry['entryContent']
             soup = BeautifulSoup(html_content, 'html.parser')
             parsed_data = {
                 'word': None,
@@ -120,12 +120,13 @@ class Collins_writer:
     def look_up(self, word_list: list):
         entry_list = []
         for word in word_list:
-            if not word in self.dic.keys():
+            entry = dict()
+            if not word in self.dic:
                 # if the word hasn't been in the dictionary
                 collins_entry = Collins_entry(word=word)
                 entry = collins_entry.look_up()
                 if entry:
-                    entry_list.append(entry)
+                    entry_list.append(deepcopy(entry))
             self.new_entries = self.__list_to_dict(entry_list)
             self.__refresh_dictionary()
     
