@@ -437,7 +437,7 @@ class CompleteDefinitionsAndExamples(Exercise):
             if sentence_length > 3:
                 sentence_with_gap, solution_list = replace_term(original_string=pair[1],
                                                         old_value=pair[0],
-                                                        new_value='\ldots')
+                                                        new_value=r'\ldots')
                 # Append the sentences with gaps to the current string
                 if sentence_with_gap != pair[1]:
                     if sentence_with_gap:
