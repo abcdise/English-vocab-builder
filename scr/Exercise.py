@@ -322,7 +322,7 @@ class FillInTheGapExercise(Exercise):
 
     def __init__(self, word_list:list, example_sentences: ExampleSentences):
         super().__init__(word_list=word_list)
-        self.word_list = [word for word in self.word_list if len(word.split(' ')) == 1]
+        self.word_list = [get_british_spelling(word) for word in self.word_list if len(word.split(' ')) == 1]
         self.box = self._write_box(word_list=self.word_list)
         self.example_sentences = example_sentences.example_sentences
         self.exercise, self.solution = self.generate_exercise(aug_dict=self.example_sentences)
@@ -463,6 +463,7 @@ class CompleteDefinitionsAndExamples(Exercise):
 
 class ParaphraseExercise(Exercise):
     def __init__(self, word_list: list, example_sentences: ExampleSentences):
+        word_list = [get_british_spelling(word) for word in word_list]
         super().__init__(word_list=word_list)
         self.example_sentences = example_sentences.example_sentences
         self.example_sentences_with_analysis = example_sentences.example_sentences_with_analysis
