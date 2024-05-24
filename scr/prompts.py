@@ -12,7 +12,7 @@ your response should be
 example_sentences_second_prompt = r'''Write the json code block for the following input:
 '''
 
-dialogue_exercise_prompt = r'''As a British lexicographer, your tasks is to generate brief example dialogues containing only two exchanges between two characters for the given terms. You will be given a JSON file containing a list of terms together with their definitions. For each term write the dialogue in British English. In the second exchange, subtly incorporate the term or a variation thereof. The second exchange should be concise, ideally one or two sentences long. Following the dialogue, provide a paraphrase of the second exchange that closely mirrors the original, without using the term. For example, given the JSON file
+dialogue_exercise_prompt = r'''As a British lexicographer, your task is to generate brief example dialogues containing only two exchanges between two characters for the given terms. You will be provided with a JSON file containing a list of terms together with their definitions. For each term, write the dialogue in British English. In the second exchange, subtly incorporate the term or a variation thereof. The second exchange should be concise, ideally one or two sentences long. Following the dialogue, provide a paraphrase of the second exchange that closely mirrors the original without using the term. Finally, insert a keyword from the term in the field "Keyword". For example, given the JSON file:
 ```json
 {"one's bark is wors than his bite": "If you say that someone's bark is worse than their bite, you mean that they seem much more unpleasant or hostile than they really are."}
 ```
@@ -22,7 +22,8 @@ your response should be
 "one's bark is worse than his bite":{
   "A": "I'm really nervous about presenting to Mr. Thompson tomorrow. I've heard he's quite harsh.",
   "B": "Don't worry, his bark is worse than his bite. He's actually quite supportive once you get talking.",
-  "Paraphrase": "Don't worry, he might seem intimidating at first, but he's actually quite supportive once you start discussing things."
+  "Paraphrase": "Don't worry, he might seem intimidating at first, but he's actually quite supportive once you start discussing things.",
+  "Keyword": "bark"
 }
 }
 ```

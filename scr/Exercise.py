@@ -292,6 +292,7 @@ class ExampleSentences(Exercise):
             for sentence in sentence_list:
                 sentence_analysis = dict()
                 sentence_analysis['Sentence'] = sentence
+                sentence_analysis['Keyword'] = ''
                 sentence_analysis['Excerpt'] = ''
                 sentence_analysis['Paraphrase'] = ''
                 sentence_analysis_list.append(deepcopy(sentence_analysis))
@@ -479,7 +480,7 @@ class ParaphraseExercise(Exercise):
         exercise_list = []
         for term, analysis_list in aug_dict.items():
             for analysis in analysis_list:
-                exercise_list.append((term, analysis['Sentence'], analysis['Excerpt'], analysis['Paraphrase']))
+                exercise_list.append((analysis['Keyword'], analysis['Sentence'], analysis['Excerpt'], analysis['Paraphrase']))
 
         random.shuffle(exercise_list)
         ex = r'\begin' + r'{enumerate}' + '\n'
@@ -596,8 +597,9 @@ class DialogueExercise(Exercise):
             ex += r'\begin{dialogue}' '\n'
             ex += r'\speak{A} ' + dialogue['A'] + '\n'
             ex += r'\speak{B} ' + dialogue['Paraphrase'] + '\n'
-            ex += r'\vspace{3ex}' + '\n'
             ex += r'\end{dialogue}' + '\n'
+            ex += r'\underline{\textsc{' + dialogue['Keyword'] + '}}\n'
+            ex += r'\vspace{10ex}' + '\n\n'
             sol += r'\item ' + dialogue['B']  + '\n'
             index += 1
 
@@ -612,7 +614,6 @@ class DialogueExercise(Exercise):
 
         """
         self.exercise_dict['exercise'] = self.exercise
-        self.exercise_dict['box'] = self.box
         self.exercise_dict['solution'] = self.solution
         
 

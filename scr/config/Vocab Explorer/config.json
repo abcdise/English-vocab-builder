@@ -2377,26 +2377,6 @@
         "peak"
     ],
     "new": [
-        "discern",
-        "illegal",
-        "hatch",
-        "countenance",
-        "drought",
-        "canon",
-        "prostrate",
-        "linchpin",
-        "allay",
-        "reptile",
-        "deliberate",
-        "trench",
-        "producer",
-        "miniature",
-        "biography",
-        "proscribe",
-        "arrogate",
-        "undermine",
-        "deduce",
-        "revelation",
         "traverse",
         "portent",
         "dissent",
@@ -4753,9 +4733,7 @@
         "contaminate",
         "vessel",
         "narrate",
-        "flamboyant"
-    ],
-    "last change": [
+        "flamboyant",
         "discern",
         "illegal",
         "hatch",
@@ -4775,7 +4753,9 @@
         "arrogate",
         "undermine",
         "deduce",
-        "revelation",
+        "revelation"
+    ],
+    "last change": [
         "traverse",
         "portent",
         "dissent",
