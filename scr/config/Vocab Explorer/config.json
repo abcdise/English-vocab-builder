@@ -2377,26 +2377,6 @@
         "peak"
     ],
     "new": [
-        "traverse",
-        "portent",
-        "dissent",
-        "morale",
-        "dire",
-        "dispensation",
-        "exact",
-        "avant-garde",
-        "defraud",
-        "audition",
-        "intangible",
-        "esthetic",
-        "beck",
-        "affiliate",
-        "tenant",
-        "transcription",
-        "refractory",
-        "hereditary",
-        "likelihood",
-        "excrement",
         "quorum",
         "unyielding",
         "raze",
@@ -4753,9 +4733,7 @@
         "arrogate",
         "undermine",
         "deduce",
-        "revelation"
-    ],
-    "last change": [
+        "revelation",
         "traverse",
         "portent",
         "dissent",
@@ -4775,7 +4753,9 @@
         "refractory",
         "hereditary",
         "likelihood",
-        "excrement",
+        "excrement"
+    ],
+    "last change": [
         "quorum",
         "unyielding",
         "raze",

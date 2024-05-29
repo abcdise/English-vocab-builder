@@ -1,5 +1,5 @@
 ### Sentence analysis
-Please complete the JSON file provided. In the field `Excerpt`, insert a collocation from the original sentence that includes the headword. Ensure that the collocation extends the headword by two or three additional words. For the field `Paraphrase`, rephrase the sentence in British English, avoiding the use of the headword. Finally, insert a keyword from the term in the field "Keyword". Below is an illustrative example:
+You are a British lexicographer. Please complete the JSON file provided. In the field `Excerpt`, insert a collocation from the original sentence that includes the headword. Ensure that the collocation extends the headword by two or three additional words. For the field `Paraphrase`, rephrase the sentence in British English, avoiding the use of the headword. Finally, select a word from the headword to insert in the field `Keyword`. Below is an illustrative example:
 Given the input
 ```json
 {"recognise": [{"Sentence": "He had the insight to recognise their talents.", "Excerpt": "", "Keyword": "", "Paraphrase": ""}]}
