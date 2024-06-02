@@ -101,7 +101,7 @@ class AnkiCommunicator:
         if not card_ids:
             return []
         cards_info = self.__invoke('cardsInfo', {'cards': card_ids})
-        words = {self._extract_word_from_field(card['fields'][item]['value']) for card in cards_info}
+        words = {self._extract_word_from_field(card['fields'][item]['value']) for card in cards_info if card}
         return list(words)
 
     def get_words_for_tomorrow(self, deck_name, item):

@@ -2377,26 +2377,6 @@
         "peak"
     ],
     "new": [
-        "quorum",
-        "unyielding",
-        "raze",
-        "discreet",
-        "carbohydrate",
-        "caption",
-        "mold",
-        "shrill",
-        "corpse",
-        "supersede",
-        "amicable",
-        "interference",
-        "misnomer",
-        "anomaly",
-        "incriminate",
-        "adjoin",
-        "absurd",
-        "unworthy",
-        "blunt",
-        "secluded",
         "maiden",
         "affront",
         "accolade",
@@ -4753,9 +4733,7 @@
         "refractory",
         "hereditary",
         "likelihood",
-        "excrement"
-    ],
-    "last change": [
+        "excrement",
         "quorum",
         "unyielding",
         "raze",
@@ -4775,7 +4753,9 @@
         "absurd",
         "unworthy",
         "blunt",
-        "secluded",
+        "secluded"
+    ],
+    "last change": [
         "maiden",
         "affront",
         "accolade",
