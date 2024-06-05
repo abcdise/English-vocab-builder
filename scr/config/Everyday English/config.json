@@ -161,26 +161,6 @@
         "ally oneself with sb."
     ],
     "new": [
-        "go over",
-        "look into it",
-        "take care of it",
-        "the list goes on and on",
-        "drive sales",
-        "match the competitors",
-        "damned if you do, and damned if you don't",
-        "in the market",
-        "will never fly",
-        "be here any minute",
-        "a brilliant idea",
-        "kick sb. out",
-        "creep sb. out",
-        "scare the heck out of sb.",
-        "fill sb. in",
-        "a house warming gift",
-        "I don't know if you've heard",
-        "you'll never guess ...",
-        "such a mess",
-        "chores",
         "set the table",
         "tidy up",
         "spotless",
@@ -321,9 +301,7 @@
         "embark on",
         "uppercase",
         "through the roof",
-        "off the charts"
-    ],
-    "last change": [
+        "off the charts",
         "go over",
         "look into it",
         "take care of it",
@@ -343,7 +321,9 @@
         "I don't know if you've heard",
         "you'll never guess ...",
         "such a mess",
-        "chores",
+        "chores"
+    ],
+    "last change": [
         "set the table",
         "tidy up",
         "spotless",

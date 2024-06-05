@@ -2377,26 +2377,6 @@
         "peak"
     ],
     "new": [
-        "maiden",
-        "affront",
-        "accolade",
-        "sustenance",
-        "speculate",
-        "barren",
-        "blase",
-        "vindicate",
-        "drudgery",
-        "timid",
-        "inviolable",
-        "vulgar",
-        "apathetic",
-        "aristocrat",
-        "inventive",
-        "simile",
-        "bewilderment",
-        "creed",
-        "intolerant",
-        "urchin",
         "emigrate",
         "primitive",
         "hut",
@@ -4753,9 +4733,7 @@
         "absurd",
         "unworthy",
         "blunt",
-        "secluded"
-    ],
-    "last change": [
+        "secluded",
         "maiden",
         "affront",
         "accolade",
@@ -4775,7 +4753,9 @@
         "bewilderment",
         "creed",
         "intolerant",
-        "urchin",
+        "urchin"
+    ],
+    "last change": [
         "emigrate",
         "primitive",
         "hut",
