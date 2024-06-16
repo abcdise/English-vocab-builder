@@ -160,17 +160,7 @@
         "in rotation",
         "ally oneself with sb."
     ],
-    "new": [
-        "exact a high price",
-        "at one's beck and call",
-        "exact a revenge on sb.",
-        "a dispensation from sth.",
-        "in all likelihood",
-        "arrogate sth. to oneself",
-        "bibe one's time",
-        "in rotation",
-        "ally oneself with sb."
-    ],
+    "new": [],
     "review": [
         "complimentary glass of wine",
         "coke and fries",
@@ -321,9 +311,7 @@
         "in error",
         "a twist in sth.",
         "prostrate",
-        "a bulge in sth."
-    ],
-    "last change": [
+        "a bulge in sth.",
         "exact a high price",
         "at one's beck and call",
         "exact a revenge on sb.",
@@ -333,5 +321,6 @@
         "bibe one's time",
         "in rotation",
         "ally oneself with sb."
-    ]
+    ],
+    "last change": []
 }
