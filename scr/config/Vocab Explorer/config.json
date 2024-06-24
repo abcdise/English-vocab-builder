@@ -2377,26 +2377,6 @@
         "peak"
     ],
     "new": [
-        "disparate",
-        "unwieldy",
-        "adulterate",
-        "suspend",
-        "virtuoso",
-        "ravine",
-        "studious",
-        "interpolate",
-        "jerk",
-        "vacate",
-        "wander",
-        "reminiscent",
-        "caustic",
-        "ferocious",
-        "sulfur",
-        "stately",
-        "benign",
-        "outrage",
-        "cogent",
-        "obsequious",
         "reliance",
         "hurl",
         "incident",
@@ -4753,9 +4733,7 @@
         "connective",
         "inhospitable",
         "ghastly",
-        "wretch"
-    ],
-    "last change": [
+        "wretch",
         "disparate",
         "unwieldy",
         "adulterate",
@@ -4775,7 +4753,9 @@
         "benign",
         "outrage",
         "cogent",
-        "obsequious",
+        "obsequious"
+    ],
+    "last change": [
         "reliance",
         "hurl",
         "incident",
