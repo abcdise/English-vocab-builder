@@ -231,10 +231,12 @@ class ReadingExercise(Exercise):
     passage: str = None
 
     def create_prompt(self, passage:str):
-        self.initial_passage = self.__remove_first_paragraph(passage)
-        self.generation_prompt = f'''
-        Term: {self.word_list}
-        Passage: {self.initial_passage}
+        self.initial_passage = passage
+        self.generation_prompt = f'''Term: {self.word_list}
+        Original Text: 
+        ```
+        {self.initial_passage}
+        ```
         '''   
 
 
@@ -246,21 +248,6 @@ class ReadingExercise(Exercise):
         self.exercise_dict['exercise'] = self.exercise
         self.exercise_dict['passage'] = self.passage
         self.exercise_dict['solution'] = self.solution
-
-
-
-    def __remove_first_paragraph(text):
-        # Split the text into paragraphs using double line breaks as the separator
-        paragraphs = text.split('\n\n')
-        
-        # Check if there is more than one paragraph in the text
-        if len(paragraphs) > 1:
-            # Remove the first paragraph by slicing the list
-            remaining_text = '\n\n'.join(paragraphs[1:])
-            return remaining_text
-        else:
-            # If there is only one paragraph or no paragraphs, return the original text
-            return text
 
 
 class ExampleSentences(Exercise):
