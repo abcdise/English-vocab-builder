@@ -189,17 +189,18 @@ class Definition(Exercise):
                         definition = entry['definition']
                         definition = self._string_processing(definition)
                         def_text += r'{' + definition + r'}'
+                        sentence_with_gap, solution_list = replace_term(original_string=definition, 
+                                old_value=word, 
+                                new_value=r'\ldots')
+                        if sentence_with_gap != definition and sentence_with_gap and solution_list:
+                            sentence_with_gap = sentence_with_gap.replace('...', r'{[\ldots] }')
+                            sentence_with_gap = remove_brackets_and_contents(sentence_with_gap)
+                            solution = ', '.join(solution_list)
+                            exercise_list.append((sentence_with_gap, solution))
                         if entry['example_sentences']:
                             sentence = entry['example_sentences'][0]
                             sentence = self._string_processing(sentence)
                             def_text += r'{' + sentence + r'}' + '\n'
-                            sentence_with_gap, solution_list = replace_term(original_string=sentence, 
-                                                            old_value=word, 
-                                                            new_value=r'\ldots')
-                            if sentence_with_gap != sentence and sentence_with_gap and solution_list:
-                                sentence_with_gap = sentence_with_gap.replace('...', r'{[\ldots] }')
-                                solution = ', '.join(solution_list)
-                                exercise_list.append((sentence_with_gap, solution))
                         else:
                             # If there is no example sentence, we still need a `{}` for the LaTeX command.
                             def_text += r'{}' + '\n'
