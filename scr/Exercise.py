@@ -23,7 +23,6 @@ def json_string_to_dict(json_string: str):
         return None
 
 
-
 def remove_brackets_and_contents(text):
     """
     Removes brackets and their contents from the given text.
@@ -111,6 +110,8 @@ class Exercise(ABC):
         for word in text_list:
             if word.startswith("'"):
                 word = '`' + word[1:]
+            if word.startswith('"'):
+                word = '``' + word[1:]
             text_list_new.append(word)
         return ' '.join(text_list_new)
 
