@@ -247,6 +247,7 @@ class Definition(Exercise):
 
     def __init__(self, word_list: list):
         super().__init__(word_list)
+        self.box = self._write_box(word_list=word_list)
         self.definition = None
         self.definition_dict = dict()
 
@@ -313,29 +314,60 @@ class Definition(Exercise):
         self.exercise_dict['definition'] = self.definition
         self.exercise_dict['exercise'] = self.exercise
         self.exercise_dict['solution'] = self.solution
+        self.exercise_dict['box'] = self.box
+
 
 class ReadingExercise(Exercise):
-    initial_passage: str = None
-    passage: str = None
+    def __init__(self, word_list:list):
+        super().__init__(word_list=word_list)
+        self.dialogue: str = None
+        self.passage: str = None
+        self.box: str = None
 
     def create_prompt(self, passage:str):
-        self.initial_passage = passage
         self.generation_prompt = f'''Term: {self.word_list}
         Original Text: 
         ```
-        {self.initial_passage}
+        {passage}
         ```
-        '''   
+        '''
+        self.passage = self._string_processing(passage.replace('\n', '\n\n'))
 
+    
+    def import_dialogue(self, dialogue:str):
+        dialogue_json = json.loads(dialogue)
+        # Write box
+        keywords = dialogue_json['keywords'] + self.word_list
+        self.box = self._write_box(word_list=keywords)
 
-    def import_passage(self, text:str):
-        self.passage = self._string_processing(text)
+        # Write dialogue
+        dialog_list = dialogue_json['conversation']
+        dialog_str = r'\begin{dialogue}' + '\n'
+        solution_list = []
+        for exchange in dialog_list:
+            utterance = self._string_processing(exchange['text'])
+            doc = nlp(utterance)
+            for token in doc:
+                if token.lemma_ in keywords or token.text in keywords:
+                    utterance, solution = replace_term(original_string=utterance, old_value=token.text, new_value=r'\rule{1cm}{0.15mm}')
+                    solution_list += solution
+                    keywords.remove(token.lemma_) if token.lemma_ in keywords else keywords.remove(token.text)
+            dialog_str += r'\speak{' + exchange['speaker'] + r'} ' + utterance + '\n'
+        dialog_str += r'\end{dialogue}' + '\n'
+        self.dialogue = dialog_str
+        sol = r'\begin{enumerate}' + '\n'
+        for solution in solution_list:
+            sol += r'\item ' + solution + '\n'
+        sol += r'\end{enumerate}' + '\n'
+        self.solution = sol
+
 
 
     def finish_import(self):
-        self.exercise_dict['exercise'] = self.exercise
+        self.exercise_dict['box'] = self.box
         self.exercise_dict['passage'] = self.passage
         self.exercise_dict['solution'] = self.solution
+        self.exercise_dict['dialogue'] = self.dialogue
 
 
 class ExampleSentences(Exercise):
@@ -416,7 +448,7 @@ class FillInTheGapExercise(Exercise):
             for original_sentence in sentence_list:            
                 question, sol_list = replace_term(original_string=original_sentence,
                                               old_value=word,
-                                              new_value=r'\ldots')
+                                              new_value=r'\rule{1cm}{0.15mm}')
                 if question != original_sentence:
                     exercise_list.append((question, ', '.join(sol_list)))
     
@@ -513,7 +545,7 @@ class CompleteDefinitionsAndExamples(Exercise):
             if sentence_length > 3:
                 sentence_with_gap, solution_list = replace_term(original_string=pair[1],
                                                         old_value=pair[0],
-                                                        new_value=r'\ldots')
+                                                        new_value=r'\rule{1cm}{0.15mm}')
                 # Append the sentences with gaps to the current string
                 if sentence_with_gap != pair[1]:
                     if sentence_with_gap:
@@ -564,7 +596,7 @@ class ParaphraseExercise(Exercise):
             paraphrased_sentence = exercise[3]
             question, _ = self.__replace_term(original_string=exercise[1],
                                                 old_value=exercise[2],
-                                                new_value=r'\ldots ')
+                                                new_value=r'\rule{1cm}{0.15mm}')
             big_term = r'\textsc{' + exercise[0] + r'}'
             ex += r'\item ' + '\n'
             ex += paraphrased_sentence + r' \\' + '\n'
