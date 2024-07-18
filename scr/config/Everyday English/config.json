@@ -237,15 +237,27 @@
         "be a mouthful",
         "browse the aisles",
         "a walk in the park",
-        "plump for sth."
+        "plump for sth.",
+        "file one's taxes",
+        "tax agency",
+        "payroll tax statement",
+        "with an open mind",
+        "fire truck",
+        "make the runoff",
+        "eat sb. alive",
+        "as old as time",
+        "take a nosedive",
+        "take a battering",
+        "come under fire",
+        "mix and match",
+        "walk back",
+        "dial back"
     ],
     "new": [
-        "walk past sth.",
-        "move by sb.",
-        "be a mouthful",
-        "browse the aisles",
-        "a walk in the park",
-        "plump for sth."
+        "come under fire",
+        "mix and match",
+        "walk back",
+        "dial back"
     ],
     "review": [
         "complimentary glass of wine",
@@ -479,14 +491,28 @@
         "network with sb.",
         "be specific about sth.",
         "walk down the aisle",
-        "be groomed for sth."
-    ],
-    "last change": [
+        "be groomed for sth.",
         "walk past sth.",
         "move by sb.",
         "be a mouthful",
         "browse the aisles",
         "a walk in the park",
-        "plump for sth."
+        "plump for sth.",
+        "file one's taxes",
+        "tax agency",
+        "payroll tax statement",
+        "with an open mind",
+        "fire truck",
+        "make the runoff",
+        "eat sb. alive",
+        "as old as time",
+        "take a nosedive",
+        "take a battering"
+    ],
+    "last change": [
+        "come under fire",
+        "mix and match",
+        "walk back",
+        "dial back"
     ]
 }
