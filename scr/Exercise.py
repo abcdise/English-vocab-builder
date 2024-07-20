@@ -369,7 +369,7 @@ class FillInTheGapExercise(Exercise):
         ex = r'\begin{enumerate}' + '\n'
         sol = r'\begin{enumerate}' + '\n'
         for exercise in exercise_list:
-            ex += r'\item ' + exercise[0] + '\n'
+            ex += r'\item ' + self._string_processing(exercise[0]) + '\n'
             sol += r'\item ' + exercise[1] + '\n'
 
         ex += r'\end{enumerate}' + '\n'
@@ -595,8 +595,10 @@ class DialogueExercise(Exercise):
 
         """
         prompt = prompts.dialogue_exercise_prompt
-        prompt += 'Create the JSON file based on the following inputs'
+        prompt += 'Create the JSON file based on the following inputs\n'
+        prompt += '```json\n'
         prompt += json.dumps(self.abridged_phrase_dict, ensure_ascii=False)
+        prompt += '\n```'
         self.generation_prompt = prompt
 
 

@@ -2386,26 +2386,6 @@
         "peak"
     ],
     "new": [
-        "slap",
-        "trajectory",
-        "fatigue",
-        "flaunt",
-        "falter",
-        "aperture",
-        "sumptuous",
-        "residential",
-        "defiant",
-        "trivial",
-        "ramble",
-        "lash",
-        "remote",
-        "subsist",
-        "repudiate",
-        "haul",
-        "terminal",
-        "viral",
-        "vaccine",
-        "divert",
         "dangle",
         "utilitarian",
         "retrospect",
@@ -4770,9 +4750,7 @@
         "legible",
         "lascivious",
         "chronometer",
-        "garnish"
-    ],
-    "last change": [
+        "garnish",
         "slap",
         "trajectory",
         "fatigue",
@@ -4792,7 +4770,9 @@
         "terminal",
         "viral",
         "vaccine",
-        "divert",
+        "divert"
+    ],
+    "last change": [
         "dangle",
         "utilitarian",
         "retrospect",
