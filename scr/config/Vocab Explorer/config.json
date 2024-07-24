@@ -2386,26 +2386,6 @@
         "peak"
     ],
     "new": [
-        "dangle",
-        "utilitarian",
-        "retrospect",
-        "domicile",
-        "supposed",
-        "atonement",
-        "mind-boggling",
-        "positive",
-        "rescind",
-        "vitiate",
-        "slip",
-        "superior",
-        "aesthetic",
-        "mastermind",
-        "stimulant",
-        "rascal",
-        "beware",
-        "roster",
-        "posit",
-        "cipher",
         "contemplate",
         "inconsequential",
         "abstract",
@@ -4770,9 +4750,7 @@
         "terminal",
         "viral",
         "vaccine",
-        "divert"
-    ],
-    "last change": [
+        "divert",
         "dangle",
         "utilitarian",
         "retrospect",
@@ -4792,7 +4770,9 @@
         "beware",
         "roster",
         "posit",
-        "cipher",
+        "cipher"
+    ],
+    "last change": [
         "contemplate",
         "inconsequential",
         "abstract",
