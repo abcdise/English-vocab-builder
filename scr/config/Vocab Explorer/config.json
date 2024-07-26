@@ -2386,26 +2386,6 @@
         "peak"
     ],
     "new": [
-        "contemplate",
-        "inconsequential",
-        "abstract",
-        "inexorable",
-        "nickname",
-        "fidelity",
-        "stall",
-        "rectitude",
-        "attraction",
-        "residual",
-        "courteous",
-        "thrifty",
-        "ripple",
-        "inimical",
-        "dwindle",
-        "jaw",
-        "domain",
-        "veil",
-        "stride",
-        "anguish",
         "tow",
         "subtlety",
         "feast",
@@ -4770,9 +4750,7 @@
         "beware",
         "roster",
         "posit",
-        "cipher"
-    ],
-    "last change": [
+        "cipher",
         "contemplate",
         "inconsequential",
         "abstract",
@@ -4792,7 +4770,9 @@
         "domain",
         "veil",
         "stride",
-        "anguish",
+        "anguish"
+    ],
+    "last change": [
         "tow",
         "subtlety",
         "feast",
