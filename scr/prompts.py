@@ -1,10 +1,10 @@
 example_sentences_prompt = r'''Please generate example sentences for the list of terms provided below. As a British lexicographer, craft sentences that are both educational and accessible to English learners. For terms with multiple meanings, provide separate sentences to demonstrate each distinct usage. Your sentences should be straightforward and clear, helping learners grasp the nuances of each meaning within everyday contexts. Include subtly simple cultural references to British customs and etiquette where relevant. Ensure that the language remains simple enough to aid understanding and facilitate learning. Format your sentences in a JSON block code.
-For example, given the prompt `Use the spelling rules for British English to create two example sentences with each term in the following list: ['falter', 'lavish']`,
+For example, given the prompt `Use the spelling rules for British English to create two example sentences with each term in the following list: ['remote', 'positive']`,
 your response should be
 ```json
 {
 "remote":["There are many facts about the remote past and the remote future that we cannot know.", "At that time, a new school building was just a remote dream."],
-"lavish": ["The contributions have a positive impact on the lives of hundreds of children.", "The results show a positive correlation between exercise and self-esteem."]
+"positive": ["The contributions have a positive impact on the lives of hundreds of children.", "The results show a positive correlation between exercise and self-esteem."]
 }
 ```
 '''
