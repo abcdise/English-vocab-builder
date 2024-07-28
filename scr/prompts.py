@@ -1,10 +1,27 @@
-example_sentences_prompt = r'''Please generate example sentences for the list of terms provided below. As a British lexicographer, craft sentences that are both educational and accessible to English learners. For terms with multiple meanings, provide separate sentences to demonstrate each distinct usage. Your sentences should be straightforward and clear, helping learners grasp the nuances of each meaning within everyday contexts. Include subtly simple cultural references to British customs and etiquette where relevant. Ensure that the language remains simple enough to aid understanding and facilitate learning. Format your sentences in a JSON block code.
-For example, given the prompt `Use the spelling rules for British English to create two example sentences with each term in the following list: ['remote', 'positive']`,
-your response should be
+example_sentences_prompt = r'''Generate two example sentences for each term and definition below. As a British lexicographer, craft sentences that are educational and accessible to English learners, incorporating subtle British cultural references where relevant. Ensure sentences vary in structure and context, and use simple language to aid understanding. Format your response as a JSON block.
+
+Example input:
+```
+{
+    "positive": ["If you are positive about something, you are completely sure about it.", "A positive number is greater than zero."],
+    "remote": ["Remote areas are far away from cities and towns."]
+}
+```
+
+Example response:
 ```json
 {
-"remote":["There are many facts about the remote past and the remote future that we cannot know.", "At that time, a new school building was just a remote dream."],
-"positive": ["The contributions have a positive impact on the lives of hundreds of children.", "The results show a positive correlation between exercise and self-esteem."]
+    "positive": [{
+        "Definition": "If you are positive about something, you are completely sure about it.",
+        "Example": ["After the test, I was positive that I had passed.", "I am positive that I locked the door before I left the house."]
+    }, {
+        "Definition": "A positive number is greater than zero.",
+        "Example": "The number 5 is positive."
+    }],
+    "remote": [{
+        "Definition": "Remote areas are far away from cities and towns.",
+        "Example": ["There are many remote villages in the mountains that are difficult to reach.", "The house is so remote that you can't even see the neighbours."]
+    }]
 }
 ```
 '''

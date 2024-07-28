@@ -57,8 +57,12 @@ def replace_term(original_string: str, old_value: str, new_value: str):
 
 class Exercise(ABC):
 
-    def __init__(self, word_list:list):
-        self.word_list = word_list
+    def __init__(self, word_entries:dict):
+
+        self.word_entries = word_entries
+        # For each key in the dictionary, use `self._get_british_spelling` to get the British spelling and replace the key with the British spelling.
+        self.word_entries = {self._get_british_spelling(key): list(map(remove_brackets_and_contents, value)) for key, value in self.word_entries.items()}
+        self.word_list = list(self.word_entries.keys())
         self.generation_prompt = None
         self.exercise: str = None
         self.exercise_dict: dict = dict()
@@ -138,6 +142,12 @@ class Exercise(ABC):
 
     def _remove_duplicates(self, data: list):
         return list(set(data))
+    
+
+    def _get_british_spelling(self, text:str):
+        text_tokens = text.split(' ')
+        text_tokens = [get_british_spelling(token) for token in text_tokens]
+        return ' '.join(text_tokens)
 
 
 class Definition(Exercise):
@@ -158,9 +168,9 @@ class Definition(Exercise):
     - finish_import(self): Adds the definition, exercise, and solution to the exercise dictionary.
     '''
 
-    def __init__(self, word_list: list):
-        super().__init__(word_list)
-        self.box = self._write_box(word_list=word_list)
+    def __init__(self, word_entries: dict):
+        super().__init__(word_entries=word_entries)
+        self.box = self._write_box(word_list=self.word_list)
         self.definition = None
         self.definition_dict = dict()
 
@@ -193,7 +203,7 @@ class Definition(Exercise):
                         def_text += r'{' + definition + r'}'
                         sentence_with_gap, solution_list = replace_term(original_string=definition, 
                                 old_value=word, 
-                                new_value=r'\rule{1cm}{0.15mm}')
+                                new_value=(r'\rule{' + str(0.25*len(word)) + r'cm}{0.15mm}'))
                         if sentence_with_gap != definition and sentence_with_gap and solution_list:
                             sentence_with_gap = sentence_with_gap.replace('...', r'{[\ldots] }')
                             sentence_with_gap = remove_brackets_and_contents(sentence_with_gap)
@@ -231,8 +241,8 @@ class Definition(Exercise):
 
 
 class ReadingExercise(Exercise):
-    def __init__(self, word_list:list):
-        super().__init__(word_list=word_list)
+    def __init__(self, word_entries:dict):
+        super().__init__(word_entries=word_entries)
         self.dialogue: str = None
         self.passage: str = None
         self.box: str = None
@@ -284,19 +294,15 @@ class ReadingExercise(Exercise):
 
 
 class ExampleSentences(Exercise):
-    example_sentences: dict = dict()
-    example_sentences_with_analysis: dict = dict()
 
-    def create_prompt(self, number_of_sentences:str):
-        british_word_list = []
-        for term in self.word_list:
-            words = term.split(' ')
-            words = [get_british_spelling(word) for word in words]
-            term = ' '.join(words)
-            british_word_list.append(term)
+    def __init__(self, word_entries:dict):
+        super().__init__(word_entries=word_entries)
+        self.example_sentences: dict = dict()
+        self.example_sentences_with_analysis: dict = dict()
 
+    def create_prompt(self):
         prompt = prompts.example_sentences_prompt + '\n'
-        prompt += f'Use the spelling rules for British English to create {number_of_sentences} example sentences with each term in the following list: {british_word_list}'
+        prompt += f'Use the spelling rules for British English to create two example sentences with each definition in the following list: {self.word_entries}'
         self.generation_prompt = prompt
 
     
@@ -330,20 +336,15 @@ class ExampleSentences(Exercise):
 
 
     def finish_import(self):
-        tex_str = r'''\begin{enumerate}
-        
-        '''
-        for sentence in self.example_sentences.values():
-            tex_str += r'\item ' + f'{sentence}\n'
-        tex_str += r'\end{enumerate}'
-        self.exercise_dict['sentences'] = tex_str
+        # Obsolete
+        None
         
 
 class FillInTheGapExercise(Exercise):
 
-    def __init__(self, word_list:list, example_sentences: ExampleSentences):
-        super().__init__(word_list=word_list)
-        self.word_list = [get_british_spelling(word) for word in self.word_list if len(word.split(' ')) == 1]
+    def __init__(self, word_entries:dict, example_sentences: ExampleSentences):
+        super().__init__(word_entries=word_entries)
+        self.word_list = [term for term in self.word_list if len(term.split(' ')) == 1]
         self.box = self._write_box(word_list=self.word_list)
         self.example_sentences = example_sentences.example_sentences
         self.exercise, self.solution = self.generate_exercise(aug_dict=self.example_sentences)
@@ -357,13 +358,14 @@ class FillInTheGapExercise(Exercise):
     
     def generate_exercise(self, aug_dict: dict):
         exercise_list = []
-        for word, sentence_list in aug_dict.items():
-            for original_sentence in sentence_list:            
-                question, sol_list = replace_term(original_string=original_sentence,
-                                              old_value=word,
-                                              new_value=r'\rule{1cm}{0.15mm}')
-                if question != original_sentence:
-                    exercise_list.append((question, ', '.join(sol_list)))
+        for word in aug_dict:
+            for entry in aug_dict[word]:
+                for sentence in entry['Example']:
+                    question, sol_list = replace_term(original_string=sentence,
+                                                    old_value=word,
+                                                    new_value=(r'\rule{' + str(0.25*len(word)) + r'cm}{0.15mm}'))
+                    if question != sentence:
+                        exercise_list.append((question, ', '.join(sol_list)))
     
         random.shuffle(exercise_list)
         ex = r'\begin{enumerate}' + '\n'
@@ -374,7 +376,6 @@ class FillInTheGapExercise(Exercise):
 
         ex += r'\end{enumerate}' + '\n'
         sol += r'\end{enumerate}' + '\n'
-
         return ex, sol
 
 
@@ -392,12 +393,12 @@ class CompleteDefinitionsAndExamples(Exercise):
     exercise, solution(str): a LaTeX code block storing the questions and the solutions containing the definitions
     example_exercise, exercise_solution(str): a LaTeX code block storing the questions and the solutions containing the examples
     '''
-    def __init__(self, word_list:list, dictionary_path: str='../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Dictionary/Collins.json'):
+    def __init__(self, word_entries:dict, dictionary_path: str='../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Dictionary/Collins.json'):
         '''
         The main purpose of the the constructor is to prepare the organise the information from a dictionary into a python
         dictionary whose keys are the words and the values are lists of definitions in the dictionary
         '''
-        super().__init__(word_list=word_list)
+        super().__init__(word_entries=word_entries)
         self.word_list = [word for word in self.word_list if len(word.split(' ')) == 1]
         self.example_exercise: str = None
         self.example_solution: str = None
@@ -407,16 +408,14 @@ class CompleteDefinitionsAndExamples(Exercise):
             self.dictionary = json.load(json_file)
         self.definitions = dict()
         self.examples = dict()
-        for word in word_list:
+        for word in self.word_list:
+            self.definitions[word] = self.word_entries[word]
             word = get_american_spelling(word)
             if word in self.dictionary.keys():
-                self.definitions[word] = []
                 self.examples[word] = []
                 entries = self.dictionary[word][1]
                 for entry in entries:
-                    definition = remove_brackets_and_contents(entry['definition'])
                     example_list = entry['example_sentences']
-                    self.definitions[word].append(definition)
                     for example in example_list:
                         self.examples[word].append(example)
 
@@ -457,8 +456,8 @@ class CompleteDefinitionsAndExamples(Exercise):
             sentence_length = len(original_sentence.split(' '))
             if sentence_length > 3:
                 sentence_with_gap, solution_list = replace_term(original_string=pair[1],
-                                                        old_value=pair[0],
-                                                        new_value=r'\rule{1cm}{0.15mm}')
+                                                        old_value=get_american_spelling(pair[0]),
+                                                        new_value=(r'\rule{' + str(0.25*len(word)) + r'cm}{0.15mm}'))
                 # Append the sentences with gaps to the current string
                 if sentence_with_gap != pair[1]:
                     if sentence_with_gap:
@@ -483,9 +482,8 @@ class CompleteDefinitionsAndExamples(Exercise):
 
 
 class ParaphraseExercise(Exercise):
-    def __init__(self, word_list: list, example_sentences: ExampleSentences):
-        word_list = [get_british_spelling(word) for word in word_list]
-        super().__init__(word_list=word_list)
+    def __init__(self, word_entries: dict, example_sentences: ExampleSentences):
+        super().__init__(word_entries=word_entries)
         self.example_sentences = example_sentences.example_sentences
         self.example_sentences_with_analysis = example_sentences.example_sentences_with_analysis
         self.exercise, self.solution = self.__generate_exercise(aug_dict=self.example_sentences_with_analysis)
@@ -498,7 +496,7 @@ class ParaphraseExercise(Exercise):
 
     def __generate_exercise(self, aug_dict: dict):
         exercise_list = []
-        for term, analysis_list in aug_dict.items():
+        for _, analysis_list in aug_dict.items():
             for analysis in analysis_list:
                 exercise_list.append((analysis['Keyword'], analysis['Sentence'], analysis['Excerpt'], analysis['Paraphrase']))
 
@@ -555,13 +553,13 @@ class DialogueExercise(Exercise):
 
     """
 
-    def __init__(self, word_list: list):
-        super().__init__(word_list=word_list)
+    def __init__(self, word_entries: dict):
+        super().__init__(word_entries=word_entries)
         self.phrase_dict = dict()
         self.abridged_phrase_dict = dict()
         self.__import_dictionary()
         self.create_prompt()
-        self.box = self._write_box(word_list=word_list)
+        # self.box = self._write_box(word_list=self.word_list)
         self.exercise = None
         self.solution = None
 
@@ -640,7 +638,7 @@ class DialogueExercise(Exercise):
         
 
 class ExerciseFactory:
-    def create_exercise(self, exercise_type:str, word_list:list, example_sentences: ExampleSentences=None):
+    def create_exercise(self, exercise_type:str, word_entries:dict, example_sentences: ExampleSentences=None):
         '''
         Create exercises.
 
@@ -656,17 +654,17 @@ class ExerciseFactory:
             ValueError: If the exercise type is invalid.
         '''
         if exercise_type == 'Reading':
-            return ReadingExercise(word_list=word_list)
+            return ReadingExercise(word_entries=word_entries)
         elif exercise_type == 'Fill in the gap':
-            return FillInTheGapExercise(word_list=word_list, example_sentences=example_sentences)
+            return FillInTheGapExercise(word_entries=word_entries, example_sentences=example_sentences)
         elif exercise_type == 'Paraphrase':
-            return ParaphraseExercise(word_list=word_list, example_sentences=example_sentences)
+            return ParaphraseExercise(word_entries=word_entries, example_sentences=example_sentences)
         elif exercise_type == 'Definition':
-            return Definition(word_list=word_list)
+            return Definition(word_entries=word_entries)
         elif exercise_type == 'Definition and Example Completion':
-            return CompleteDefinitionsAndExamples(word_list=word_list)
+            return CompleteDefinitionsAndExamples(word_entries=word_entries)
         elif exercise_type == 'Dialogue':
-            return DialogueExercise(word_list=word_list)
+            return DialogueExercise(word_entries=word_entries)
         raise ValueError('Invalid exercise type!')
     
 

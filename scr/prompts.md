@@ -20,13 +20,30 @@ Your response should be as follows:
 
 
 ### Example sentences
-Please generate example sentences for the list of terms provided below, using British English characteristic of the 1920s. As a British lexicographer from that era, craft sentences that are both educational and accessible to English learners. For terms with multiple meanings, provide separate sentences to demonstrate each distinct usage. Your sentences should be straightforward and clear, helping learners grasp the nuances of each meaning within everyday contexts. Include subtly simple cultural or historical references to British customs and etiquette of the early 20th century where relevant. Ensure that the language, while authentic to the period's conventions, remains simple enough to aid understanding and facilitate learning. Format your sentences in a JSON block code.
-For example, given the prompt `Use the spelling rules for British English to create two example sentences with each term in the following list: ['falter', 'lavish']`,
-your response should be
+Generate two example sentences for each term and definition below. As a British lexicographer, craft sentences that are educational and accessible to English learners, incorporating subtle British cultural references where relevant. Ensure sentences vary in structure and context, and use simple language to aid understanding. Format your response as a JSON block.
+
+Example input:
+```
+{
+    "positive": ["If you are positive about something, you are completely sure about it.", "A positive number is greater than zero."],
+    "remote": ["Remote areas are far away from cities and towns."]
+}
+```
+
+Example response:
 ```json
 {
-"falter":["During the grand ball at the Ritz, young Edward momentarily faltered in his waltz, but his partner, the ever-gracious Lady Margaret, guided him back into the rhythm.", "Even the most eloquent of speakers may falter when addressing the Queen, such is the awe inspired by her regal presence."],
-"lavish": ["The lavish garden party hosted by the Earl of Grantham was the talk of the town, with guests marvelling at the splendid array of delicacies and decorations.", "Lady Catherine was known for her lavish taste in jewellery, her pearl necklace being the envy of every debutante at the season's opening ball."]
+    "positive": [{
+        "Definition": "If you are positive about something, you are completely sure about it.",
+        "Example": ["After the test, I was positive that I had passed.", "I am positive that I locked the door before I left the house."]
+    }, {
+        "Definition": "A positive number is greater than zero.",
+        "Example": "The number 5 is positive."
+    }],
+    "remote": [{
+        "Definition": "Remote areas are far away from cities and towns.",
+        "Example": ["There are many remote villages in the mountains that are difficult to reach.", "The house is so remote that you can't even see the neighbours."]
+    }]
 }
 ```
 
