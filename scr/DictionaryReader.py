@@ -30,6 +30,18 @@ class DictionaryReader(ABC):
     def get_word_entry_list(self):
         self._update_word_entry_list(self.word_list)
         return self.word_entry_list
+    
+
+    def get_concise_dictionary(self):
+        concise_dictionary = dict()
+        for i in range(len(self.word_list)):
+            word = self.word_list[i]
+            definitions = []
+            for entry in self.word_entry_list[i].definition_entries:
+                definition = entry['definition']
+                definitions.append(definition)
+            concise_dictionary[word] = definitions
+        return concise_dictionary
 
 
     @abstractmethod
