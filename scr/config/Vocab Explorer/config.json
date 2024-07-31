@@ -2386,21 +2386,6 @@
         "peak"
     ],
     "new": [
-        "hypocrite",
-        "moribund",
-        "battalion",
-        "languid",
-        "lad",
-        "brink",
-        "surrender",
-        "unkempt",
-        "starch",
-        "lewd",
-        "gel",
-        "condenser",
-        "bribe",
-        "creditor",
-        "brokerage",
         "emulate",
         "buoyant",
         "disdain",
@@ -4690,9 +4675,7 @@
         "despotic",
         "insinuate",
         "corridor",
-        "eccentric"
-    ],
-    "last change": [
+        "eccentric",
         "hypocrite",
         "moribund",
         "battalion",
@@ -4707,7 +4690,9 @@
         "condenser",
         "bribe",
         "creditor",
-        "brokerage",
+        "brokerage"
+    ],
+    "last change": [
         "emulate",
         "buoyant",
         "disdain",
