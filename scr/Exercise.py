@@ -53,7 +53,39 @@ def replace_term(original_string: str, old_value: str, new_value: str):
     else:
         new_string = ''
     return new_string, old_value_list
-    
+
+
+def int_to_roman(num):
+        """
+        Converts an integer to a Roman numeral.
+
+        Args:
+            num (int): The integer to be converted.
+
+        Returns:
+            str: The Roman numeral representation of the integer.
+        """
+        val = [
+            1000, 900, 500, 400,
+            100, 90, 50, 40,
+            10, 9, 5, 4,
+            1
+        ]
+        syms = [
+            "M", "CM", "D", "CD",
+            "C", "XC", "L", "XL",
+            "X", "IX", "V", "IV",
+            "I"
+        ]
+        roman_numeral = ''
+        i = 0
+        while num > 0:
+            for _ in range(num // val[i]):
+                roman_numeral += syms[i]
+                num -= val[i]
+            i += 1
+        return roman_numeral
+
 
 class Exercise(ABC):
 
@@ -243,54 +275,88 @@ class Definition(Exercise):
 class ReadingExercise(Exercise):
     def __init__(self, word_entries:dict):
         super().__init__(word_entries=word_entries)
-        self.dialogue: str = None
+        self.passage_dict = {word: [{"Definition": remove_brackets_and_contents(definition), "Passage": "Write the passage here"} for definition in word_entries[word]] for word in word_entries}
+        self.__create_prompt()
         self.passage: str = None
-        self.box: str = None
+        self.solution: str = None
 
-    def create_prompt(self, passage:str):
-        self.generation_prompt = f'''Term: {self.word_list}
-        Original Text: 
-        ```
-        {passage}
+
+    def __create_prompt(self):
+        self.generation_prompt = f'''
+        For each word and definition, write a one-paragraph passage using the word about an anecdote in the cultural history of England. Incorporate the word subtly into the passage. Ensure the word in the passage matches the given definition. Your passsages should adhere to the British English spelling rules. Format the response as follows
+        ```json
+        {self.passage_dict}
         ```
         '''
-        self.passage = self._string_processing(passage.replace('\n', '\n\n'))
 
     
-    def import_dialogue(self, dialogue:str):
-        dialogue_json = json.loads(dialogue)
-        # Write box
-        keywords = dialogue_json['keywords'] + self.word_list
-        self.box = self._write_box(word_list=keywords)
+    def import_passage(self, text:str):
+        self.passage_dict = deepcopy(json_string_to_dict(text))
 
-        # Write dialogue
-        dialog_list = dialogue_json['conversation']
-        dialog_str = r'\begin{dialogue}' + '\n'
+
+    def get_second_prompt(self):
+        passage_list = []
+        for _, def_passage_list in self.passage_dict.items():
+            for def_passage in def_passage_list:
+                passage_list.append(def_passage['Passage'])
+
+        input_dict = {passage: [{
+                                "Word": "Write the word from the passage here", 
+                                "Context": "Extract a two-word excerpt containing the word from the passage here",
+                                "Incorrect options": ["Incorrect option 1", "Incorrect option 2", "Incorrect option 3"]
+                                }] for passage in passage_list}
+
+        prompt = "For each of the given passages, you should create a cloze test with 5 questions. Make sure that each question can be solved by a purely linguistic understanding of the passage. Make sure that the wrong options for the same gap do not have similar meanings so that the correct answer doesn't stand out . Finally, ensure the words in the wrong options adhere to the British English spelling rule. Format your response by completing the following JSON code block:"
+        prompt += r'```json' + '\n'
+        prompt += json.dumps(input_dict, ensure_ascii=False)
+        prompt += r'```'
+        pyperclip.copy(prompt)
+
+    
+    def import_exercise(self, text: str):
+        imported_dict = json_string_to_dict(text)
+        self.passage = ''
+        self.solution = ''
+        labels = ['A', 'B', 'C', 'D']
         solution_list = []
-        for exchange in dialog_list:
-            utterance = self._string_processing(exchange['text'])
-            doc = nlp(utterance)
-            for token in doc:
-                if token.lemma_ in keywords or token.text in keywords:
-                    utterance, solution = replace_term(original_string=utterance, old_value=token.text, new_value=r'\rule{1cm}{0.15mm}')
-                    solution_list += solution
-                    keywords.remove(token.lemma_) if token.lemma_ in keywords else keywords.remove(token.text)
-            dialog_str += r'\speak{' + exchange['speaker'] + r'} ' + utterance + '\n'
-        dialog_str += r'\end{dialogue}' + '\n'
-        self.dialogue = dialog_str
-        sol = r'\begin{enumerate}' + '\n'
-        for solution in solution_list:
-            sol += r'\item ' + solution + '\n'
-        sol += r'\end{enumerate}' + '\n'
-        self.solution = sol
+        passage_index = 1
+        
+        for passage in imported_dict:
+            question_list = []
+            solution_sub_list = []
+            for i, exercise in enumerate(imported_dict[passage]):
+                index = i + 1
+                excerpt = exercise['Context']
+                word_to_replace = exercise['Word']
+                sentence_with_gap = excerpt.replace(word_to_replace, f'({index})' + r'\rule{1.25cm}{0.15mm}')
+                passage = passage.replace(excerpt, sentence_with_gap)
+                answer_options = exercise['Incorrect options'] + [word_to_replace]
+                random.shuffle(answer_options)
+                solution_sub_list.append(labels[answer_options.index(word_to_replace)])
+                answer_options_with_labels = [f'{label}. {item}' for label, item in zip(labels, answer_options)]
+                question_list.append(answer_options_with_labels)
+            
+            self.passage += r'\begin{center}' + '\n' + f'\\textbf{{Passage {int_to_roman(passage_index)}}}\n' + r'\end{center}' + '\n\n'
+            self.passage += self._string_processing(passage) + '\n\n' + r'\vspace{2ex}' + '\n\n'
+            self.passage += r'\begin{tabbing}' + '\n'
+            self.passage += r'\hspace{1em} \= \hspace{10em} \= \hspace{10em} \= \hspace{10em} \= \\' + '\n'
 
+            for question_index, question in enumerate(question_list):
+                self.passage += f'{question_index + 1}. ' + r'\> ' + r' \> '.join(question) + r'\\' + '\n'
+            
+            self.passage += r'\end{tabbing}' + '\n'
+            solution_list.append(solution_sub_list)
+            passage_index += 1
+
+        self.solution += r'\begin{enumerate}' + '\n'
+        for solution in solution_list:    
+            self.solution += r'\item ' + ''.join(solution) + '\n'
+        self.solution += r'\end{enumerate}' + '\n'
 
 
     def finish_import(self):
-        self.exercise_dict['box'] = self.box
         self.exercise_dict['passage'] = self.passage
         self.exercise_dict['solution'] = self.solution
-        self.exercise_dict['dialogue'] = self.dialogue
 
 
 class ExampleSentences(Exercise):
@@ -712,37 +778,6 @@ class ExerciseGatherer:
             tuple: A tuple containing the set index (in Roman numeral) and the exercise set.
         """
         if last_set:
-            return self._int_to_roman(set_index), self.exercise_set[-1]
+            return int_to_roman(set_index), self.exercise_set[-1]
         else:
-            return self._int_to_roman(set_index), self.exercise_set[set_index-1]
-
-    def _int_to_roman(self, num):
-        """
-        Converts an integer to a Roman numeral.
-
-        Args:
-            num (int): The integer to be converted.
-
-        Returns:
-            str: The Roman numeral representation of the integer.
-        """
-        val = [
-            1000, 900, 500, 400,
-            100, 90, 50, 40,
-            10, 9, 5, 4,
-            1
-        ]
-        syms = [
-            "M", "CM", "D", "CD",
-            "C", "XC", "L", "XL",
-            "X", "IX", "V", "IV",
-            "I"
-        ]
-        roman_numeral = ''
-        i = 0
-        while num > 0:
-            for _ in range(num // val[i]):
-                roman_numeral += syms[i]
-                num -= val[i]
-            i += 1
-        return roman_numeral
+            return int_to_roman(set_index), self.exercise_set[set_index-1]
