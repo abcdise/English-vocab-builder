@@ -735,7 +735,7 @@ class ClozeExercise(Exercise):
                                 "Incorrect options": ["Incorrect option 1", "Incorrect option 2", "Incorrect option 3"]
                                 }] for passage in passage_list}
 
-        prompt = "For each of the given passages, you should create a cloze test with 3 questions. Make sure that each question can be solved by a purely linguistic understanding of the passage. Make sure that the wrong options for the same gap have various meanings so that the correct answer doesn't stand out. Finally, ensure the words in the wrong options adhere to the British English spelling rule. Format your response by completing the following JSON code block:"
+        prompt = "For each of the given passages, you should create a cloze test with 3 questions. Make sure that each question can be solved by a purely linguistic understanding of the passage. Make sure that the wrong options for the same gap have disinct meanings so that the correct answer doesn't stand out. Finally, ensure the words in the wrong options adhere to the British English spelling rule. Format your response by completing the following JSON code block:"
         prompt += r'```json' + '\n'
         prompt += json.dumps(input_dict, ensure_ascii=False)
         prompt += r'```'
@@ -766,7 +766,7 @@ class ClozeExercise(Exercise):
                 question_list.append(answer_options_with_labels)
             
             self.passage += r'\noindent' + f'\\textbf{{Passage {passage_index}}}\n\n' + r'\vspace{1ex}' + '\n\n'
-            self.passage += self._string_processing(passage) + '\n\n' + r'\vspace{2ex}' + '\n\n'
+            self.passage += self._string_processing(passage) + '\n\n'
             self.passage += r'\begin{tabbing}' + '\n'
             self.passage += r'\hspace{1em} \= \hspace{10em} \= \hspace{10em} \= \hspace{10em} \= \\' + '\n'
 
