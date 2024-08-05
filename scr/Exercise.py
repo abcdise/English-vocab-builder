@@ -306,7 +306,7 @@ class ReadingExercise(Exercise):
                                 "Incorrect options": ["Incorrect option 1", "Incorrect option 2", "Incorrect option 3"]
                                 }] for passage in passage_list}
 
-        prompt = "For each of the given passages, you should create a cloze test with 5 questions. Make sure that each question can be solved by a purely linguistic understanding of the passage. Make sure that the wrong options for the same gap do not have similar meanings so that the correct answer doesn't stand out . Finally, ensure the words in the wrong options adhere to the British English spelling rule. Format your response by completing the following JSON code block:"
+        prompt = "For each of the given passages, you should create a cloze test with 5 questions. Make sure that each question can be solved by a purely linguistic understanding of the passage. Make sure that the wrong options for the same gap have various meanings so that the correct answer doesn't stand out. Finally, ensure the words in the wrong options adhere to the British English spelling rule. Format your response by completing the following JSON code block:"
         prompt += r'```json' + '\n'
         prompt += json.dumps(input_dict, ensure_ascii=False)
         prompt += r'```'
@@ -336,7 +336,7 @@ class ReadingExercise(Exercise):
                 answer_options_with_labels = [f'{label}. {item}' for label, item in zip(labels, answer_options)]
                 question_list.append(answer_options_with_labels)
             
-            self.passage += r'\begin{center}' + '\n' + f'\\textbf{{Passage {int_to_roman(passage_index)}}}\n' + r'\end{center}' + '\n\n'
+            self.passage += r'\noindent' + f'\\textbf{{Passage {passage_index}}}\n\n' + r'\vspace{1ex}' + '\n\n'
             self.passage += self._string_processing(passage) + '\n\n' + r'\vspace{2ex}' + '\n\n'
             self.passage += r'\begin{tabbing}' + '\n'
             self.passage += r'\hspace{1em} \= \hspace{10em} \= \hspace{10em} \= \hspace{10em} \= \\' + '\n'
@@ -543,8 +543,6 @@ class CompleteDefinitionsAndExamples(Exercise):
         self.exercise_dict['box'] = self.box
         self.exercise_dict['definition_exercise'] = self.exercise
         self.exercise_dict['definition_solution'] = self.solution
-        self.exercise_dict['example_exercise'] = self.example_exercise
-        self.exercise_dict['example_solution'] = self.example_solution
 
 
 class ParaphraseExercise(Exercise):
@@ -701,7 +699,94 @@ class DialogueExercise(Exercise):
         """
         self.exercise_dict['exercise'] = self.exercise
         self.exercise_dict['solution'] = self.solution
+
+
+class ClozeExercise(Exercise):
+    def __init__(self, word_entries:dict):
+        super().__init__(word_entries=word_entries)
+        self.passage_dict = {word: [{"Definition": remove_brackets_and_contents(definition), "Passage": "Write the passage here"} for definition in word_entries[word]] for word in word_entries}
+        self.__create_prompt()
+        self.passage: str = None
+        self.solution: str = None
+
+
+    def __create_prompt(self):
+        self.generation_prompt = f'''
+        For each word and definition, write a one-paragraph passage using the word about an anecdote in the cultural history of England. Incorporate the word subtly into the passage. Ensure the word in the passage matches the given definition. Your passsages should adhere to the British English spelling rules. Format the response as follows
+        ```json
+        {self.passage_dict}
+        ```
+        '''
+
+    
+    def import_passage(self, text:str):
+        self.passage_dict = deepcopy(json_string_to_dict(text))
+
+
+    def get_second_prompt(self):
+        passage_list = []
+        for _, def_passage_list in self.passage_dict.items():
+            for def_passage in def_passage_list:
+                passage_list.append(def_passage['Passage'])
+
+        input_dict = {passage: [{
+                                "Word": "Write the word from the passage here", 
+                                "Context": "Extract a two-word excerpt containing the word from the passage here",
+                                "Incorrect options": ["Incorrect option 1", "Incorrect option 2", "Incorrect option 3"]
+                                }] for passage in passage_list}
+
+        prompt = "For each of the given passages, you should create a cloze test with 3 questions. Make sure that each question can be solved by a purely linguistic understanding of the passage. Make sure that the wrong options for the same gap have various meanings so that the correct answer doesn't stand out. Finally, ensure the words in the wrong options adhere to the British English spelling rule. Format your response by completing the following JSON code block:"
+        prompt += r'```json' + '\n'
+        prompt += json.dumps(input_dict, ensure_ascii=False)
+        prompt += r'```'
+        pyperclip.copy(prompt)
+
+    
+    def import_exercise(self, text: str):
+        imported_dict = json_string_to_dict(text)
+        self.passage = ''
+        self.solution = ''
+        labels = ['A', 'B', 'C', 'D']
+        solution_list = []
+        passage_index = 1
         
+        for passage in imported_dict:
+            question_list = []
+            solution_sub_list = []
+            for i, exercise in enumerate(imported_dict[passage]):
+                index = i + 1
+                excerpt = exercise['Context']
+                word_to_replace = exercise['Word']
+                sentence_with_gap = excerpt.replace(word_to_replace, f'({index})' + r'\rule{1.25cm}{0.15mm}')
+                passage = passage.replace(excerpt, sentence_with_gap)
+                answer_options = exercise['Incorrect options'] + [word_to_replace]
+                random.shuffle(answer_options)
+                solution_sub_list.append(labels[answer_options.index(word_to_replace)])
+                answer_options_with_labels = [f'{label}. {item}' for label, item in zip(labels, answer_options)]
+                question_list.append(answer_options_with_labels)
+            
+            self.passage += r'\noindent' + f'\\textbf{{Passage {passage_index}}}\n\n' + r'\vspace{1ex}' + '\n\n'
+            self.passage += self._string_processing(passage) + '\n\n' + r'\vspace{2ex}' + '\n\n'
+            self.passage += r'\begin{tabbing}' + '\n'
+            self.passage += r'\hspace{1em} \= \hspace{10em} \= \hspace{10em} \= \hspace{10em} \= \\' + '\n'
+
+            for question_index, question in enumerate(question_list):
+                self.passage += f'{question_index + 1}. ' + r'\> ' + r' \> '.join(question) + r'\\' + '\n'
+            
+            self.passage += r'\end{tabbing}' + '\n'
+            solution_list.append(solution_sub_list)
+            passage_index += 1
+
+        self.solution += r'\begin{enumerate}' + '\n'
+        for solution in solution_list:    
+            self.solution += r'\item ' + ''.join(solution) + '\n'
+        self.solution += r'\end{enumerate}' + '\n'
+
+
+    def finish_import(self):
+        self.exercise_dict['passage'] = self.passage
+        self.exercise_dict['solution'] = self.solution
+
 
 class ExerciseFactory:
     def create_exercise(self, exercise_type:str, word_entries:dict, example_sentences: ExampleSentences=None):
@@ -721,6 +806,8 @@ class ExerciseFactory:
         '''
         if exercise_type == 'Reading':
             return ReadingExercise(word_entries=word_entries)
+        elif exercise_type == 'Cloze':
+            return ClozeExercise(word_entries=word_entries)
         elif exercise_type == 'Fill in the gap':
             return FillInTheGapExercise(word_entries=word_entries, example_sentences=example_sentences)
         elif exercise_type == 'Paraphrase':
