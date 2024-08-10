@@ -2386,21 +2386,6 @@
         "peak"
     ],
     "new": [
-        "habitual",
-        "absolve",
-        "molt",
-        "indelible",
-        "plastic",
-        "beseech",
-        "morose",
-        "dividend",
-        "marsh",
-        "splendor",
-        "hypodermic",
-        "greed",
-        "proxy",
-        "amiable",
-        "supple",
         "grievous",
         "treacherous",
         "sentimental",
@@ -4705,9 +4690,7 @@
         "provisional",
         "surrogate",
         "myth",
-        "fortunate"
-    ],
-    "last change": [
+        "fortunate",
         "habitual",
         "absolve",
         "molt",
@@ -4722,7 +4705,9 @@
         "greed",
         "proxy",
         "amiable",
-        "supple",
+        "supple"
+    ],
+    "last change": [
         "grievous",
         "treacherous",
         "sentimental",
