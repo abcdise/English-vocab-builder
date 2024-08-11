@@ -1,6 +1,5 @@
 # Python environment
 .venv
-requirements.txt
 **/__pycache__/
 
 # Jupyter Notebook
