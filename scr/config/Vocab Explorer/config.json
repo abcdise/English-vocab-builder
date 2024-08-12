@@ -2386,21 +2386,6 @@
         "peak"
     ],
     "new": [
-        "borough",
-        "effusion",
-        "prescient",
-        "convey",
-        "alteration",
-        "recapture",
-        "swindle",
-        "sustainable",
-        "feat",
-        "cohesion",
-        "mutilate",
-        "precaution",
-        "column",
-        "stagger",
-        "seditious",
         "affluent",
         "release",
         "plume",
@@ -4705,9 +4690,7 @@
         "remonstrate",
         "plumed",
         "superfluous",
-        "morbid"
-    ],
-    "last change": [
+        "morbid",
         "borough",
         "effusion",
         "prescient",
@@ -4722,7 +4705,9 @@
         "precaution",
         "column",
         "stagger",
-        "seditious",
+        "seditious"
+    ],
+    "last change": [
         "affluent",
         "release",
         "plume",

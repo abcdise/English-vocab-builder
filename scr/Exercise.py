@@ -724,21 +724,19 @@ class ClozeExercise(Exercise):
 
 
     def get_second_prompt(self):
-        passage_list = []
-        for _, def_passage_list in self.passage_dict.items():
-            for def_passage in def_passage_list:
-                passage_list.append(def_passage['Passage'])
+        passage_list = [passage for def_passage_list in self.passage_dict.values() for passage in def_passage_list]
+        # for _, def_passage_list in self.passage_dict.items():
+        #     for def_passage in def_passage_list:
+        #         passage_list.append(def_passage['Passage'])
 
-        input_dict = {passage: [{
-                                "Word": "Write the word from the passage here", 
-                                "Context": "Extract a two-word excerpt containing the word from the passage here",
-                                "Incorrect options": ["Incorrect option 1", "Incorrect option 2", "Incorrect option 3"]
-                                }] for passage in passage_list}
+        # input_dict = {passage: [{
+        #                         "Word": "Write the word from the passage here", 
+        #                         "Context": "Extract a two-word excerpt containing the word from the passage here",
+        #                         "Incorrect options": ["Incorrect option 1", "Incorrect option 2", "Incorrect option 3"]
+        #                         }] for passage in passage_list}
 
-        prompt = "For each of the given passages, you should create a cloze test with 3 questions. Make sure that each question can be solved by a purely linguistic understanding of the passage. Make sure that the wrong options for the same gap have disinct meanings so that the correct answer doesn't stand out. Finally, ensure the words in the wrong options adhere to the British English spelling rule. Format your response by completing the following JSON code block:"
-        prompt += r'```json' + '\n'
-        prompt += json.dumps(input_dict, ensure_ascii=False)
-        prompt += r'```'
+        prompt = prompts.cloze_prompt + '\n'
+        prompt += str(passage_list)
         pyperclip.copy(prompt)
 
     

@@ -57,3 +57,25 @@ Format your response in a JSON code block
 }
 ```
 '''
+
+cloze_prompt = r'''
+For each of the given passages, you should create a cloze test with 3 questions in the form of a JSON code block. To do this, select three words from each passage and place them in the 'Word' field. For each word, place a two-word phrase containing the word from the passage in the 'Context' field. For each word, choose three words as distractors. Make sure the distractors are not synonyms, antonyms or closely related words. Make sure that each question can be solved by a linguistic understanding the context. Finally, make sure that the words in the distractors follow British English spelling rules and are not obviously incorrect or too easy to eliminate.  For example, given the passage:
+["The ancient castle stood proudly atop the hill. Its towering walls were adorned with intricate carvings that told stories of centuries past. The castle's grandeur attracted tourists from all over the world."]
+Your response should be
+```json
+{
+  "The ancient castle stood proudly atop the hill. Its towering walls were adorned with intricate carvings that told stories of centuries past. The castle's grandeur attracted tourists from all over the world.": [
+    {
+      "Word": "castle", "Context": "ancient castle", "Incorrect options": ["house", "church", "market"]
+    },
+    {
+      "Word": "carvings", "Context": "intricate carvings", "Incorrect options": ["paintings", "windows", "furniture"]
+    },
+    {
+      "Word": "grandeur", "Context": "castle's grandeur", "Incorrect options": ["colour", "size", "shape"]
+    }
+  ]
+}
+```
+Here are the passages:
+'''
