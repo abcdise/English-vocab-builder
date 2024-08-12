@@ -765,10 +765,9 @@ class ClozeExercise(Exercise):
             solution_list.append(solution_sub_list)
             passage_index += 1
 
-        self.solution += r'\begin{enumerate}' + '\n'
-        for solution in solution_list:    
-            self.solution += r'\item ' + ''.join(solution) + '\n'
-        self.solution += r'\end{enumerate}' + '\n'
+        self.solution += '\n\n' + r'\vspace{3ex}' + '\n\n'
+        for solution_index, solution in enumerate(solution_list):    
+            self.solution += str(solution_index) + '. ' + ''.join(solution) + '\\quad'
 
 
     def finish_import(self):
