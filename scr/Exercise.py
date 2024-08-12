@@ -725,16 +725,6 @@ class ClozeExercise(Exercise):
 
     def get_second_prompt(self):
         passage_list = [passage for def_passage_list in self.passage_dict.values() for passage in def_passage_list]
-        # for _, def_passage_list in self.passage_dict.items():
-        #     for def_passage in def_passage_list:
-        #         passage_list.append(def_passage['Passage'])
-
-        # input_dict = {passage: [{
-        #                         "Word": "Write the word from the passage here", 
-        #                         "Context": "Extract a two-word excerpt containing the word from the passage here",
-        #                         "Incorrect options": ["Incorrect option 1", "Incorrect option 2", "Incorrect option 3"]
-        #                         }] for passage in passage_list}
-
         prompt = prompts.cloze_prompt + '\n'
         prompt += str(passage_list)
         pyperclip.copy(prompt)
@@ -753,7 +743,7 @@ class ClozeExercise(Exercise):
             solution_sub_list = []
             for i, exercise in enumerate(imported_dict[passage]):
                 index = i + 1
-                excerpt = exercise['Context']
+                excerpt = exercise['Collocation']
                 word_to_replace = exercise['Word']
                 sentence_with_gap = excerpt.replace(word_to_replace, f'({index})' + r'\rule{1.25cm}{0.15mm}')
                 passage = passage.replace(excerpt, sentence_with_gap)
