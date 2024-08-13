@@ -767,7 +767,7 @@ class ClozeExercise(Exercise):
 
         self.solution += '\n\n' + r'\vspace{3ex}' + '\n\n'
         for solution_index, solution in enumerate(solution_list):    
-            self.solution += str(solution_index) + '. ' + ''.join(solution) + '\\quad'
+            self.solution += f' {solution_index + 1}. ' + ''.join(solution) + r' \quad'
 
 
     def finish_import(self):
