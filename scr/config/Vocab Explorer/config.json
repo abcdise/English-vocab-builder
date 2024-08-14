@@ -2386,21 +2386,6 @@
         "peak"
     ],
     "new": [
-        "affluent",
-        "release",
-        "plume",
-        "discomfit",
-        "contemptible",
-        "codicil",
-        "curmudgeon",
-        "corrosion",
-        "withdraw",
-        "vertigo",
-        "detrimental",
-        "distance",
-        "bump",
-        "flock",
-        "ceremonial",
         "subconscious",
         "behold",
         "erode",
@@ -4705,9 +4690,7 @@
         "precaution",
         "column",
         "stagger",
-        "seditious"
-    ],
-    "last change": [
+        "seditious",
         "affluent",
         "release",
         "plume",
@@ -4722,7 +4705,9 @@
         "distance",
         "bump",
         "flock",
-        "ceremonial",
+        "ceremonial"
+    ],
+    "last change": [
         "subconscious",
         "behold",
         "erode",
