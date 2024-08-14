@@ -2386,21 +2386,6 @@
         "peak"
     ],
     "new": [
-        "subconscious",
-        "behold",
-        "erode",
-        "upbraid",
-        "oath",
-        "clandestine",
-        "allusion",
-        "turnover",
-        "induce",
-        "cereal",
-        "kernel",
-        "scapegoat",
-        "variant",
-        "combustible",
-        "odious",
         "fanatic",
         "ion",
         "ebb",
@@ -4705,9 +4690,7 @@
         "distance",
         "bump",
         "flock",
-        "ceremonial"
-    ],
-    "last change": [
+        "ceremonial",
         "subconscious",
         "behold",
         "erode",
@@ -4722,7 +4705,9 @@
         "scapegoat",
         "variant",
         "combustible",
-        "odious",
+        "odious"
+    ],
+    "last change": [
         "fanatic",
         "ion",
         "ebb",
