@@ -2386,21 +2386,6 @@
         "peak"
     ],
     "new": [
-        "fanatic",
-        "ion",
-        "ebb",
-        "feint",
-        "specious",
-        "script",
-        "electrolyte",
-        "alias",
-        "altruism",
-        "run-off",
-        "duplicity",
-        "bellow",
-        "scowl",
-        "encompass",
-        "overpowering",
         "irony",
         "causal",
         "ardor",
@@ -4705,9 +4690,7 @@
         "scapegoat",
         "variant",
         "combustible",
-        "odious"
-    ],
-    "last change": [
+        "odious",
         "fanatic",
         "ion",
         "ebb",
@@ -4722,7 +4705,9 @@
         "bellow",
         "scowl",
         "encompass",
-        "overpowering",
+        "overpowering"
+    ],
+    "last change": [
         "irony",
         "causal",
         "ardor",

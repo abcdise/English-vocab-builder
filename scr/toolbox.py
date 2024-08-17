@@ -90,17 +90,18 @@ class AnkiCommunicator:
             raise Exception(f'Failed to fetch card info: {response_json["error"]}')
         return response_json['result']
 
-    def __get_cards_id_in_n_days(self, n, deck_name, new):
-        query = f'"deck:{deck_name}", is:new' if new else f'"deck:{deck_name}", prop:due<={n}'
+    def __get_cards_id_in_n_days(self, n):
+        query = f'prop:due<={n}'
         response = self.__invoke('findCards', {'query': query})
         return response
 
-    def get_words_in_n_days(self, n, deck_name, new):
-        card_ids = self.__get_cards_id_in_n_days(n, deck_name, new)
+    def get_words_in_n_days(self, n, deck_name):
+        card_ids = self.__get_cards_id_in_n_days(n)
         if not card_ids:
             return [], dict()
         cards_info = self.__invoke('cardsInfo', {'cards': card_ids})
-        result_list = [(self._extract_word_from_field(card['fields']['Front']['value']), self._extract_def_from_field(card['fields']['Back']['value'])) for card in cards_info if card]
+        result_list = [(self._extract_word_from_field(card['fields']['Front']['value']), self._extract_def_from_field(card['fields']['Back']['value'])) \
+                       for card in cards_info if card and card['deckName'] == deck_name]
         result_dict = dict()
         for term_def in result_list:
             result_dict[term_def[0]] = result_dict.get(term_def[0], []) + [term_def[1]]
@@ -111,8 +112,8 @@ class AnkiCommunicator:
         #         result_list.append((word, defn))
         return result_dict
 
-    def get_words_for_tomorrow(self, deck_name, new):
-        return self.get_words_in_n_days(1, deck_name, new)
+    def get_words_for_tomorrow(self, deck_name):
+        return self.get_words_in_n_days(1, deck_name)
 
     def _extract_word_from_field(self, input_string):
         matches = re.findall(r'<b>(.*?)</b>', input_string)
