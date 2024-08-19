@@ -2386,21 +2386,6 @@
         "peak"
     ],
     "new": [
-        "irony",
-        "causal",
-        "ardor",
-        "artefact",
-        "acquaintance",
-        "participate",
-        "credo",
-        "lush",
-        "cataclysm",
-        "supplement",
-        "clip",
-        "quantum",
-        "saturation",
-        "nullify",
-        "testimony",
         "degenerate",
         "perch",
         "epidemic",
@@ -4705,9 +4690,7 @@
         "bellow",
         "scowl",
         "encompass",
-        "overpowering"
-    ],
-    "last change": [
+        "overpowering",
         "irony",
         "causal",
         "ardor",
@@ -4722,7 +4705,9 @@
         "quantum",
         "saturation",
         "nullify",
-        "testimony",
+        "testimony"
+    ],
+    "last change": [
         "degenerate",
         "perch",
         "epidemic",
