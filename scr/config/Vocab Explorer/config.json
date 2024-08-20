@@ -2386,21 +2386,6 @@
         "peak"
     ],
     "new": [
-        "degenerate",
-        "perch",
-        "epidemic",
-        "inevitable",
-        "torment",
-        "indulgent",
-        "stoke",
-        "credulity",
-        "congenital",
-        "doleful",
-        "resemblance",
-        "rigid",
-        "confront",
-        "fresco",
-        "replica",
         "disorder",
         "pious",
         "salute",
@@ -4705,9 +4690,7 @@
         "quantum",
         "saturation",
         "nullify",
-        "testimony"
-    ],
-    "last change": [
+        "testimony",
         "degenerate",
         "perch",
         "epidemic",
@@ -4722,7 +4705,9 @@
         "rigid",
         "confront",
         "fresco",
-        "replica",
+        "replica"
+    ],
+    "last change": [
         "disorder",
         "pious",
         "salute",
