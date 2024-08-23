@@ -431,14 +431,14 @@ class FillInTheGapExercise(Exercise):
                                                     old_value=word,
                                                     new_value=(r'\rule{' + str(0.25*len(word)) + r'cm}{0.15mm}'))
                     if question != sentence:
-                        exercise_list.append((question, ', '.join(sol_list)))
+                        exercise_list.append((question, ', '.join(sol_list), entry['Definition']))
     
         random.shuffle(exercise_list)
         ex = r'\begin{enumerate}' + '\n'
         sol = r'\begin{enumerate}' + '\n'
         for exercise in exercise_list:
             ex += r'\item ' + self._string_processing(exercise[0]) + '\n'
-            sol += r'\item ' + exercise[1] + '\n'
+            sol += r'\item ' + exercise[1] + '(' + self._string_processing(exercise[2]) + ')' + '\n'
 
         ex += r'\end{enumerate}' + '\n'
         sol += r'\end{enumerate}' + '\n'
