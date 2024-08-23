@@ -438,7 +438,7 @@ class FillInTheGapExercise(Exercise):
         sol = r'\begin{enumerate}' + '\n'
         for exercise in exercise_list:
             ex += r'\item ' + self._string_processing(exercise[0]) + '\n'
-            sol += r'\item ' + exercise[1] + '(' + self._string_processing(exercise[2]) + ')' + '\n'
+            sol += r'\item ' + exercise[1] + '. ' + self._string_processing(exercise[2]) + '\n'
 
         ex += r'\end{enumerate}' + '\n'
         sol += r'\end{enumerate}' + '\n'
