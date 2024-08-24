@@ -523,10 +523,7 @@ class DialogueExercise(Exercise):
             with open(dictionary_path) as file:
                 self.phrase_dict = json.load(file)
             for word in self.word_list:
-                if word in self.phrase_dict.keys():
-                    self.abridged_phrase_dict[word] = self.phrase_dict[word][1][0]['definition']
-                else:
-                    raise ValueError(f'The term {word} does not exist in the reference dictionary.')
+                self.abridged_phrase_dict[word] = self.phrase_dict[word][1][0]['definition']
         except FileNotFoundError:
             raise FileNotFoundError(f"The dictionary file '{dictionary_path}' does not exist.")
     

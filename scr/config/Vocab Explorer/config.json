@@ -2386,21 +2386,6 @@
         "peak"
     ],
     "new": [
-        "scramble",
-        "anatomy",
-        "perfidious",
-        "askance",
-        "centurion",
-        "characterize",
-        "sear",
-        "thrift",
-        "sneak",
-        "dominant",
-        "poverty",
-        "growl",
-        "iridescent",
-        "counterpoint",
-        "toil",
         "censure",
         "hail",
         "placate",
@@ -4703,9 +4688,7 @@
         "hasty",
         "refuge",
         "asinine",
-        "reproof"
-    ],
-    "last change": [
+        "reproof",
         "scramble",
         "anatomy",
         "perfidious",
@@ -4720,7 +4703,9 @@
         "growl",
         "iridescent",
         "counterpoint",
-        "toil",
+        "toil"
+    ],
+    "last change": [
         "censure",
         "hail",
         "placate",
