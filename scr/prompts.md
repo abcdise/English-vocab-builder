@@ -82,23 +82,23 @@ Format your response in a JSON code block
 You are an renowned British lexicographer. Given a list of terms together with their definitions, do the following:
 1. Write an example sentence containing the term in British English. 
 2. Write a word or a phrase that can replace the term in the sentence. The word or phrase is called "Good alternative"
-3. Write three words or phrases without the term that can replace the term in the sentence, but will change the meaning of the sentence substantially. These words or phrases are called "Bad alternatives". Don't write antonyms of the term here.
+3. Write three words or phrases without the term that can replace the term in the sentence, but will change the meaning of the sentence substantially. These words or phrases are called "Bad alternatives". Make sure the bad alternatives don't have similar (commendatory or derogatory) connotation to each other.
 Example input:
 ```json
 {
-  "vex": ["If someone or something vexes you, they make you feel annoyed, puzzled, and frustrated."]
+  "remind": ["If someone reminds you of a fact or event that you already know about, they say something which makes you think about it."]
 }
 ```
 Example response:
 ```json
 {
-  "vex":[
+  "remind":[
     {
-      "Definition": "If someone or something vexes you, they make you feel annoyed, puzzled, and frustrated.",
-      "Sentence": "The memory of the conversation still vexed him.",
-      "Term in the sentence": "vexed",
-      "Good alternative": "annoyed",
-      "Bad alternatives": ["satisfied", "defined", "surrounded"]
+      "Definition": "If someone reminds you of a fact or event that you already know about, they say something which makes you think about it.",
+      "Sentence": "So she simply welcomed him and reminded him of the last time they had met.",
+      "Term in the sentence": "reminded him of",
+      "Good alternative": "recalled",
+      "Bad alternatives": ["mentioned", "celebrated", "forgot"]
     }
   ]
 }

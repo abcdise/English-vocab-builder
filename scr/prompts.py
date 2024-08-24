@@ -104,7 +104,7 @@ Example response:
       "Sentence": "So she simply welcomed him and reminded him of the last time they had met.",
       "Term in the sentence": "reminded him of",
       "Good alternative": "recalled",
-      "Bad alternatives": ["warned", "distracted", "forgot"]
+      "Bad alternatives": ["mentioned", "celebrated", "forgot"]
     }
   ]
 }
