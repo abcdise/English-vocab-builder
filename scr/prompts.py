@@ -88,7 +88,7 @@ Here are the passages:
 equivalence_prompt = r'''You are an renowned British lexicographer. Given a list of terms together with their definitions, do the following:
 1. Write an example sentence containing the term in British English. 
 2. Write a word or a phrase that can replace the term in the sentence. The word or phrase is called "Good alternative"
-3. Write two words or phrases without the term that can replace the term in the sentence, but will change the meaning of the sentence substantially. These words or phrases are called "Bad alternatives". Don't write antonyms of the term here.
+3. Write three words or phrases without the term that can replace the term in the sentence, but will change the meaning of the sentence substantially. These words or phrases are called "Bad alternatives". Don't write antonyms of the term here.
 Example input:
 ```json
 {
@@ -104,7 +104,7 @@ Example response:
       "Sentence": "So she simply welcomed him and reminded him of the last time they had met.",
       "Term in the sentence": "reminded him of",
       "Good alternative": "recalled",
-      "Bad alternatives": ["warned", "distracted"]
+      "Bad alternatives": ["warned", "distracted", "forgot"]
     }
   ]
 }

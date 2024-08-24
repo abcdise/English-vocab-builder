@@ -445,7 +445,7 @@ class EquivalenceExercise(Exercise):
 
     def import_exercise(self, text:str):
         imported_dict = json_string_to_dict(text)
-        labels = ['A', 'B', 'C']
+        labels = ['A', 'B', 'C', 'D']
         question_index = 1
         solution_list = []
         exercise = ''
@@ -460,7 +460,7 @@ class EquivalenceExercise(Exercise):
                 random.shuffle(answer_options)
                 answer_options_with_labels = [f'{label}. {item}' for label, item in zip(labels, answer_options)]
                 solution_list.append(labels[answer_options.index(question['Good alternative'])])
-                exercise += '\\multiplechoiceabc{' + f'{question_index}. ' + sentence_underlined + '}'
+                exercise += '\\multiplechoiceabcd{' + f'{question_index}. ' + sentence_underlined + '}'
                 exercise += '{' + '}{'.join(answer_options_with_labels) + '}\n' 
                 question_index += 1
         
