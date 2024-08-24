@@ -58,25 +58,55 @@ Format your response in a JSON code block
 ```
 '''
 
-cloze_prompt = r'''
-
-For each of the given passages, you should create a cloze test with 3 questions in the form of a JSON code block. To do this, select three collocations from each passage and place them in the 'Collocation' field. For each collocation, place the keyword in the 'Word' field. For each word, choose three words as distractors. Make sure the distractors are not synonyms, antonyms or closely related words. Make sure that each question can be solved by a linguistic understanding the context. Finally, make sure that the words in the distractors follow British English spelling rules and are not obviously incorrect or too easy to eliminate.  For example, given the passage:
+cloze_prompt = r'''For each of the given passages, you should create a cloze test with 3 questions in the form of a JSON code block. Do the following:
+1. Select three phrases from each passage and place them in the 'Phrase' field. 
+2. For each collocation, place the keyword in the 'Word' field. 
+3. Find three words that can replace the keyword but will change the meaning of the phrase substantially. Place these words in the 'Incorrect options' field. Ensure these words are written in British English.
+Example input:
 ["The ancient castle stood proudly atop the hill. Its towering walls were adorned with intricate carvings that told stories of centuries past. The castle's grandeur attracted tourists from all over the world."]
-Your response should be
+
+Example output:
 ```json
 {
   "The ancient castle stood proudly atop the hill. Its towering walls were adorned with intricate carvings that told stories of centuries past. The castle's grandeur attracted tourists from all over the world.": [
     {
-      "Word": "atop", "Collocation": "atop the hill", "Incorrect options": ["above", "under", "in"]
+      "Word": "ancient", "Phrase": "ancient castle", "Incorrect options": ["shabby", "artificial", "mythical"]
     },
     {
-      "Word": "with", "Collocation": "were adorned with", "Incorrect options": ["by", "on", "in"]
+      "Word": "adorned", "Phrase": "were adorned with", "Incorrect options": ["satisfied", "supported", "bored"]
     },
     {
-      "Word": "told", "Collocation": "told stories", "Incorrect options": ["say", "speak", "utter"]
+      "Word": "attracted", "Phrase": "attracted tourists", "Incorrect options": ["saved", "disappointed", "ignored"]
     }
   ]
 }
 ```
 Here are the passages:
+'''
+
+
+equivalence_prompt = r'''You are an renowned British lexicographer. Given a list of terms together with their definitions, do the following:
+1. Write an example sentence containing the term in British English. 
+2. Write a word or a phrase that can replace the term in the sentence. The word or phrase is called "Good alternative"
+3. Write two words or phrases without the term that can replace the term in the sentence, but will change the meaning of the sentence substantially. These words or phrases are called "Bad alternatives". Ensure each bad alternative has the same word count as the good alternative.
+Example input:
+```json
+{
+  "remind": ["If someone reminds you of a fact or event that you already know about, they say something which makes you think about it."]
+}
+```
+Example response:
+```json
+{
+  "remind":[
+    {
+      "Definition": "If someone reminds you of a fact or event that you already know about, they say something which makes you think about it.",
+      "Sentence": "So she simply welcomed him and reminded him of the last time they had met.",
+      "Term in the sentence": "reminded him of",
+      "Good alternative": "recalled",
+      "Bad alternatives": ["warned", "distracted"]
+    }
+  ]
+}
+```
 '''
