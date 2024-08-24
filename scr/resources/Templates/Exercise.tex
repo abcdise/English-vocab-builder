@@ -20,7 +20,33 @@
 \pagestyle{fancy}
 \fancyhf{}
 \rhead{\datedate}
+\newcommand{\multiplechoiceabc}[4]{
+\noindent #1
+
+\vspace{-4ex}
+
+\begin{tabbing}
+	\hspace{1em} \= \hspace{15em} \= \hspace{15em} \= \\
+	\> #2 \> #3 \> #4\\
+\end{tabbing}
+
+\vspace{-3ex}
+}
+
+\newcommand{\multiplechoiceabcd}[5]{
+\noindent #1
+
+\vspace{-4ex}
+\begin{tabbing}
+	\hspace{1em} \= \hspace{10em} \= \hspace{10em} \= \hspace{10em} \= \\
+	\> #2 \> #3 \> #4 \> #5\\
+\end{tabbing}
+
+\vspace{-3ex}
+}
+
 \newcommand{\trianglebullet}{$\triangleright$ }
+
 \newcommand{\vocabulary}[2]{
 
 \vspace{4ex}
@@ -28,6 +54,7 @@
 \noindent \textbf{{#1}} \quad {#2} 
 
 }
+
 \newcommand{\defitem}[3]{\noindent \trianglebullet \textsc{#1}. \ {#2} 
 
 \vspace{-1.5ex}
@@ -38,6 +65,7 @@
 
 
 }
+
 \begin{document}
 
 \section{Vocabulary Preview}

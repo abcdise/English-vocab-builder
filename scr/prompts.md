@@ -82,7 +82,7 @@ Format your response in a JSON code block
 You are an renowned British lexicographer. Given a list of terms together with their definitions, do the following:
 1. Write an example sentence containing the term in British English. 
 2. Write a word or a phrase that can replace the term in the sentence. The word or phrase is called "Good alternative"
-3. Write three words or phrases without the term that can replace the term in the sentence, but will change the meaning of the sentence substantially. These words or phrases are called "Bad alternatives". Ensure each bad alternative has the same word count as the good alternative.
+3. Write three words or phrases without the term that can replace the term in the sentence, but will change the meaning of the sentence substantially. These words or phrases are called "Bad alternatives". Don't write antonyms of the term here.
 Example input:
 ```json
 {
