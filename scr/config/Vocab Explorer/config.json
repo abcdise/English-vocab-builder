@@ -2386,21 +2386,6 @@
         "peak"
     ],
     "new": [
-        "censure",
-        "hail",
-        "placate",
-        "mirage",
-        "sacrilege",
-        "inclement",
-        "homely",
-        "equestrian",
-        "revive",
-        "bray",
-        "resourceful",
-        "excerpt",
-        "restitution",
-        "exhale",
-        "aeronautics",
         "disguise",
         "sap",
         "harassment",
@@ -4703,9 +4688,7 @@
         "growl",
         "iridescent",
         "counterpoint",
-        "toil"
-    ],
-    "last change": [
+        "toil",
         "censure",
         "hail",
         "placate",
@@ -4720,7 +4703,9 @@
         "excerpt",
         "restitution",
         "exhale",
-        "aeronautics",
+        "aeronautics"
+    ],
+    "last change": [
         "disguise",
         "sap",
         "harassment",
