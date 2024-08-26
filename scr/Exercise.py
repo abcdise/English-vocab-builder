@@ -557,7 +557,7 @@ class ClozeExercise(Exercise):
 
     def __create_prompt(self):
         self.generation_prompt = f'''
-        For each word and definition, write a one-paragraph passage using the word about an anecdote in the cultural history of England. Incorporate the word subtly into the passage. Ensure the word in the passage matches the given definition. Your passsages should adhere to the British English spelling rules. Format the response as follows
+        For each word and definition, write a one-paragraph passage using the word about an anecdote in the cultural history of England. Incorporate the word subtly into the passage by using it only once. Ensure the word in the passage matches the given definition. Your passsages should adhere to the British English spelling rules. Format the response as follows
         ```json
         {self.passage_dict}
         ```

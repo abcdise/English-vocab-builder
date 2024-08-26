@@ -2386,21 +2386,6 @@
         "peak"
     ],
     "new": [
-        "disguise",
-        "sap",
-        "harassment",
-        "dauntless",
-        "prattle",
-        "quarrelsome",
-        "perjure",
-        "ethnic",
-        "writhe",
-        "disburse",
-        "sloth",
-        "proficiency",
-        "affluence",
-        "apposite",
-        "obsessive",
         "suppress",
         "foresee",
         "recess",
@@ -4703,9 +4688,7 @@
         "excerpt",
         "restitution",
         "exhale",
-        "aeronautics"
-    ],
-    "last change": [
+        "aeronautics",
         "disguise",
         "sap",
         "harassment",
@@ -4720,7 +4703,9 @@
         "proficiency",
         "affluence",
         "apposite",
-        "obsessive",
+        "obsessive"
+    ],
+    "last change": [
         "suppress",
         "foresee",
         "recess",
