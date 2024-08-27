@@ -2386,21 +2386,6 @@
         "peak"
     ],
     "new": [
-        "suppress",
-        "foresee",
-        "recess",
-        "endure",
-        "bereft",
-        "artery",
-        "ensnare",
-        "cradle",
-        "pamphlet",
-        "hone",
-        "plea",
-        "carnivorous",
-        "disparity",
-        "apothecary",
-        "papal",
         "restrain",
         "salutary",
         "incumbent",
@@ -4703,9 +4688,7 @@
         "proficiency",
         "affluence",
         "apposite",
-        "obsessive"
-    ],
-    "last change": [
+        "obsessive",
         "suppress",
         "foresee",
         "recess",
@@ -4720,7 +4703,9 @@
         "carnivorous",
         "disparity",
         "apothecary",
-        "papal",
+        "papal"
+    ],
+    "last change": [
         "restrain",
         "salutary",
         "incumbent",
