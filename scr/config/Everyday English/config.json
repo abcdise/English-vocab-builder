@@ -308,12 +308,6 @@
         "go on about sth."
     ],
     "new": [
-        "be all ears",
-        "desk worker",
-        "pile up",
-        "a bummer",
-        "take a nose dive",
-        "eggnog",
         "appoint an attorney",
         "take that tone with me",
         "have got oneself a situation",
@@ -612,13 +606,27 @@
         "tease sb.",
         "be explicit about sth.",
         "be obsequious to sb.",
-        "navigate the crowd"
-    ],
-    "last change": [
+        "navigate the crowd",
         "be all ears",
         "desk worker",
         "pile up",
         "a bummer",
-        "take a nose dive"
+        "eggnog"
+    ],
+    "last change": [
+        "appoint an attorney",
+        "take that tone with me",
+        "have got oneself a situation",
+        "have 20/20 vision",
+        "have a poor vision",
+        "make out",
+        "blind as a bat",
+        "blurry vision",
+        "fill out the prescription",
+        "What seems to be the problem",
+        "head on over somewhere",
+        "Fortune 500 company",
+        "under somemeone",
+        "go on about sth."
     ]
 }

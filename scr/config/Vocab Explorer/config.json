@@ -2386,21 +2386,6 @@
         "peak"
     ],
     "new": [
-        "restrain",
-        "salutary",
-        "incumbent",
-        "outlast",
-        "pension",
-        "crass",
-        "voluptuous",
-        "scribble",
-        "primeval",
-        "clog",
-        "culpable",
-        "sully",
-        "detach",
-        "deceitful",
-        "postage",
         "devise",
         "aggregate",
         "bristle",
@@ -4703,9 +4688,7 @@
         "carnivorous",
         "disparity",
         "apothecary",
-        "papal"
-    ],
-    "last change": [
+        "papal",
         "restrain",
         "salutary",
         "incumbent",
@@ -4720,7 +4703,9 @@
         "sully",
         "detach",
         "deceitful",
-        "postage",
+        "postage"
+    ],
+    "last change": [
         "devise",
         "aggregate",
         "bristle",
