@@ -2386,21 +2386,6 @@
         "peak"
     ],
     "new": [
-        "devise",
-        "aggregate",
-        "bristle",
-        "therapeutic",
-        "invincible",
-        "subterfuge",
-        "robust",
-        "razor",
-        "chasm",
-        "malodorous",
-        "comprise",
-        "expedite",
-        "shatter",
-        "pretext",
-        "propagate",
         "adorn",
         "vitality",
         "mount",
@@ -4703,9 +4688,7 @@
         "sully",
         "detach",
         "deceitful",
-        "postage"
-    ],
-    "last change": [
+        "postage",
         "devise",
         "aggregate",
         "bristle",
@@ -4720,7 +4703,9 @@
         "expedite",
         "shatter",
         "pretext",
-        "propagate",
+        "propagate"
+    ],
+    "last change": [
         "adorn",
         "vitality",
         "mount",

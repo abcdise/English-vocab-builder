@@ -16,7 +16,7 @@ Example response:
         "Example": ["After the test, I was positive that I had passed.", "I am positive that I locked the door before I left the house."]
     }, {
         "Definition": "A positive number is greater than zero.",
-        "Example": "The number 5 is positive."
+        "Example": ["The number 5 is positive."]
     }],
     "remote": [{
         "Definition": "Remote areas are far away from cities and towns.",
@@ -24,9 +24,6 @@ Example response:
     }]
 }
 ```
-'''
-
-example_sentences_second_prompt = r'''Write the json code block for the following input:
 '''
 
 dialogue_exercise_prompt = r'''As a British lexicographer, your task is to generate brief example dialogues containing only two exchanges between two characters for the given terms. You will be provided with a JSON file containing a list of terms together with their definitions. For each term, write the dialogue in British English. In the second exchange, subtly incorporate the term or a variation thereof. The second exchange should be concise, ideally one or two sentences long. Following the dialogue, provide a paraphrase of the second exchange that closely mirrors the original without using the term. Finally, insert a keyword from the term in the field "Keyword". For example, given the JSON file:
@@ -84,7 +81,6 @@ Example output:
 Here are the passages:
 '''
 
-
 equivalence_prompt = r'''You are an renowned British lexicographer. Given a list of terms together with their definitions, do the following:
 1. Write an example sentence containing the term in British English. 
 2. Write a word or a phrase that can replace the term in the sentence. The word or phrase is called "Good alternative"
@@ -107,6 +103,30 @@ Example response:
       "Bad alternatives": ["mentioned", "celebrated", "forgot"]
     }
   ]
+}
+```
+'''
+
+translation_prompt = r'''Given a list of terms and their definitions, craft a concise and everyday example sentence for each term that encapsulates its meaning. Ensure your sentences follow British English spelling conventions. Then, translate each sentence into colloquial Chinese, prioritising natural and authentic flow over literal accuracy. The translations should mimic casual conversation, even if slight adaptations of the original meaning are necessary to achieve this.
+
+Example input:
+```json
+{
+    "tasty": [
+        "If you say that food, especially savoury food, is tasty, you mean that it has a fairly strong and pleasant flavour which makes it good to eat."
+    ]
+}
+```
+Example response:
+```json
+{
+    "tasty": [
+        {
+            "Definition": "If you say that food, especially savoury food, is tasty, you mean that it has a fairly strong and pleasant flavour which makes it good to eat.",
+            "Example": "I thought the food was very tasty.",
+            "Colloquial Chinese": "我以为那些东西很好吃。"
+        }
+    ]
 }
 ```
 '''

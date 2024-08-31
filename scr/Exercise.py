@@ -621,6 +621,44 @@ class ClozeExercise(Exercise):
         self.exercise_dict['solution'] = self.solution
 
 
+class TranslationExercise(Exercise):
+    def __init__(self, word_entries: dict):
+        super().__init__(word_entries)
+        self.word_list = [term for term in self.word_list if len(term.split(' ')) == 1]
+        self.box = self._write_box(word_list=self.word_list)
+        self.example_sentences = dict()
+        self.create_prompt()
+
+    
+    def create_prompt(self):
+        prompt = prompts.translation_prompt + '\n'
+        prompt += f'Here is the list of terms and their definitions: {self.word_entries}'
+        self.generation_prompt = prompt
+
+    
+    def import_sentences(self, text: str):
+        self.example_sentences = json.loads(text)
+        self.generate_exercise(self.example_sentences)
+
+    
+    def generate_exercise(self, aug_dict: dict):
+        self.exercise = r'\begin{enumerate}' + '\n'
+        self.solution = r'\begin{enumerate}' + '\n'
+        for word in aug_dict:
+            for entry in aug_dict[word]:
+                self.solution += r'\item ' + entry['Example'] + '\n'
+                self.exercise += r'\item ' + entry['Colloquial Chinese'] + '\n'
+
+        self.exercise += r'\end{enumerate}' + '\n'
+        self.solution += r'\end{enumerate}' + '\n'
+
+    
+    def finish_import(self):
+        self.exercise_dict['exercise'] = self.exercise
+        self.exercise_dict['box'] = self.box
+        self.exercise_dict['solution'] = self.solution
+
+
 class ExerciseFactory:
     def create_exercise(self, exercise_type:str, word_entries:dict):
         '''
@@ -649,6 +687,8 @@ class ExerciseFactory:
             return Definition(word_entries=word_entries)
         elif exercise_type == 'Dialogue':
             return DialogueExercise(word_entries=word_entries)
+        elif exercise_type == 'Translation':
+            return TranslationExercise(word_entries=word_entries)
         raise ValueError('Invalid exercise type!')
     
 
