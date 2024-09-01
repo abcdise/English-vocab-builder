@@ -365,8 +365,7 @@ class FillInTheGapExercise(Exercise):
 
     
     def import_sentences(self, text: str):
-        self.exercise = text
-        self.example_sentences = json.loads(self.exercise)
+        self.example_sentences = json.loads(text)
         self.exercise, self.solution = self.generate_exercise(self.example_sentences)
 
 
@@ -625,11 +624,11 @@ class TranslationExercise(Exercise):
     def __init__(self, word_entries: dict):
         super().__init__(word_entries)
         self.word_list = [term for term in self.word_list if len(term.split(' ')) == 1]
-        self.box = self._write_box(word_list=self.word_list)
+        self.box = r'\centering ' + self._write_box(word_list=self.word_list)
         self.example_sentences = dict()
         self.create_prompt()
 
-    
+
     def create_prompt(self):
         prompt = prompts.translation_prompt + '\n'
         prompt += f'Here is the list of terms and their definitions: {self.word_entries}'
@@ -637,20 +636,22 @@ class TranslationExercise(Exercise):
 
     
     def import_sentences(self, text: str):
-        self.example_sentences = json.loads(text)
-        self.generate_exercise(self.example_sentences)
+        self.exercise = text
+        self.example_sentences = json.loads(self.exercise)
+        self.exercise, self.solution = self.generate_exercise(aug_dict=self.example_sentences)
 
     
     def generate_exercise(self, aug_dict: dict):
-        self.exercise = r'\begin{enumerate}' + '\n'
-        self.solution = r'\begin{enumerate}' + '\n'
+        exercise = r'\begin{enumerate}' + '\n'
+        solution = r'\begin{enumerate}' + '\n'
         for word in aug_dict:
             for entry in aug_dict[word]:
-                self.solution += r'\item ' + entry['Example'] + '\n'
-                self.exercise += r'\item ' + entry['Colloquial Chinese'] + '\n'
+                solution += r'\item ' + self._string_processing(entry['Example']) + '\n'
+                exercise += r'\item ' + entry['Colloquial Chinese'] + '\n' + r'\vspace{10ex}' + '\n'
 
-        self.exercise += r'\end{enumerate}' + '\n'
-        self.solution += r'\end{enumerate}' + '\n'
+        exercise += r'\end{enumerate}' + '\n'
+        solution += r'\end{enumerate}' + '\n'
+        return exercise, solution
 
     
     def finish_import(self):
