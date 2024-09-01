@@ -597,9 +597,10 @@ class ClozeExercise(Exercise):
                 answer_options_with_labels = [f'{label}. {item}' for label, item in zip(labels, answer_options)]
                 question_list.append(answer_options_with_labels)
             
-            self.passage += r'\begin{tabbing}' + '\n'
+            
             self.passage += r'\noindent' + f'\\textbf{{Passage {passage_index}}}\n\n' + r'\vspace{1ex}' + '\n\n'
             self.passage += self._string_processing(passage) + '\n\n'
+            self.passage += r'\begin{tabbing}' + '\n'
             self.passage += r'\hspace{1em} \= \hspace{10em} \= \hspace{10em} \= \hspace{10em} \= \\' + '\n'
 
             for question_index, question in enumerate(question_list):
