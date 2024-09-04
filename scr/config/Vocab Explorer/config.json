@@ -2386,21 +2386,6 @@
         "peak"
     ],
     "new": [
-        "garner",
-        "wrath",
-        "probe",
-        "triple",
-        "translucent",
-        "peremptory",
-        "attenuate",
-        "exceptional",
-        "diffident",
-        "standout",
-        "disseminate",
-        "circumscribe",
-        "chicanery",
-        "pecuniary",
-        "endocrine",
         "invalidate",
         "indiscreet",
         "ensemble",
@@ -4701,9 +4686,7 @@
         "overwork",
         "miserly",
         "colloquial",
-        "armada"
-    ],
-    "last change": [
+        "armada",
         "garner",
         "wrath",
         "probe",
@@ -4718,7 +4701,9 @@
         "circumscribe",
         "chicanery",
         "pecuniary",
-        "endocrine",
+        "endocrine"
+    ],
+    "last change": [
         "invalidate",
         "indiscreet",
         "ensemble",
