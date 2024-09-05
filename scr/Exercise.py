@@ -398,7 +398,7 @@ class FillInTheGapExercise(Exercise):
         return ex, sol
 
 
-class EquivalenceExercise(Exercise):
+class InferenceExercise(Exercise):
     def __init__(self, word_entries:dict):
         super().__init__(word_entries=word_entries)
         self.create_prompt()
@@ -419,15 +419,16 @@ class EquivalenceExercise(Exercise):
 
         for _, question_list in imported_dict.items():
             for question in question_list:
-                sentence = self._string_processing(question['Sentence'])
-                term_in_sentence = question['Term in the sentence']
-                term_in_sentence_underlined = '\\underline{' + term_in_sentence + '}'
-                sentence_underlined = sentence.replace(term_in_sentence, term_in_sentence_underlined)
-                answer_options = question['Bad alternatives'] + [question['Good alternative']]
+                sentence = self._string_processing(question['Example'])
+                # term_in_sentence = question['Term in the sentence']
+                # term_in_sentence_underlined = '\\underline{' + term_in_sentence + '}'
+                # sentence_underlined = sentence.replace(term_in_sentence, term_in_sentence_underlined)
+                answer_options = question['Irrelevant inferences'] + [question['Logical inferences']]
+                answer_options = [self._string_processing(item) for item in answer_options]
                 random.shuffle(answer_options)
                 answer_options_with_labels = [f'{label}. {item}' for label, item in zip(labels, answer_options)]
-                solution_list.append(labels[answer_options.index(question['Good alternative'])])
-                exercise += '\\multiplechoiceabcd{' + f'{question_index}. ' + sentence_underlined + '}'
+                solution_list.append(labels[answer_options.index(question['Logical inference'])])
+                exercise += '\\multiplechoiceabcd{' + f'{question_index}. ' + sentence + '}'
                 exercise += '{' + '}{'.join(answer_options_with_labels) + '}\n' 
                 question_index += 1
         
@@ -465,14 +466,16 @@ class DialogueExercise(Exercise):
     """
 
     def __init__(self, word_entries: dict):
-        super().__init__(word_entries=word_entries)
+        self.word_entries = word_entries
+        self.word_list = list(self.word_entries.keys())
+        self.generation_prompt = None
+        self.exercise: str = None
+        self.exercise_dict: dict = dict()
+        self.solution: str = None
         self.phrase_dict = dict()
         self.abridged_phrase_dict = dict()
         self.__import_dictionary()
         self.create_prompt()
-        # self.box = self._write_box(word_list=self.word_list)
-        self.exercise = None
-        self.solution = None
 
     
     def __import_dictionary(self, dictionary_path:str='../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Dictionary/Phrase.json'):
@@ -679,8 +682,8 @@ class ExerciseFactory:
         '''
         if exercise_type == 'Reading':
             return ReadingExercise(word_entries=word_entries)
-        elif exercise_type == 'Equivalence':
-            return EquivalenceExercise(word_entries=word_entries)
+        elif exercise_type == 'Inference':
+            return InferenceExercise(word_entries=word_entries)
         elif exercise_type == 'Cloze':
             return ClozeExercise(word_entries=word_entries)
         elif exercise_type == 'Fill in the gap':

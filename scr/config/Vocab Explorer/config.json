@@ -2386,21 +2386,6 @@
         "peak"
     ],
     "new": [
-        "invalidate",
-        "indiscreet",
-        "ensemble",
-        "epidermis",
-        "instigate",
-        "motto",
-        "mound",
-        "heat",
-        "facetious",
-        "armory",
-        "travail",
-        "steadfast",
-        "putrid",
-        "procure",
-        "sober",
         "stunt",
         "cantankerous",
         "wreak",
@@ -4701,9 +4686,7 @@
         "circumscribe",
         "chicanery",
         "pecuniary",
-        "endocrine"
-    ],
-    "last change": [
+        "endocrine",
         "invalidate",
         "indiscreet",
         "ensemble",
@@ -4718,7 +4701,9 @@
         "steadfast",
         "putrid",
         "procure",
-        "sober",
+        "sober"
+    ],
+    "last change": [
         "stunt",
         "cantankerous",
         "wreak",
