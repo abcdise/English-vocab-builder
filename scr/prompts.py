@@ -81,28 +81,30 @@ Example output:
 Here are the passages:
 '''
 
-equivalence_prompt = r'''You are an renowned British lexicographer. Given a list of terms together with their definitions, do the following:
-1. Write an example sentence containing the term in British English. 
-2. Write a word or a phrase that can replace the term in the sentence. The word or phrase is called "Good alternative"
-3. Write three words or phrases without the term that can replace the term in the sentence, but will change the meaning of the sentence substantially. These words or phrases are called "Bad alternatives". Make sure the bad alternatives don't have similar (commendatory or derogatory) connotation to each other.
+inference_prompt = r'''You are a British lexicographer. Given a list of words with their definitions, carry out the following tasks for each word:
+1. Craft an example sentence that clearly illustrates the word's definition.
+2. Based on the example sentence, write a logically inferred sentence.
+3. Write three sentences that deliberately twist or distort the meaning of the word as used in the example sentence.
+Ensure all sentences adhere to spelling conventions of British English. Format your output as a JSON code block.
+
 Example input:
-```json
+```
 {
-  "remind": ["If someone reminds you of a fact or event that you already know about, they say something which makes you think about it."]
+    "teach": ["If you teach someone something, you are helping them to learn about it."]
 }
 ```
 Example response:
 ```json
 {
-  "remind":[
-    {
-      "Definition": "If someone reminds you of a fact or event that you already know about, they say something which makes you think about it.",
-      "Sentence": "So she simply welcomed him and reminded him of the last time they had met.",
-      "Term in the sentence": "reminded him of",
-      "Good alternative": "recalled",
-      "Bad alternatives": ["mentioned", "celebrated", "forgot"]
-    }
-  ]
+    "teach": [
+            {
+                "Definition": "If you teach someone something, you are helping them to learn about it.",
+                "Example": "Tom teaches economics at a school in Warwick.",
+                "Logical inference": "Simon has become friends with Noah in Tom's economics class.",
+                "Irrelevant inferences": ["The boss asked Tom to hand in his research and policy report on the capital market development.", "Tom has seen his fair share of criminals during his career.", "Tom is the only student to have got an A in A-level economics."]
+            }
+    ]
+    
 }
 ```
 '''

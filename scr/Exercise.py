@@ -405,7 +405,7 @@ class InferenceExercise(Exercise):
 
     
     def create_prompt(self):
-        prompt = prompts.equivalence_prompt + '\n'
+        prompt = prompts.inference_prompt + '\n'
         prompt += f'Here is the list of terms and their definitions: {self.word_entries}'
         self.generation_prompt = prompt
     
@@ -420,9 +420,6 @@ class InferenceExercise(Exercise):
         for _, question_list in imported_dict.items():
             for question in question_list:
                 sentence = self._string_processing(question['Example'])
-                # term_in_sentence = question['Term in the sentence']
-                # term_in_sentence_underlined = '\\underline{' + term_in_sentence + '}'
-                # sentence_underlined = sentence.replace(term_in_sentence, term_in_sentence_underlined)
                 answer_options = question['Irrelevant inferences'] + [question['Logical inferences']]
                 answer_options = [self._string_processing(item) for item in answer_options]
                 random.shuffle(answer_options)
