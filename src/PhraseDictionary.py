@@ -5,7 +5,7 @@ import itertools
 from copy import deepcopy
 from DictionaryReader import phrase_json_path
 
-phrase_json_config_path = '../scr/config/Everyday English/config.json'
+phrase_json_config_path = '../src/config/Everyday English/config.json'
 
 
 class PhraseDictionary:
