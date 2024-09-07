@@ -422,7 +422,7 @@ class InferenceExercise(Exercise):
             for question in question_list:
                 sentence = self._string_processing(question['Example'])
                 definition_list.append((term, question['Definition']))
-                answer_options = question['Irrelevant inferences'] + [question['Logical inferences']]
+                answer_options = question['Irrelevant inferences'] + [question['Logical inference']]
                 answer_options = [self._string_processing(item) for item in answer_options]
                 random.shuffle(answer_options)
                 answer_options_with_labels = [f'{label}. {item}' for label, item in zip(labels, answer_options)]
@@ -690,7 +690,7 @@ class ComprehensionExercise(Exercise):
         for term, question_list in imported_dict.items():
             for question in question_list:
                 true_of_false = random.choice(keys)
-                label = 'T' if true_of_false == 'Yes Question' else 'F'
+                label = 'Y' if true_of_false == 'Yes Question' else 'N'
                 sentence = self._string_processing(question[true_of_false])
                 definition_list.append((term, question['Definition']))
                 solution_list.append(label)
