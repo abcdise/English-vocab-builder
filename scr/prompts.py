@@ -83,10 +83,11 @@ Here are the passages:
 '''
 
 inference_prompt = r'''You are a British lexicographer. Given a list of words with their definitions, carry out the following tasks for each word:
-1. Craft an example sentence that clearly illustrates the word's definition.
-2. Based on the example sentence, write a logically inferred sentence.
-3. Write three sentences that deliberately twist or distort the meaning of the word as used in the example sentence.
-Make sure all four sentences are of a similar length and sentence structure. Ensure all sentences adhere to spelling conventions of British English. Format your output as a JSON code block.
+1. Write an example sentence, that clearly illustrates the word's definition. The sentence should only consists of subject, predicate and object without details.
+2. Based on the example sentence, briefly describe a scenario that is logically suitable for the example sentence, even though the background is somewhat different from the example sentence.
+3. Briefly create three scenarios that deliberately twist or distort the meaning of the word as used in the example sentence and is unlikely to happen given the example sentence.
+
+Don't use the keyword in the logical inference or irrelevant inferences. Ensure all sentences adhere to spelling conventions of British English. Format your output as a JSON code block.
 
 Example input:
 ```
@@ -100,8 +101,8 @@ Example response:
     "teach": [
             {
                 "Definition": "If you teach someone something, you are helping them to learn about it.",
-                "Example": "Tom teaches economics at a school in Warwick.",
-                "Logical inference": "Simon has become friends with Noah in Tom's economics class.",
+                "Example": "Tom teaches economics.",
+                "Logical inference": "Simon has become friends with Noah in Tom's class.",
                 "Irrelevant inferences": [
                     "The boss asked Tom to hand in his research and policy report on the capital market development.",
                     "The unending succession of daily meetings with the board members has become an oppressive and overwhelming burden for Tom",
@@ -109,9 +110,10 @@ Example response:
                 ]
             }
     ]
-    
 }
 ```
+
+Here is the list of terms and their definitions: {'felicitous': ['If you describe a remark or idea as felicitous, you approve of it because it seems particularly suitable in the circumstances. '], 'dismay': ['Dismay is a strong feeling of fear, worry, or sadness that is caused by something unpleasant and unexpected. '], 'shovel': ['A shovel is a tool with a long handle that is used for lifting and moving earth, coal, or snow.'], 'hundredth': ['A hundredth of something is one of a hundred equal parts of it.'], 'reap': ['If you reap the benefits or the rewards of something, you enjoy the good things that happen as a result of it. '], 'unscrupulous': ['If you describe a person as unscrupulous, you are critical of the fact that they are prepared to act in a dishonest or immoral way in order to get what they want. '], 'impute': ['If you impute something such as blame or a crime to someone, you say that they are responsible for it or are the cause of it. '], 'ferocious': ['If you describe actions or feelings as ferocious, you mean that they are intense and determined.'], 'complicity': ['Complicity is involvement with other people in an illegal activity or plan. '], 'prevail': ['If you prevail upon someone to do something, you succeed in persuading them to do it. ']}
 '''
 
 translation_prompt = r'''Given a list of terms and their definitions, craft a concise and everyday example sentence for each term that encapsulates its meaning. Ensure your sentences follow British English spelling conventions. Then, translate each sentence into colloquial Chinese, prioritising natural and authentic flow over literal accuracy. The translations should mimic casual conversation, even if slight adaptations of the original meaning are necessary to achieve this.

@@ -415,7 +415,8 @@ class InferenceExercise(Exercise):
         labels = ['A', 'B', 'C', 'D']
         solution_list = []
         definition_list = []
-        exercise = r'\begin{enumerate}' + '\n'
+        question_index = 1
+        exercise = ''
 
         for term, question_list in imported_dict.items():
             for question in question_list:
@@ -424,13 +425,14 @@ class InferenceExercise(Exercise):
                 answer_options = question['Irrelevant inferences'] + [question['Logical inference']]
                 answer_options = [self._string_processing(item) for item in answer_options]
                 random.shuffle(answer_options)
-                answer_options_with_labels = [f'{label}. {item}' for label, item in zip(labels, answer_options)]
+                # answer_options_with_labels = [f'{label}. {item}' for label, item in zip(labels, answer_options)]
                 solution_list.append(labels[answer_options.index(question['Logical inference'])])
-                exercise += r'\item ' + sentence + r'\\' + '\n'
-                for option in answer_options_with_labels:
-                    exercise += option + r'\\' + '\n'
+                exercise += r'\longmultiplechoiceabcd{' + f'{question_index}. {sentence}' + '}'
+                for option in answer_options:
+                    exercise += '{' + option + '}'
+                exercise += '\n'
+                question_index += 1
             
-        exercise += r'\end{enumerate}' + '\n'
         solution = self._partition_list(solution_list) + '\n\n'
         solution += r'\vspace{3ex}' + '\n\n'
         solution += r'\begin{enumerate}' + '\n'

@@ -2386,26 +2386,6 @@
         "peak"
     ],
     "new": [
-        "stunt",
-        "cantankerous",
-        "wreak",
-        "patrol",
-        "myriad",
-        "magnificent",
-        "elusive",
-        "circulate",
-        "keepsake",
-        "balk",
-        "stimulate",
-        "visibility",
-        "tutelage",
-        "appreciable",
-        "rapt",
-        "testify",
-        "descent",
-        "collide",
-        "merchandise",
-        "testimonial",
         "insignificant",
         "suffuse",
         "senile",
@@ -4701,9 +4681,7 @@
         "steadfast",
         "putrid",
         "procure",
-        "sober"
-    ],
-    "last change": [
+        "sober",
         "stunt",
         "cantankerous",
         "wreak",
@@ -4723,7 +4701,9 @@
         "descent",
         "collide",
         "merchandise",
-        "testimonial",
+        "testimonial"
+    ],
+    "last change": [
         "insignificant",
         "suffuse",
         "senile",
