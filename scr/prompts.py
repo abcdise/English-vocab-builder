@@ -85,7 +85,7 @@ inference_prompt = r'''You are a British lexicographer. Given a list of words wi
 1. Craft an example sentence that clearly illustrates the word's definition.
 2. Based on the example sentence, write a logically inferred sentence.
 3. Write three sentences that deliberately twist or distort the meaning of the word as used in the example sentence.
-Ensure all sentences adhere to spelling conventions of British English. Format your output as a JSON code block.
+Make sure all four sentences are of a similar length and sentence structure. Ensure all sentences adhere to spelling conventions of British English. Format your output as a JSON code block.
 
 Example input:
 ```
@@ -101,7 +101,11 @@ Example response:
                 "Definition": "If you teach someone something, you are helping them to learn about it.",
                 "Example": "Tom teaches economics at a school in Warwick.",
                 "Logical inference": "Simon has become friends with Noah in Tom's economics class.",
-                "Irrelevant inferences": ["The boss asked Tom to hand in his research and policy report on the capital market development.", "Tom has seen his fair share of criminals during his career.", "Tom is the only student to have got an A in A-level economics."]
+                "Irrelevant inferences": [
+                    "The boss asked Tom to hand in his research and policy report on the capital market development.",
+                    "The unending succession of daily meetings with the board members has become an oppressive and overwhelming burden for Tom",
+                    "Tom is the sole student who has secured an A grade in A-level economics."
+                ]
             }
     ]
     
@@ -129,6 +133,37 @@ Example response:
             "Colloquial Chinese": "我以为那些东西很好吃。"
         }
     ]
+}
+```
+'''
+
+comprehension_prompt = r'''You are a British lexicographer. Given a list of words with their definitions, write a question using the word, whose answer is Yes. Then write a question using the word, whose answer is No. Ensure both sentences use present tense and adhere to spelling conventions of British English. Format your output as a JSON code block.
+
+Example input:
+```
+{
+    "teach": ["If you teach someone something, you are helping them to learn about it."],
+    "lazy": ["If someone is lazy, they do not want to work or make any effort to do anything."]
+}
+```
+Example response:
+```json
+{
+    "teach": [
+        {
+            "Definition": "If you teach someone something, you are helping them to learn about it.",
+            "Yes Question": "Do you teach the grammar rules to your students by providing examples?",
+            "No Question": "Does a father teach her son to swim by forbidding him to go near the water?"
+        }
+    ],
+    "lazy": [
+        {
+            "Definition": "If someone is lazy, they do not want to work or make any effort to do anything.",
+            "Yes Question": "Does a lazy student like to postpone his homework until the last minute?",
+            "No Question": "Is a lazy person someone who works hard to achieve his goals?"
+        }
+    ]
+    
 }
 ```
 '''

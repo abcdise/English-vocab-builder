@@ -415,11 +415,13 @@ class InferenceExercise(Exercise):
         labels = ['A', 'B', 'C', 'D']
         question_index = 1
         solution_list = []
+        definition_list = []
         exercise = ''
 
-        for _, question_list in imported_dict.items():
+        for term, question_list in imported_dict.items():
             for question in question_list:
                 sentence = self._string_processing(question['Example'])
+                definition_list.append((term, question['Definition']))
                 answer_options = question['Irrelevant inferences'] + [question['Logical inferences']]
                 answer_options = [self._string_processing(item) for item in answer_options]
                 random.shuffle(answer_options)
@@ -429,7 +431,12 @@ class InferenceExercise(Exercise):
                 exercise += '{' + '}{'.join(answer_options_with_labels) + '}\n' 
                 question_index += 1
         
-        solution = self._partition_list(solution_list)
+        solution = self._partition_list(solution_list) + '\n\n'
+        solution += r'\vspace{3ex}' + '\n\n'
+        solution += r'\begin{enumerate}' + '\n'
+        for term_def in definition_list:
+            solution += r'\item ' + term_def[0] + ': ' + term_def[1] + '\n'
+        solution += r'\end{enumerate}' + '\n'
         self.exercise = exercise
         self.solution = solution
 
@@ -661,6 +668,50 @@ class TranslationExercise(Exercise):
         self.exercise_dict['solution'] = self.solution
 
 
+class ComprehensionExercise(Exercise):
+    def __init__(self, word_entries:dict):
+        super().__init__(word_entries=word_entries)
+        self.create_prompt()
+
+
+    def create_prompt(self):
+        prompt = prompts.comprehension_prompt + '\n'
+        prompt += f'Here is the list of terms and their definitions: {self.word_entries}'
+        self.generation_prompt = prompt
+
+
+    def import_exercise(self, text:str):
+        imported_dict = json_string_to_dict(text)
+        keys = ['Yes Question', 'No Question']
+        solution_list = []
+        definition_list = []
+        exercise = r'\begin{enumerate}' + '\n'
+
+        for term, question_list in imported_dict.items():
+            for question in question_list:
+                true_of_false = random.choice(keys)
+                label = 'T' if true_of_false == 'Yes Question' else 'F'
+                sentence = self._string_processing(question[true_of_false])
+                definition_list.append((term, question['Definition']))
+                solution_list.append(label)
+                exercise += r'\item ' + sentence + '\n'
+        
+        exercise += r'\end{enumerate}' + '\n'
+        solution = self._partition_list(solution_list) + '\n\n'
+        solution += r'\vspace{3ex}' + '\n\n'
+        solution += r'\begin{enumerate}' + '\n'
+        for term_def in definition_list:
+            solution += r'\item ' + term_def[0] + ': ' + term_def[1] + '\n'
+        solution += r'\end{enumerate}' + '\n'
+        self.exercise = exercise
+        self.solution = solution
+
+    
+    def finish_import(self):
+        self.exercise_dict['exercise'] = self.exercise
+        self.exercise_dict['solution'] = self.solution
+                
+
 class ExerciseFactory:
     def create_exercise(self, exercise_type:str, word_entries:dict):
         '''
@@ -691,6 +742,8 @@ class ExerciseFactory:
             return DialogueExercise(word_entries=word_entries)
         elif exercise_type == 'Translation':
             return TranslationExercise(word_entries=word_entries)
+        elif exercise_type == 'Comprehension':
+            return ComprehensionExercise(word_entries=word_entries)
         raise ValueError('Invalid exercise type!')
     
 
