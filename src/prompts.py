@@ -82,48 +82,35 @@ Example output:
 Here are the passages:
 '''
 
-inference_prompt = r'''You are a British lexicographer. Given a list of words with their definitions, carry out the following tasks for each word:
-1. Write an example sentence, that clearly illustrates the word's definition. The sentence should only consists of subject, predicate and object without details.
-2. Based on the example sentence, briefly describe a scenario that is logically suitable for the example sentence, even though the background is somewhat different from the example sentence.
-3. Briefly create three scenarios that deliberately twist or distort the meaning of the word as used in the example sentence and is unlikely to happen given the example sentence.
+inference_prompt = r'''You are a British lexicographer. Given a list of words with their definitions:
+1. Write a clear, concise sentence using only subject, predicate, and object without additional details, which demonstrates the word's meaning. For example, for the keyword "teach", your example sentence can be "Tom teaches economics."
+2. Write a brief plausible scenario that logically follows from the sentence, without using the keyword. For example, you can write "Simon has become friends with Noah in Tom's class." This sentence extends the meaning of "teaching" by introducing a scenario that could logically follow from Tom teaching economics. It relates to the context of a classroom environment, reflecting an outcome of the teaching situation.
+3. Imagine you've misunderstood the word's meaning. Briefly write three different scenarios that involve similar subjects or contexts but don’t accurately reflect the meaning of the key word. These scenarios should sound reasonable but still be incorrect assumptions about the meaning of the word. One example can be "The unending succession of daily meetings with the board members has become an oppressive and overwhelming burden for Tom." This sentence indicates that Tom is not a teacher, contradicting the example sentence. Don't use absolute terms like "immediate", "suddenly" in the sentences.
 
-Don't use the keyword in the logical inference or irrelevant inferences. Ensure all sentences adhere to spelling conventions of British English. Format your output as a JSON code block.
+General Notes:
+- Avoid using the keyword (e.g., "teach") in the fields `Likely to happen` and `Unlikely to happen`.
+- Ensure all sentences are brief and adhere to British spelling conventions.
 
-Example input:
-```
-{
-    "teach": ["If you teach someone something, you are helping them to learn about it."]
-}
-```
-Example response:
+Response format:
 ```json
 {
-    "teach": [
+    "keyword": [
             {
-                "Definition": "If you teach someone something, you are helping them to learn about it.",
-                "Example": "Tom teaches economics.",
-                "Logical inference": "Simon has become friends with Noah in Tom's class.",
-                "Irrelevant inferences": [
-                    "The boss asked Tom to hand in his research and policy report on the capital market development.",
-                    "The unending succession of daily meetings with the board members has become an oppressive and overwhelming burden for Tom",
-                    "Tom is the sole student who has secured an A grade in A-level economics."
-                ]
+                "Definition": "",
+                "Example": "",
+                "Likely to happen": "",
+                "Unlikely to happen": ["", "", ""]
             }
     ]
 }
-```
+```'''
 
-Here is the list of terms and their definitions: {'felicitous': ['If you describe a remark or idea as felicitous, you approve of it because it seems particularly suitable in the circumstances. '], 'dismay': ['Dismay is a strong feeling of fear, worry, or sadness that is caused by something unpleasant and unexpected. '], 'shovel': ['A shovel is a tool with a long handle that is used for lifting and moving earth, coal, or snow.'], 'hundredth': ['A hundredth of something is one of a hundred equal parts of it.'], 'reap': ['If you reap the benefits or the rewards of something, you enjoy the good things that happen as a result of it. '], 'unscrupulous': ['If you describe a person as unscrupulous, you are critical of the fact that they are prepared to act in a dishonest or immoral way in order to get what they want. '], 'impute': ['If you impute something such as blame or a crime to someone, you say that they are responsible for it or are the cause of it. '], 'ferocious': ['If you describe actions or feelings as ferocious, you mean that they are intense and determined.'], 'complicity': ['Complicity is involvement with other people in an illegal activity or plan. '], 'prevail': ['If you prevail upon someone to do something, you succeed in persuading them to do it. ']}
-'''
-
-translation_prompt = r'''Given a list of terms and their definitions, craft a concise and everyday example sentence for each term that encapsulates its meaning. Ensure your sentences follow British English spelling conventions. Then, translate each sentence into colloquial Chinese, prioritising natural and authentic flow over literal accuracy. The translations should mimic casual conversation, even if slight adaptations of the original meaning are necessary to achieve this.
+translation_prompt = r'''Given a list of terms and their definitions, write a clear, concise sentence using only subject, predicate, and object without additional details, which demonstrates the word's meaning. Ensure your sentences follow British English spelling conventions. Then, translate each sentence into colloquial Chinese, prioritising natural and authentic flow over literal accuracy. The translations should mimic casual conversation, even if slight adaptations of the original meaning are necessary to achieve this.
 
 Example input:
 ```json
 {
-    "tasty": [
-        "If you say that food, especially savoury food, is tasty, you mean that it has a fairly strong and pleasant flavour which makes it good to eat."
-    ]
+    "tasty": ["If you say that food, especially savoury food, is tasty, you mean that it has a fairly strong and pleasant flavour which makes it good to eat."]
 }
 ```
 Example response:
@@ -132,8 +119,8 @@ Example response:
     "tasty": [
         {
             "Definition": "If you say that food, especially savoury food, is tasty, you mean that it has a fairly strong and pleasant flavour which makes it good to eat.",
-            "Example": "I thought the food was very tasty.",
-            "Colloquial Chinese": "我以为那些东西很好吃。"
+            "Example": "The food is tasty.",
+            "Colloquial Chinese": "东西很好吃。"
         }
     ]
 }

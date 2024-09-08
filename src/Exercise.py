@@ -422,11 +422,10 @@ class InferenceExercise(Exercise):
             for question in question_list:
                 sentence = self._string_processing(question['Example'])
                 definition_list.append((term, question['Definition']))
-                answer_options = question['Irrelevant inferences'] + [question['Logical inference']]
+                answer_options = question['Unlikely to happen'] + [question['Likely to happen']]
                 answer_options = [self._string_processing(item) for item in answer_options]
                 random.shuffle(answer_options)
-                # answer_options_with_labels = [f'{label}. {item}' for label, item in zip(labels, answer_options)]
-                solution_list.append(labels[answer_options.index(question['Logical inference'])])
+                solution_list.append(labels[answer_options.index(question['Likely to happen'])])
                 exercise += r'\longmultiplechoiceabcd{' + f'{question_index}. {sentence}' + '}'
                 for option in answer_options:
                     exercise += '{' + option + '}'
@@ -565,7 +564,7 @@ class ClozeExercise(Exercise):
 
     def __create_prompt(self):
         self.generation_prompt = f'''
-        For each word and definition, write a one-paragraph passage using the word about an anecdote in the cultural history of England. Incorporate the word subtly into the passage by using it only once. Ensure the word in the passage matches the given definition. Your passsages should adhere to the British English spelling rules. Format the response as follows
+        For each word and definition, write an elaborated one-paragraph passage using the word about an anecdote in the cultural history of England. Incorporate the word subtly into the passage by using it only once. Ensure the word in the passage matches the given definition. Your passsages should adhere to the British English spelling rules. Format the response as follows
         ```json
         {self.passage_dict}
         ```

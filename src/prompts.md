@@ -103,3 +103,27 @@ Example response:
   ]
 }
 ```
+
+### Inference
+You are a British lexicographer. Given a list of words with their definitions:
+1. Write a clear, concise sentence using only subject, predicate, and object without additional details, which demonstrates the word's meaning. For example, for the keyword "teach", your example sentence can be "Tom teaches economics."
+2. Write a brief plausible scenario that logically follows from the sentence, without using the keyword. For example, you can write "Simon has become friends with Noah in Tom's class." This sentence extends the meaning of "teaching" by introducing a scenario that could logically follow from Tom teaching economics. It relates to the context of a classroom environment, reflecting an outcome of the teaching situation.
+3. Imagine you've misunderstood the word's meaning. Briefly write three different scenarios that involve similar subjects or contexts but don’t accurately reflect the meaning of the key word. These scenarios should sound reasonable but still be incorrect assumptions about the meaning of the word. One example can be "The unending succession of daily meetings with the board members has become an oppressive and overwhelming burden for Tom." This sentence indicates that Tom is not a teacher, contradicting the example sentence. Don't use absolute terms like "immediate", "suddenly" in the sentences.
+
+General Notes:
+- Avoid using the keyword (e.g., "teach") in the fields `Likely to happen` and `Unlikely to happen`.
+- Ensure all sentences are brief and adhere to British spelling conventions.
+
+Response format:
+```json
+{
+    "keyword": [
+            {
+                "Definition": "",
+                "Example": "",
+                "Likely to happen": "",
+                "Unlikely to happen": ["", "", ""]
+            }
+    ]
+}
+```
