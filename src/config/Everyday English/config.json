@@ -307,12 +307,7 @@
         "under somemeone",
         "go on about sth."
     ],
-    "new": [
-        "head on over somewhere",
-        "Fortune 500 company",
-        "under somemeone",
-        "go on about sth."
-    ],
+    "new": [],
     "review": [
         "complimentary glass of wine",
         "coke and fries",
@@ -611,12 +606,11 @@
         "blind as a bat",
         "blurry vision",
         "fill out the prescription",
-        "What seems to be the problem"
-    ],
-    "last change": [
+        "What seems to be the problem",
         "head on over somewhere",
         "Fortune 500 company",
-        "under somemeone",
+        "under someone",
         "go on about sth."
-    ]
+    ],
+    "last change": []
 }

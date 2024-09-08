@@ -2386,26 +2386,6 @@
         "peak"
     ],
     "new": [
-        "insignificant",
-        "suffuse",
-        "senile",
-        "quest",
-        "abscond",
-        "bibliography",
-        "undulate",
-        "personnel",
-        "confide",
-        "workmanship",
-        "commend",
-        "unleaded",
-        "unbecoming",
-        "coax",
-        "cylinder",
-        "debilitate",
-        "prick",
-        "ulterior",
-        "camaraderie",
-        "wrinkle",
         "anthology",
         "drip",
         "gloomy",
@@ -4701,9 +4681,7 @@
         "descent",
         "collide",
         "merchandise",
-        "testimonial"
-    ],
-    "last change": [
+        "testimonial",
         "insignificant",
         "suffuse",
         "senile",
@@ -4723,7 +4701,9 @@
         "prick",
         "ulterior",
         "camaraderie",
-        "wrinkle",
+        "wrinkle"
+    ],
+    "last change": [
         "anthology",
         "drip",
         "gloomy",
