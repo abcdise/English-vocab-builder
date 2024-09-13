@@ -82,28 +82,42 @@ Example output:
 Here are the passages:
 '''
 
-inference_prompt = r'''You are a British lexicographer. Given a list of words with their definitions:
-1. Write a clear, concise sentence using only subject, predicate, and object without additional details, which demonstrates the word's meaning. For example, for the keyword "teach", your example sentence can be "Tom teaches economics."
-2. Write a brief plausible scenario that logically follows from the sentence, without using the keyword. For example, you can write "Simon has become friends with Noah in Tom's class." This sentence extends the meaning of "teaching" by introducing a scenario that could logically follow from Tom teaching economics. It relates to the context of a classroom environment, reflecting an outcome of the teaching situation.
-3. Imagine you've misunderstood the word's meaning. Briefly write three different scenarios that involve similar subjects or contexts but don’t accurately reflect the meaning of the key word. These scenarios should sound reasonable but still be incorrect assumptions about the meaning of the word. One example can be "The unending succession of daily meetings with the board members has become an oppressive and overwhelming burden for Tom." This sentence indicates that Tom is not a teacher, contradicting the example sentence. Don't use absolute terms like "immediate", "suddenly" in the sentences.
 
-General Notes:
-- Avoid using the keyword (e.g., "teach") in the fields `Likely to happen` and `Unlikely to happen`.
-- Ensure all sentences are brief and adhere to British spelling conventions.
+inference_example_prompt = r'''
+Task: You are a British lexicographer. For each term in the given list, write short, simple, factual sentences that demonstrates the term's given definition. Avoid using descriptive adjectives, adverbs, or additional context. Don't express emotions or provide extra details about the setting or circumstances. Ensure the sentences adhere to the British English spelling rules.
+Example: 
+Input: {"dirty": ["If something is dirty, it is marked or covered with stains, spots, or mud, and needs to be cleaned."]}
+Good Response: 
+```
+{"dirty": [{"Definition": "If something is dirty, it is marked or covered with stains, spots, or mud, and needs to be cleaned.", "Example": "The street is dirty."}]}
+```
+Bad Response:
+```
+{"dirty": [{"Definition": "If something is dirty, it is marked or covered with stains, spots, or mud, and needs to be cleaned.", "Example": "He watched a movie in a dirty cinema."}]}
+```
+Now try the following
+'''
 
-Response format:
-```json
-{
-    "keyword": [
-            {
-                "Definition": "",
-                "Example": "",
-                "Likely to happen": "",
-                "Unlikely to happen": ["", "", ""]
-            }
-    ]
-}
-```'''
+inference_options_prompt = r'''
+Task: 
+Given a sentence describing a person or a situation, generate three sentences that is plausible and reasonable on their own, but subtly contradicts the original sentence. Then write a sentence that is a plausible scenario that logically follows from the original sentence. 
+
+Example:
+Input: "Tom teaches economics."
+Unlikely to happen: "The frequent meetings with the board have become somewhat burdensome for Tom."
+Likely to happen: "Simon has become friends with Noah in Tom's class."
+
+Instructions:
+1. Use the format: `{"keyword":["Example": "", "Unlikely to happen": ["", "", ""], "Likely to happen": ""]}`.
+2. Avoid using exaggerated or absolute words like "complete", "immediate". The contradiction should be subtle and implied. 
+3. For "Unlikely to happen", focus on creating scenarios or situations that subtly hint at different realities or outcomes than the one implied in the original sentence.
+4. For "Likely to happen", create scenarios that logically follow from the original sentence, extending the context or situation.
+5. Don't use the keyword in all of the sentences.
+6. The sentences should adhere to the British English spelling rule.
+
+Now try the following:
+'''
+
 
 translation_prompt = r'''Given a list of terms and their definitions, write a clear, concise sentence using only subject, predicate, and object without additional details, which demonstrates the word's meaning. Ensure your sentences follow British English spelling conventions. Then, translate each sentence into colloquial Chinese, prioritising natural and authentic flow over literal accuracy. The translations should mimic casual conversation, even if slight adaptations of the original meaning are necessary to achieve this.
 

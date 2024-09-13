@@ -402,12 +402,26 @@ class InferenceExercise(Exercise):
     def __init__(self, word_entries:dict):
         super().__init__(word_entries=word_entries)
         self.create_prompt()
+        self.example_sentences = dict()
+        self.exercises_dict = deepcopy(word_entries)
 
     
     def create_prompt(self):
-        prompt = prompts.inference_prompt + '\n'
-        prompt += f'Here is the list of terms and their definitions: {self.word_entries}'
+        prompt = prompts.inference_example_prompt + f'\n{self.word_entries}'
         self.generation_prompt = prompt
+
+
+    def create_exercise_prompt(self):
+        prompt = prompts.inference_options_prompt + f'\n{self.example_sentences}'
+
+    
+    def import_sentences(self, text:str):
+        example_sentences = json.loads(text)
+        for word in example_sentences:
+            self.example_sentences[word] = []
+            for i, entry in enumerate(example_sentences[word]):
+                self.example_sentences[word].append(entry['Example'])
+                self.exercises_dict[word][i] = self.example_sentences[word]
     
 
     def import_exercise(self, text:str):
@@ -422,7 +436,7 @@ class InferenceExercise(Exercise):
             for question in question_list:
                 sentence = self._string_processing(question['Example'])
                 definition_list.append((term, question['Definition']))
-                answer_options = question['Unlikely to happen'] + [question['Likely to happen']]
+                answer_options = [question['Unlikely to happen'], question['Likely to happen']]
                 answer_options = [self._string_processing(item) for item in answer_options]
                 random.shuffle(answer_options)
                 solution_list.append(labels[answer_options.index(question['Likely to happen'])])
