@@ -403,46 +403,55 @@ class InferenceExercise(Exercise):
         super().__init__(word_entries=word_entries)
         self.create_prompt()
         self.example_sentences = dict()
-        self.exercises_dict = deepcopy(word_entries)
 
     
     def create_prompt(self):
-        prompt = prompts.inference_example_prompt + f'\n{self.word_entries}'
+        prompt = prompts.inference_example_prompt + f'\n```json\n{self.word_entries}\n```'
         self.generation_prompt = prompt
 
 
-    def create_exercise_prompt(self):
-        prompt = prompts.inference_options_prompt + f'\n{self.example_sentences}'
+    def get_exercise_prompt(self):
+        prompt = prompts.inference_options_prompt + f'\n```json\n{self.example_sentences}\n```'
+        pyperclip.copy(prompt)
 
     
     def import_sentences(self, text:str):
-        example_sentences = json.loads(text)
-        for word in example_sentences:
+        self.exercise_dict = json.loads(text)
+        for word in self.exercise_dict:
             self.example_sentences[word] = []
-            for i, entry in enumerate(example_sentences[word]):
+            for entry in self.exercise_dict[word]:
                 self.example_sentences[word].append(entry['Example'])
-                self.exercises_dict[word][i] = self.example_sentences[word]
-    
+
 
     def import_exercise(self, text:str):
+        # First import the text as a dictionary
+        # Combine the options with the definitions and example sentences
+        # Generate the exercise
         imported_dict = json_string_to_dict(text)
-        labels = ['A', 'B', 'C', 'D']
+        for word in self.exercise_dict:
+            for i, entry in enumerate(self.exercise_dict[word]):
+                entry['Likely to happen'] = imported_dict[word][i]['Likely to happen']
+                entry['Unlikely to happen'] = imported_dict[word][i]['Unlikely to happen']
+        self.generate_exercise(self.exercise_dict)
+        
+    
+    def generate_exercise(self, exercise_dict:dict):
+        labels = ['A', 'B']
         solution_list = []
         definition_list = []
         question_index = 1
         exercise = ''
 
-        for term, question_list in imported_dict.items():
+        for term, question_list in exercise_dict.items():
             for question in question_list:
                 sentence = self._string_processing(question['Example'])
                 definition_list.append((term, question['Definition']))
-                answer_options = [question['Unlikely to happen'], question['Likely to happen']]
-                answer_options = [self._string_processing(item) for item in answer_options]
+                answer_options = [question['Unlikely to happen']] + [question['Likely to happen']]
                 random.shuffle(answer_options)
                 solution_list.append(labels[answer_options.index(question['Likely to happen'])])
-                exercise += r'\longmultiplechoiceabcd{' + f'{question_index}. {sentence}' + '}'
+                exercise += r'\longmultiplechoiceab{' + f'{question_index}. {sentence}' + '}'
                 for option in answer_options:
-                    exercise += '{' + option + '}'
+                    exercise += '{' + self._string_processing(option) + '}'
                 exercise += '\n'
                 question_index += 1
             

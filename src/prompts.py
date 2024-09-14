@@ -84,36 +84,36 @@ Here are the passages:
 
 
 inference_example_prompt = r'''
-Task: You are a British lexicographer. For each term in the given list, write short, simple, factual sentences that demonstrates the term's given definition. Avoid using descriptive adjectives, adverbs, or additional context. Don't express emotions or provide extra details about the setting or circumstances. Ensure the sentences adhere to the British English spelling rules.
-Example: 
-Input: {"dirty": ["If something is dirty, it is marked or covered with stains, spots, or mud, and needs to be cleaned."]}
-Good Response: 
-```
-{"dirty": [{"Definition": "If something is dirty, it is marked or covered with stains, spots, or mud, and needs to be cleaned.", "Example": "The street is dirty."}]}
-```
-Bad Response:
-```
-{"dirty": [{"Definition": "If something is dirty, it is marked or covered with stains, spots, or mud, and needs to be cleaned.", "Example": "He watched a movie in a dirty cinema."}]}
-```
-Now try the following
+Task: You are a British lexicographer. For each term in the given list, write succinct, factual sentences that demonstrates the term's given definition. Avoid using descriptive adjectives, adverbs, or additional context. Don't express emotions or provide extra details about the setting or circumstances. Ensure the sentences adhere to the British English spelling rules.
+
+Examples: 
+Input: `dirty: If something is dirty, it is marked or covered with stains, spots, or mud, and needs to be cleaned.`
+Good Response: `The street is dirty.` Bad Response: `He watched a movie in a dirty cinema.`(Too detailed)
+Input: `write: When you write something, you produce it on a surface with a pen, pencil, or typewriter.`
+Good Response: `Noah wrote a letter.` Bad Response: `The teacher wrote the answer on the board.` (Too detailed)
+
+Instructions:
+1. Use the json format: `{"keyword": [{"Definition": "", "Example": ""}]}`.
+2. The sentences should adhere to the British English spelling rule.
+
+Now try the following:
 '''
 
 inference_options_prompt = r'''
 Task: 
-Given a sentence describing a person or a situation, generate three sentences that is plausible and reasonable on their own, but subtly contradicts the original sentence. Then write a sentence that is a plausible scenario that logically follows from the original sentence. 
+Given a sentence describing a person or a situation, write a brief sentence that is plausible and reasonable on their own, but subtly contradicts the original sentence. Then write a brief sentence that is a plausible scenario that logically follows from the original sentence. 
 
 Example:
-Input: "Tom teaches economics."
-Unlikely to happen: "The frequent meetings with the board have become somewhat burdensome for Tom."
-Likely to happen: "Simon has become friends with Noah in Tom's class."
+Input: `teach: Tom teaches economics.`
+Unlikely to happen: `The frequent meetings with the board have become burdensome for Tom.`
+Likely to happen: `Simon has become friends with Noah in Tom's class.`
 
 Instructions:
-1. Use the format: `{"keyword":["Example": "", "Unlikely to happen": ["", "", ""], "Likely to happen": ""]}`.
-2. Avoid using exaggerated or absolute words like "complete", "immediate". The contradiction should be subtle and implied. 
+1. Use the json format: `{"keyword":[{"Example": "", "Unlikely to happen": "", "Likely to happen": ""}]}`.
+2. Avoid using exaggerated or absolute words in all sentences. 
 3. For "Unlikely to happen", focus on creating scenarios or situations that subtly hint at different realities or outcomes than the one implied in the original sentence.
 4. For "Likely to happen", create scenarios that logically follow from the original sentence, extending the context or situation.
-5. Don't use the keyword in all of the sentences.
-6. The sentences should adhere to the British English spelling rule.
+5. Don't use the keyword and absolute words in all of the sentences. The sentences should adhere to the British English spelling rule.
 
 Now try the following:
 '''
