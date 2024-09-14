@@ -78,52 +78,38 @@ Format your response in a JSON code block
 ```
 
 
-### Equivalence
-You are an renowned British lexicographer. Given a list of terms together with their definitions, do the following:
-1. Write an example sentence containing the term in British English. 
-2. Write a word or a phrase that can replace the term in the sentence. The word or phrase is called "Good alternative"
-3. Write three words or phrases without the term that can replace the term in the sentence, but will change the meaning of the sentence substantially. These words or phrases are called "Bad alternatives". Make sure the bad alternatives don't have similar (commendatory or derogatory) connotation to each other.
-Example input:
-```json
-{
-  "remind": ["If someone reminds you of a fact or event that you already know about, they say something which makes you think about it."]
-}
-```
-Example response:
-```json
-{
-  "remind":[
-    {
-      "Definition": "If someone reminds you of a fact or event that you already know about, they say something which makes you think about it.",
-      "Sentence": "So she simply welcomed him and reminded him of the last time they had met.",
-      "Term in the sentence": "reminded him of",
-      "Good alternative": "recalled",
-      "Bad alternatives": ["mentioned", "celebrated", "forgot"]
-    }
-  ]
-}
-```
 
-### Inference
-You are a British lexicographer. Given a list of words with their definitions:
-1. Write a clear, concise sentence using only subject, predicate, and object without additional details, which demonstrates the word's meaning. For example, for the keyword "teach", your example sentence can be "Tom teaches economics."
-2. Write a brief plausible scenario that logically follows from the sentence, without using the keyword. For example, you can write "Simon has become friends with Noah in Tom's class." This sentence extends the meaning of "teaching" by introducing a scenario that could logically follow from Tom teaching economics. It relates to the context of a classroom environment, reflecting an outcome of the teaching situation.
-3. Imagine you've misunderstood the word's meaning. Briefly write three different scenarios that involve similar subjects or contexts but don’t accurately reflect the meaning of the key word. These scenarios should sound reasonable but still be incorrect assumptions about the meaning of the word. One example can be "The unending succession of daily meetings with the board members has become an oppressive and overwhelming burden for Tom." This sentence indicates that Tom is not a teacher, contradicting the example sentence. Don't use absolute terms like "immediate", "suddenly" in the sentences.
+### Inference Sentences
+Task: You are a British lexicographer. For each term in the given list, write succinct, factual sentences that demonstrates the term's given definition. Avoid using descriptive adjectives, adverbs, or additional context. Don't express emotions or provide extra details about the setting or circumstances. Ensure the sentences adhere to the British English spelling rules.
 
-General Notes:
-- Avoid using the keyword (e.g., "teach") in the fields `Likely to happen` and `Unlikely to happen`.
-- Ensure all sentences are brief and adhere to British spelling conventions.
+Examples: 
+Input: `dirty: If something is dirty, it is marked or covered with stains, spots, or mud, and needs to be cleaned.`
+Good Response: `The street is dirty.` Bad Response: `He watched a movie in a dirty cinema.`(Too detailed)
+Input: `write: When you write something, you produce it on a surface with a pen, pencil, or typewriter.`
+Good Response: `Noah wrote a letter.` Bad Response: `The teacher wrote the answer on the board.` (Too detailed)
 
-Response format:
-```json
-{
-    "keyword": [
-            {
-                "Definition": "",
-                "Example": "",
-                "Likely to happen": "",
-                "Unlikely to happen": ["", "", ""]
-            }
-    ]
-}
-```
+Instructions:
+1. Use the json format: `{"keyword": [{"Definition": "", "Example": ""}]}`.
+2. The sentences should adhere to the British English spelling rule.
+
+Now try the following:
+
+
+### Inference Options
+Task: 
+Given a sentence describing a person or a situation, write a brief sentence that is plausible and reasonable on their own, but subtly contradicts the original sentence. Then write a brief sentence that is a plausible scenario that logically follows from the original sentence. 
+
+Example:
+Input: `teach: Tom teaches economics.`
+Unlikely to happen: `The frequent meetings with the board have become burdensome for Tom.`
+Likely to happen: `Simon has become friends with Noah in Tom's class.`
+
+Instructions:
+1. Use the json format: `{"keyword":[{"Example": "", "Unlikely to happen": "", "Likely to happen": ""}]}`.
+2. Avoid using exaggerated or absolute words in all sentences. 
+3. For "Unlikely to happen", focus on creating scenarios or situations that subtly hint at different realities or outcomes than the one implied in the original sentence.
+4. For "Likely to happen", create scenarios that logically follow from the original sentence, extending the context or situation.
+5. Don't use the keyword and absolute words in all of the sentences. The sentences should adhere to the British English spelling rule.
+
+Now try the following:
+
