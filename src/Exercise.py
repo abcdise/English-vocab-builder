@@ -430,13 +430,12 @@ class InferenceExercise(Exercise):
         imported_dict = json_string_to_dict(text)
         for word in self.exercise_dict:
             for i, entry in enumerate(self.exercise_dict[word]):
-                entry['Likely to happen'] = imported_dict[word][i]['Likely to happen']
                 entry['Unlikely to happen'] = imported_dict[word][i]['Unlikely to happen']
         self.generate_exercise(self.exercise_dict)
         
     
     def generate_exercise(self, exercise_dict:dict):
-        labels = ['A', 'B']
+        labels = ['A', 'B', 'C']
         solution_list = []
         definition_list = []
         question_index = 1
@@ -446,10 +445,10 @@ class InferenceExercise(Exercise):
             for question in question_list:
                 sentence = self._string_processing(question['Example'])
                 definition_list.append((term, question['Definition']))
-                answer_options = [question['Unlikely to happen']] + [question['Likely to happen']]
+                answer_options = question['Unlikely to happen'] + [question['Likely to happen']]
                 random.shuffle(answer_options)
                 solution_list.append(labels[answer_options.index(question['Likely to happen'])])
-                exercise += r'\longmultiplechoiceab{' + f'{question_index}. {sentence}' + '}'
+                exercise += r'\longmultiplechoiceabc{' + f'{question_index}. {sentence}' + '}'
                 for option in answer_options:
                     exercise += '{' + self._string_processing(option) + '}'
                 exercise += '\n'

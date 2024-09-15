@@ -80,36 +80,23 @@ Format your response in a JSON code block
 
 
 ### Inference Sentences
-Task: You are a British lexicographer. For each term in the given list, write succinct, factual sentences that demonstrates the term's given definition. Avoid using descriptive adjectives, adverbs, or additional context. Don't express emotions or provide extra details about the setting or circumstances. Ensure the sentences adhere to the British English spelling rules.
+Task: You are a British lexicographer. For each term in the given list, write a succinct sentence that demonstrates the term's given definition. Then write a brief sentence with a different subject describing a plausible scenario that logically follows from the original sentence. Use British English spelling in your responses. Use the json format: `{"keyword": [{"Definition": "", "Example": "", "Likely to happen": ""}]}` in your response.
 
 Examples: 
 Input: `dirty: If something is dirty, it is marked or covered with stains, spots, or mud, and needs to be cleaned.`
-Good Response: `The street is dirty.` Bad Response: `He watched a movie in a dirty cinema.`(Too detailed)
-Input: `write: When you write something, you produce it on a surface with a pen, pencil, or typewriter.`
-Good Response: `Noah wrote a letter.` Bad Response: `The teacher wrote the answer on the board.` (Too detailed)
-
-Instructions:
-1. Use the json format: `{"keyword": [{"Definition": "", "Example": ""}]}`.
-2. The sentences should adhere to the British English spelling rule.
+Output: `{"dirty": [{"Definition": "If something is dirty, it is marked or covered with stains, spots, or mud, and needs to be cleaned.", "Example": "The street is dirty.", "Likely to happen": "The restaurants on the streets have lost many of their regular visitors."}]}`
 
 Now try the following:
 
 
 ### Inference Options
-Task: 
-Given a sentence describing a person or a situation, write a brief sentence that is plausible and reasonable on their own, but subtly contradicts the original sentence. Then write a brief sentence that is a plausible scenario that logically follows from the original sentence. 
+For each keyword-sentence pair describing a situation, create two brief clues Sherlock Holmes has discovered, which suggest scenarios that are unlikely to happen given the keyword and the statement. Don't use the given keywords or any absolute terms in the clues. Finally, use British English spelling.
 
 Example:
-Input: `teach: Tom teaches economics.`
-Unlikely to happen: `The frequent meetings with the board have become burdensome for Tom.`
-Likely to happen: `Simon has become friends with Noah in Tom's class.`
+Input: teach: Tom teaches economics.
+Output: `{"teach": [{"Example": "Tom teaches economics.", "Unlikely to happen": ["The frequent board meetings have become burdensome for Tom.", "The journalist is eager to interview Tom about his recent quantum computing breakthrough."]}]}`
 
-Instructions:
-1. Use the json format: `{"keyword":[{"Example": "", "Unlikely to happen": "", "Likely to happen": ""}]}`.
-2. Avoid using exaggerated or absolute words in all sentences. 
-3. For "Unlikely to happen", focus on creating scenarios or situations that subtly hint at different realities or outcomes than the one implied in the original sentence.
-4. For "Likely to happen", create scenarios that logically follow from the original sentence, extending the context or situation.
-5. Don't use the keyword and absolute words in all of the sentences. The sentences should adhere to the British English spelling rule.
+In this example, both sentences contradicts the keyword "teach" in original sentence indirectly: the first sentences indicates that Tom doesn't work at a school, while the second sentence implies Tom is not an economist.
 
 Now try the following:
 
