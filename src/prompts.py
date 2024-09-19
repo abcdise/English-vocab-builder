@@ -135,10 +135,15 @@ Example response:
         {
             "Definition": "If someone is lazy, they do not want to work or make any effort to do anything.",
             "Yes Question": "Does a lazy student like to postpone his homework until the last minute?",
-            "No Question": "Is a lazy person someone who works hard to achieve his goals?"
+            "No Question": "Is a lazy person hardworking?"
         }
     ]
-    
 }
 ```
+'''
+
+sentence_order_prompt = r'''
+For each keyword-definition pair, write a piece of news in the UK consisting of three sentences. One of the sentences must contain the keyword. Use the following format in your response:
+`{"keyword": [{"Definition": "", "Paragraph": ["First sentence", "Second sentence", "Third sentence"]}]}`
+Ensure the paragraphs use British English spelling.
 '''

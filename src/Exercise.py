@@ -255,8 +255,8 @@ class Definition(Exercise):
                         definition = self._string_processing(definition)
                         def_text += r'{' + definition + r'}'
                         sentence_with_gap, solution_list = replace_term(original_string=definition, 
-                                old_value=word, 
-                                new_value=(r'\rule{' + str(0.25*len(word)) + r'cm}{0.15mm}'))
+                                old_value=word,
+                                new_value=f'\\fillin[{word}][{1/3*len(word)}in]')
                         if sentence_with_gap != definition and sentence_with_gap and solution_list:
                             sentence_with_gap = sentence_with_gap.replace('...', r'{[\ldots] }')
                             sentence_with_gap = remove_brackets_and_contents(sentence_with_gap)
@@ -382,7 +382,7 @@ class FillInTheGapExercise(Exercise):
                 for sentence in entry['Example']:
                     question, sol_list = replace_term(original_string=sentence,
                                                     old_value=word,
-                                                    new_value=(r'\rule{' + str(0.25*len(word)) + r'cm}{0.15mm}'))
+                                                    new_value=f'\\fillin[{word}][{1/3*len(word)}in]')
                     if question != sentence:
                         exercise_list.append((question, ', '.join(sol_list), entry['Definition']))
     
@@ -438,21 +438,20 @@ class InferenceExercise(Exercise):
         labels = ['A', 'B', 'C']
         solution_list = []
         definition_list = []
-        question_index = 1
         exercise = ''
 
         for term, question_list in exercise_dict.items():
             for question in question_list:
-                sentence = self._string_processing(question['Example'])
+                sentence = question['Example']
                 definition_list.append((term, question['Definition']))
-                answer_options = question['Unlikely to happen'] + [question['Likely to happen']]
+                answer_options = [question['Unlikely to happen']] + question['Likely to happen']
                 random.shuffle(answer_options)
-                solution_list.append(labels[answer_options.index(question['Likely to happen'])])
-                exercise += r'\longmultiplechoiceabc{' + f'{question_index}. {sentence}' + '}'
+                solution_list.append(labels[answer_options.index(question['Unlikely to happen'])])
+                exercise += f'\\question {self._string_processing(sentence)}\n'
+                exercise += r'\begin{choices}' + '\n'
                 for option in answer_options:
                     exercise += '{' + self._string_processing(option) + '}'
-                exercise += '\n'
-                question_index += 1
+                exercise += r'\end{choices}' + '\n'
             
         solution = self._partition_list(solution_list) + '\n\n'
         solution += r'\vspace{3ex}' + '\n\n'
@@ -708,7 +707,7 @@ class ComprehensionExercise(Exercise):
         keys = ['Yes Question', 'No Question']
         solution_list = []
         definition_list = []
-        exercise = r'\begin{enumerate}' + '\n'
+        exercise = ''
 
         for term, question_list in imported_dict.items():
             for question in question_list:
@@ -717,9 +716,8 @@ class ComprehensionExercise(Exercise):
                 sentence = self._string_processing(question[true_of_false])
                 definition_list.append((term, question['Definition']))
                 solution_list.append(label)
-                exercise += r'\item ' + sentence + '\n'
+                exercise += f'\\question \\tf[{label}] ' + sentence + '\n'
         
-        exercise += r'\end{enumerate}' + '\n'
         solution = self._partition_list(solution_list) + '\n\n'
         solution += r'\vspace{3ex}' + '\n\n'
         solution += r'\begin{enumerate}' + '\n'
@@ -733,7 +731,53 @@ class ComprehensionExercise(Exercise):
     def finish_import(self):
         self.exercise_dict['exercise'] = self.exercise
         self.exercise_dict['solution'] = self.solution
-                
+
+
+class SentenceOrderExercise(Exercise):
+    def __init__(self, word_entries:dict):
+        super().__init__(word_entries=word_entries)
+        self.create_prompt()
+
+
+    def create_prompt(self):
+        prompt = prompts.sentence_order_prompt + '\n'
+        prompt += f'Try the following' + '\n'
+        prompt += f'```json\n{self.word_entries}\n```'
+        self.generation_prompt = prompt
+
+    
+    def import_exercise(self, text:str):
+        imported_dict = json_string_to_dict(text)
+        solution_list = []
+        definition_list = []
+        exercise = ''
+        solution = ''
+        for term, entry_list in imported_dict.items():
+            for entry in entry_list:
+                index = [1, 2, 3]
+                definition_list.append((term, entry['Definition']))
+                paragraph = entry['Paragraph']
+                random.shuffle(index)
+                solution_list.append(''.join([str(i) for i in index]))
+                exercise += f'\\question \\tf[{index[0]}] ' + paragraph[index[0] - 1] + '\n\n'
+                exercise += f'\\question \\tf[{index[1]}] ' + paragraph[index[1] - 1] + '\n\n'
+                exercise += f'\\question \\tf[{index[2]}] ' + paragraph[index[2] - 1] + '\n\n'
+
+        for i, ordering in enumerate(solution_list):
+            solution += f'{i + 1}. {ordering}' + r' \quad '
+
+        solution += '\n\n' + r'\vspace{3ex}' + '\n\n'
+        solution += r'\begin{enumerate}' + '\n'
+        for term_def in definition_list:
+            solution += r'\item ' + term_def[0] + ': ' + term_def[1] + '\n'
+        solution += r'\end{enumerate}' + '\n'
+        self.exercise = exercise
+        self.solution = solution
+
+    def finish_import(self):
+        self.exercise_dict['exercise'] = self.exercise
+        self.exercise_dict['solution'] = self.solution
+
 
 class ExerciseFactory:
     def create_exercise(self, exercise_type:str, word_entries:dict):
@@ -767,6 +811,8 @@ class ExerciseFactory:
             return TranslationExercise(word_entries=word_entries)
         elif exercise_type == 'Comprehension':
             return ComprehensionExercise(word_entries=word_entries)
+        elif exercise_type == 'Sentence Order':
+            return SentenceOrderExercise(word_entries=word_entries)
         raise ValueError('Invalid exercise type!')
     
 

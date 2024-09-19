@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass{exam}
 \title{Exercise Sheet}
 \usepackage{CJKutf8}
 \usepackage[utf8]{inputenc}
@@ -9,54 +9,14 @@
 \usepackage{dialogue}
 \usepackage[a4paper, margin={1in, 3cm}]{geometry}
 \usepackage{subfiles}
-\usepackage{fancyhdr}
 \usepackage{framed}
 \usepackage{enumitem}
 \usepackage{amssymb}
 \usepackage{csquotes}
 \usepackage{datenumber}
-\setdatetoday
-\addtocounter{datenumber}{1}
-\setdatebynumber{\thedatenumber}
-\pagestyle{fancy}
-\fancyhf{}
-\rhead{\datedate}
-\newcommand{\multiplechoiceabc}[4]{
-\noindent #1
-
-\vspace{-4ex}
-
-\begin{tabbing}
-	\hspace{1em} \= \hspace{15em} \= \hspace{15em} \= \\
-	\> #2 \> #3 \> #4\\
-\end{tabbing}
-
-\vspace{-3ex}
-}
-
-\newcommand{\longmultiplechoiceabc}[4]{
-\noindent #1
-\begin{enumerate}[label=\Alph*.]
-\itemsep -0.5ex 
-	\item #2
-	\item #3
-	\item #4
-\end{enumerate}
 
 
-}
-
-\newcommand{\multiplechoiceabcd}[5]{
-\noindent #1
-
-\vspace{-4ex}
-\begin{tabbing}
-	\hspace{1em} \= \hspace{10em} \= \hspace{10em} \= \hspace{10em} \= \\
-	\> #2 \> #3 \> #4 \> #5\\
-\end{tabbing}
-
-\vspace{-3ex}
-}
+\checkboxchar{\mybox}
 
 \newcommand{\trianglebullet}{$\triangleright$ }
 
@@ -65,19 +25,6 @@
 \vspace{4ex}
 
 \noindent \textbf{{#1}} \quad {#2} 
-
-}
-
-\newcommand{\longmultiplechoiceabcd}[5]{
-\noindent #1
-\begin{enumerate}[label=\Alph*.]
-\itemsep -0.5ex 
-	\item #2
-	\item #3
-	\item #4
-	\item #5
-\end{enumerate}
-
 
 }
 
@@ -91,6 +38,12 @@
 
 
 }
+
+\newcommand{\tf}[1][{}]{%
+  \fillin[#1][0.25in]%
+}
+
+\newcommand{\mybox}{\resizebox{.5cm}{!}{\raisebox{-.5ex}{$\Box$}}}
 
 \begin{document}
 
@@ -199,28 +152,28 @@
 %\subfile{./Comprehension/output_19.tex}
 %\subfile{./Comprehension/output_20.tex}
 
-\noindent \textit{2. Decide which answer can be inferred from the given situation.}
+\noindent \textit{2. Put the sentences in the correct order.}
 
-%\subfile{./Inference/output_1.tex}
-%\subfile{./Inference/output_2.tex}
-%\subfile{./Inference/output_3.tex}
-%\subfile{./Inference/output_4.tex}
-%\subfile{./Inference/output_5.tex}
-%\subfile{./Inference/output_6.tex}
-%\subfile{./Inference/output_7.tex}
-%\subfile{./Inference/output_8.tex}
-%\subfile{./Inference/output_9.tex}
-%\subfile{./Inference/output_10.tex}
-%\subfile{./Inference/output_11.tex}
-%\subfile{./Inference/output_12.tex}
-%\subfile{./Inference/output_13.tex}
-%\subfile{./Inference/output_14.tex}
-%\subfile{./Inference/output_15.tex}
-%\subfile{./Inference/output_16.tex}
-%\subfile{./Inference/output_17.tex}
-%\subfile{./Inference/output_18.tex}
-%\subfile{./Inference/output_19.tex}
-%\subfile{./Inference/output_20.tex}
+%\subfile{./SentenceOrder/output_1.tex}
+%\subfile{./SentenceOrder/output_2.tex}
+%\subfile{./SentenceOrder/output_3.tex}
+%\subfile{./SentenceOrder/output_4.tex}
+%\subfile{./SentenceOrder/output_5.tex}
+%\subfile{./SentenceOrder/output_6.tex}
+%\subfile{./SentenceOrder/output_7.tex}
+%\subfile{./SentenceOrder/output_8.tex}
+%\subfile{./SentenceOrder/output_9.tex}
+%\subfile{./SentenceOrder/output_10.tex}
+%\subfile{./SentenceOrder/output_11.tex}
+%\subfile{./SentenceOrder/output_12.tex}
+%\subfile{./SentenceOrder/output_13.tex}
+%\subfile{./SentenceOrder/output_14.tex}
+%\subfile{./SentenceOrder/output_15.tex}
+%\subfile{./SentenceOrder/output_16.tex}
+%\subfile{./SentenceOrder/output_17.tex}
+%\subfile{./SentenceOrder/output_18.tex}
+%\subfile{./SentenceOrder/output_19.tex}
+%\subfile{./SentenceOrder/output_20.tex}
 
 \noindent \textit{3. Fill in the gaps below using the terms inside the box.}
 
