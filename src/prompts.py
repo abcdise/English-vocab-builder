@@ -112,7 +112,9 @@ Example response:
 ```
 '''
 
-comprehension_prompt = r'''You are a British lexicographer. Given a list of words with their definitions, write a question using the word, whose answer is Yes. Then write a question using the word, whose answer is No. Ensure both sentences use present tense and adhere to spelling conventions of British English. Format your output as a JSON code block.
+comprehension_prompt = r'''Given a list of words with their definitions, write a short question using the word, whose answer is Yes. Then write a short question using the word, whose answer is No. 
+
+Your audience are British primary school pupils. Ensure that they are able to answer the questions using only their knowledge of the definitions of the words, without any other expertise. Ensure both sentences use present tense and adhere to spelling conventions of British English. Format your output as a JSON code block.
 
 Example input:
 ```
@@ -134,7 +136,7 @@ Example response:
     "lazy": [
         {
             "Definition": "If someone is lazy, they do not want to work or make any effort to do anything.",
-            "Yes Question": "Does a lazy student like to postpone his homework until the last minute?",
+            "Yes Question": "Does a lazy student like finishing his homework early?",
             "No Question": "Is a lazy person hardworking?"
         }
     ]
