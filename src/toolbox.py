@@ -91,7 +91,7 @@ class AnkiCommunicator:
         return response_json['result']
 
     def __get_cards_id_in_n_days(self, n):
-        query = f'prop:due<={n}'
+        query = f'prop:due={n}'
         response = self.__invoke('findCards', {'query': query})
         return response
 
@@ -105,12 +105,10 @@ class AnkiCommunicator:
         result_dict = dict()
         for term_def in result_list:
             result_dict[term_def[0]] = result_dict.get(term_def[0], []) + [term_def[1]]
-        # for card in cards_info:
-        #     if card:
-        #         word = self._extract_word_from_field(card['fields']['Front']['value'])
-        #         defn = self._extract_def_from_field(card['fields']['Back']['value'])
-        #         result_list.append((word, defn))
         return result_dict
+    
+    def get_words_for_today(self, deck_name):
+        return self.get_words_in_n_days(0, deck_name)
 
     def get_words_for_tomorrow(self, deck_name):
         return self.get_words_in_n_days(1, deck_name)
