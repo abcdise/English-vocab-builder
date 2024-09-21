@@ -628,7 +628,7 @@ class ClozeExercise(Exercise):
                 solution_sub_list.append(labels[indices.index(4)])
                 question_list.append([answer_options[i - 1] for i in indices])
             
-            self.passage += r'\noindent \textbf{Part ' + str(passage_index) + '} \n\n' + self._string_processing(passage) + '\n\n'
+            self.passage += r'\noindent \textbf{Passage ' + str(passage_index) + '} \n\n' + self._string_processing(passage) + '\n\n'
             self.passage += r'\begin{questions}' + '\n'
             for options in question_list:
                 self.passage += r'\question ' + '\n'
