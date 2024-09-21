@@ -138,8 +138,7 @@ Example response:
 ```
 '''
 
-sentence_order_prompt = r'''
-For each keyword-definition pair, write a piece of news in the UK consisting of three sentences. One of the sentences must contain the keyword. Use the following format in your response:
-`{"keyword": [{"Definition": "", "Paragraph": ["First sentence", "Second sentence", "Third sentence"]}]}`
+sentence_order_prompt = r'''For each keyword-definition pair, write a piece of news in the UK consisting of three sentences. One of the sentences must contain the keyword. Use the following format in your response:
+```json{"keyword": [{"Definition": "", "Paragraph": ["First sentence", "Second sentence", "Third sentence"]}]}```
 Ensure the paragraphs use British English spelling.
 '''

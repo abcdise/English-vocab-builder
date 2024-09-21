@@ -396,7 +396,6 @@ class FillInTheGapExercise(Exercise):
             ex += r'\question ' + self._string_processing(exercise[0]) + '\n'
             sol += r'\item ' + exercise[1] + '. ' + self._string_processing(exercise[2]) + '\n'
 
-        ex += r'\end{enumerate}' + '\n'
         sol += r'\end{enumerate}' + '\n'
         return ex, sol
 
@@ -765,9 +764,9 @@ class SentenceOrderExercise(Exercise):
                 paragraph = entry['Paragraph']
                 random.shuffle(index)
                 solution_list.append(''.join([str(i) for i in index]))
-                exercise += f'\\question \\tf[{index[0]}] ' + paragraph[index[0] - 1] + '\n\n'
-                exercise += f'\\tf[{index[1]}] ' + paragraph[index[1] - 1] + '\n\n'
-                exercise += f'\\tf[{index[2]}] ' + paragraph[index[2] - 1] + '\n\n'
+                exercise += f'\\question \\tf[{index[0]}] ' + self._string_processing(paragraph[index[0] - 1]) + '\n\n'
+                exercise += f'\\tf[{index[1]}] ' + self._string_processing(paragraph[index[1] - 1]) + '\n\n'
+                exercise += f'\\tf[{index[2]}] ' + self._string_processing(paragraph[index[2] - 1]) + '\n\n'
 
         for i, ordering in enumerate(solution_list):
             solution += f'{i + 1}. {ordering}' + r' \quad '
