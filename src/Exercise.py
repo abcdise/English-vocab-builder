@@ -241,8 +241,8 @@ class Definition(Exercise):
                 dictionary = json.load(json_file)
 
             def_text = ''
-            ex_text = r'\begin{enumerate}' + '\n'
-            sol_text = ex_text
+            ex_text = ''
+            sol_text = r'\begin{enumerate}' + '\n'
             americanize_word_list = [get_american_spelling(word) for word in self.word_list]
             exercise_list = []
             for word in americanize_word_list:
@@ -253,13 +253,15 @@ class Definition(Exercise):
                         def_text += r'\defitem{' + entry['part_of_speech'] + r'}'
                         definition = entry['definition']
                         definition = self._string_processing(definition)
+                        definition = remove_brackets_and_contents(definition)
                         def_text += r'{' + definition + r'}'
-                        sentence_with_gap, solution_list = replace_term(original_string=definition, 
-                                old_value=word,
-                                new_value=f'\\fillin[{word}][{1/3*len(word)}in]')
+                        sentence_with_gap, solution_list = replace_term(
+                            original_string=definition, 
+                            old_value=word,
+                            new_value=f'\\fillin[{word}][{0.12*len(word):.2f}in]'
+                        )
                         if sentence_with_gap != definition and sentence_with_gap and solution_list:
                             sentence_with_gap = sentence_with_gap.replace('...', r'{[\ldots] }')
-                            sentence_with_gap = remove_brackets_and_contents(sentence_with_gap)
                             solution = ', '.join(solution_list)
                             exercise_list.append((sentence_with_gap, solution))
                         if entry['example_sentences']:
@@ -275,9 +277,8 @@ class Definition(Exercise):
             for pair in exercise_list:
                 sentence_with_gap = self._string_processing(pair[0])
                 solution = self._string_processing(pair[1])
-                ex_text += r'\item ' + sentence_with_gap + '\n'
+                ex_text += r'\question ' + sentence_with_gap + '\n'
                 sol_text += r'\item ' + solution + '\n'
-            ex_text += r'\end{enumerate}'
             sol_text += r'\end{enumerate}'
             self.definition = def_text # No need to preprocess the string because it has be done in the for loop
             self.exercise = ex_text
@@ -380,17 +381,19 @@ class FillInTheGapExercise(Exercise):
         for word in aug_dict:
             for entry in aug_dict[word]:
                 for sentence in entry['Example']:
-                    question, sol_list = replace_term(original_string=sentence,
-                                                    old_value=word,
-                                                    new_value=f'\\fillin[{word}][{1/3*len(word)}in]')
+                    question, sol_list = replace_term(
+                        original_string=sentence,
+                        old_value=word,
+                        new_value=f'\\fillin[{word}][{0.12*len(word):.2f}in]'
+                    )
                     if question != sentence:
                         exercise_list.append((question, ', '.join(sol_list), entry['Definition']))
     
         random.shuffle(exercise_list)
-        ex = r'\begin{enumerate}' + '\n'
+        ex = ''
         sol = r'\begin{enumerate}' + '\n'
         for exercise in exercise_list:
-            ex += r'\item ' + self._string_processing(exercise[0]) + '\n'
+            ex += r'\question ' + self._string_processing(exercise[0]) + '\n'
             sol += r'\item ' + exercise[1] + '. ' + self._string_processing(exercise[2]) + '\n'
 
         ex += r'\end{enumerate}' + '\n'
@@ -760,8 +763,8 @@ class SentenceOrderExercise(Exercise):
                 random.shuffle(index)
                 solution_list.append(''.join([str(i) for i in index]))
                 exercise += f'\\question \\tf[{index[0]}] ' + paragraph[index[0] - 1] + '\n\n'
-                exercise += f'\\question \\tf[{index[1]}] ' + paragraph[index[1] - 1] + '\n\n'
-                exercise += f'\\question \\tf[{index[2]}] ' + paragraph[index[2] - 1] + '\n\n'
+                exercise += f'\\tf[{index[1]}] ' + paragraph[index[1] - 1] + '\n\n'
+                exercise += f'\\tf[{index[2]}] ' + paragraph[index[2] - 1] + '\n\n'
 
         for i, ordering in enumerate(solution_list):
             solution += f'{i + 1}. {ordering}' + r' \quad '
