@@ -587,8 +587,7 @@ class ClozeExercise(Exercise):
 
 
     def __create_prompt(self):
-        self.generation_prompt = f'''
-        For each word and definition, write an elaborated one-paragraph passage using the word about an anecdote in the cultural history of England. Incorporate the word subtly into the passage by using it only once. Ensure the word in the passage matches the given definition. Your passsages should adhere to the British English spelling rules. Format the response as follows
+        self.generation_prompt = f'''For each word and for each definition, write an elaborated piece of news of one paragraph in which the word is used. Incorporate each word subtly into the passage by using it only once. Ensure the word in the passage matches the given definition. Your passsages should adhere to the British English spelling rules. Format the response as follows
         ```json
         {self.passage_dict}
         ```
@@ -611,6 +610,7 @@ class ClozeExercise(Exercise):
         self.passage = ''
         self.solution = ''
         labels = ['A', 'B', 'C', 'D']
+        indices = [1, 2, 3, 4]
         solution_list = []
         passage_index = 1
         
@@ -621,27 +621,26 @@ class ClozeExercise(Exercise):
                 index = i + 1
                 excerpt = exercise['Phrase']
                 word_to_replace = exercise['Word']
-                sentence_with_gap = excerpt.replace(word_to_replace, f'({index})' + r'\rule{1.25cm}{0.15mm}')
+                sentence_with_gap = excerpt.replace(word_to_replace, f'({index})' + r'\fillin[]')
                 passage = passage.replace(excerpt, sentence_with_gap)
                 answer_options = exercise['Incorrect options'] + [word_to_replace]
-                random.shuffle(answer_options)
-                solution_sub_list.append(labels[answer_options.index(word_to_replace)])
-                answer_options_with_labels = [f'{label}. {item}' for label, item in zip(labels, answer_options)]
-                question_list.append(answer_options_with_labels)
+                random.shuffle(indices)
+                solution_sub_list.append(labels[indices.index(4)])
+                question_list.append([answer_options[i - 1] for i in indices])
             
-            
-            self.passage += r'\noindent' + f'\\textbf{{Passage {passage_index}}}\n\n' + r'\vspace{1ex}' + '\n\n'
-            self.passage += self._string_processing(passage) + '\n\n'
-            self.passage += r'\begin{tabbing}' + '\n'
-            self.passage += r'\hspace{1em} \= \hspace{10em} \= \hspace{10em} \= \hspace{10em} \= \\' + '\n'
+            self.passage += r'\noindent \textbf{Part ' + str(passage_index) + '} \n\n' + self._string_processing(passage) + '\n\n'
+            self.passage += r'\begin{questions}' + '\n'
+            for options in question_list:
+                self.passage += r'\question ' + '\n'
+                self.passage += r'\begin{oneparchoices}' + '\n'
+                for option in options:
+                    self.passage += r'\choice ' + self._string_processing(option) + '\n'
+                self.passage += r'\end{oneparchoices}' + '\n'
 
-            for question_index, question in enumerate(question_list):
-                self.passage += f'{question_index + 1}. ' + r'\> ' + r' \> '.join(question) + r'\\' + '\n'
-            
-            self.passage += r'\end{tabbing}' + '\n'
-
+            self.passage += r'\end{questions}' + '\n'
             solution_list.append(solution_sub_list)
             passage_index += 1
+            self.passage += r'\vspace{3ex}' + '\n\n'
 
         self.solution += '\n\n' + r'\vspace{3ex}' + '\n\n'
         for solution_index, solution in enumerate(solution_list):    
