@@ -612,11 +612,13 @@ class ClozeExercise(Exercise):
         labels = ['A', 'B', 'C', 'D']
         indices = [1, 2, 3, 4]
         solution_list = []
+        solution_option_list = []
         passage_index = 1
         
         for passage in imported_dict:
             question_list = []
             solution_sub_list = []
+            solution_option_sub_list = []
             for i, exercise in enumerate(imported_dict[passage]):
                 index = i + 1
                 excerpt = exercise['Phrase']
@@ -626,15 +628,17 @@ class ClozeExercise(Exercise):
                 answer_options = exercise['Incorrect options'] + [word_to_replace]
                 random.shuffle(indices)
                 solution_sub_list.append(labels[indices.index(4)])
+                solution_option_sub_list.append(word_to_replace)
                 question_list.append([answer_options[i - 1] for i in indices])
             
             self.passage += r'\noindent \textbf{Passage ' + str(passage_index) + '} \n\n' + self._string_processing(passage) + '\n\n'
             self.passage += r'\begin{questions}' + '\n'
-            for options in question_list:
+            for i, options in enumerate(question_list):
                 self.passage += r'\question ' + '\n'
                 self.passage += r'\begin{oneparchoices}' + '\n'
                 for option in options:
-                    self.passage += r'\choice ' + self._string_processing(option) + '\n'
+                    correct_choice_symbol = r'\CorrectChoice ' if option == solution_option_sub_list[i] else r'\choice '
+                    self.passage += correct_choice_symbol + self._string_processing(option) + '\n'
                 self.passage += r'\end{oneparchoices}' + '\n'
 
             self.passage += r'\end{questions}' + '\n'
