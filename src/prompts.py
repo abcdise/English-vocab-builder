@@ -84,24 +84,17 @@ inference_options_prompt = r'''
 Now try the following:
 '''
 
-translation_prompt = r'''Given a list of terms and their definitions, write a clear, concise sentence using only subject, predicate, and object without additional details, which demonstrates the word's meaning. Ensure your sentences follow British English spelling conventions. Then, translate each sentence into colloquial Chinese, prioritising natural and authentic flow over literal accuracy. The translations should mimic casual conversation, even if slight adaptations of the original meaning are necessary to achieve this.
-
+translation_prompt = r'''For each term in the list, slightly alter the context where the term is used. Modify the Chinese translation correspondingly. Ensure the Chinese translation remains colloquial, prioritising natural and authentic flow over literal accuracy. Format your response in a JSON code block.
 Example input:
 ```json
-{
-    "tasty": ["If you say that food, especially savoury food, is tasty, you mean that it has a fairly strong and pleasant flavour which makes it good to eat."]
-}
+{"take part in": [{"usage": "take part in the school play", "Chinese": "参加学校的戏剧表演"}]}
 ```
 Example response:
 ```json
 {
-    "tasty": [
-        {
-            "Definition": "If you say that food, especially savoury food, is tasty, you mean that it has a fairly strong and pleasant flavour which makes it good to eat.",
-            "Example": "The food is tasty.",
-            "Colloquial Chinese": "东西很好吃。"
-        }
-    ]
+  "take part in": [
+    {"usage": "take part in the sports day", "Chinese": "参加运动会"}
+  ]
 }
 ```
 '''
@@ -138,7 +131,7 @@ Example response:
 ```
 '''
 
-sentence_order_prompt = r'''For each keyword-definition pair, write a piece of news in the UK consisting of three sentences. One of the sentences must contain the keyword. Use the following format in your response:
+sentence_order_prompt = r'''For each keyword-definition pair, write a news item in the UK consisting of three sentences. One of the sentences must contain the keyword. Use the following format in your response:
 ```json{"keyword": [{"Definition": "", "Paragraph": ["First sentence", "Second sentence", "Third sentence"]}]}```
 Ensure the paragraphs use British English spelling.
 '''
