@@ -99,7 +99,7 @@ Example response:
 ```
 '''
 
-comprehension_prompt = r'''Given a list of words with their definitions, write a short question using the word, whose answer is Yes. Then write a short question using the word, whose answer is No. 
+comprehension_prompt = r'''For each word-definition pair, write a short question using the word, whose answer is Yes. Then write a short question using the word, whose answer is No. 
 
 Your audience are British primary school pupils. Ensure that they are able to answer the questions using only their knowledge of the definitions of the words, without any other expertise. Ensure both sentences use present tense and adhere to spelling conventions of British English. Format your output as a JSON code block.
 
@@ -131,7 +131,7 @@ Example response:
 ```
 '''
 
-sentence_order_prompt = r'''For each keyword-definition pair, write a news item in the UK consisting of three sentences. One of the sentences must contain the keyword. Use the following format in your response:
-```json{"keyword": [{"Definition": "", "Paragraph": ["First sentence", "Second sentence", "Third sentence"]}]}```
+sentence_order_prompt = r'''For each keyword-definition pair, write a news item in the UK consisting of four sentences. One of the sentences must contain the keyword. Use the following format in your response:
+```json{"keyword": [{"Definition": "", "Paragraph": ["First sentence", "Second sentence", "Third sentence", "Fourth sentence"]}]}```
 Ensure the paragraphs use British English spelling.
 '''

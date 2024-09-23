@@ -759,7 +759,7 @@ class SentenceOrderExercise(Exercise):
         solution = ''
         for term, entry_list in imported_dict.items():
             for entry in entry_list:
-                index = [1, 2, 3]
+                index = [1, 2, 3, 4]
                 definition_list.append((term, entry['Definition']))
                 paragraph = entry['Paragraph']
                 random.shuffle(index)
@@ -767,15 +767,11 @@ class SentenceOrderExercise(Exercise):
                 exercise += f'\\question \\tf[{index[0]}] ' + self._string_processing(paragraph[index[0] - 1]) + '\n\n'
                 exercise += f'\\tf[{index[1]}] ' + self._string_processing(paragraph[index[1] - 1]) + '\n\n'
                 exercise += f'\\tf[{index[2]}] ' + self._string_processing(paragraph[index[2] - 1]) + '\n\n'
+                exercise += f'\\tf[{index[3]}] ' + self._string_processing(paragraph[index[3] - 1]) + '\n\n'
 
         for i, ordering in enumerate(solution_list):
             solution += f'{i + 1}. {ordering}' + r' \quad '
 
-        solution += '\n\n' + r'\vspace{3ex}' + '\n\n'
-        solution += r'\begin{enumerate}' + '\n'
-        for term_def in definition_list:
-            solution += r'\item ' + term_def[0] + ': ' + term_def[1] + '\n'
-        solution += r'\end{enumerate}' + '\n'
         self.exercise = exercise
         self.solution = solution
 
