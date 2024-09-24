@@ -586,7 +586,7 @@ class ClozeExercise(Exercise):
 
 
     def __create_prompt(self):
-        self.generation_prompt = f'''For each word and for each definition, write an elaborated piece of news of one paragraph in which the word is used. Incorporate each word subtly into the passage by using it only once. Ensure the word in the passage matches the given definition. Your passsages should adhere to the British English spelling rules. Format the response as follows
+        self.generation_prompt = f'''For each word and for each definition, write an elaborate one-paragraph book review in which the word is used. The book review should be based on false books. Incorporate each word subtly into the passage by using it only once. Ensure the word in the passage matches the given definition. Your passsages should adhere to the British English spelling rules. Format the response as follows
         ```json
         {self.passage_dict}
         ```

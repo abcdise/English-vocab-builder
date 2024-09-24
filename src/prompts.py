@@ -131,7 +131,9 @@ Example response:
 ```
 '''
 
-sentence_order_prompt = r'''For each keyword-definition pair, write a news item in the UK consisting of four sentences. One of the sentences must contain the keyword. Use the following format in your response:
-```json{"keyword": [{"Definition": "", "Paragraph": ["First sentence", "Second sentence", "Third sentence", "Fourth sentence"]}]}```
+sentence_order_prompt = r'''For each definition of each keyword, write a story for BBC hourly news consisting of four sentences. Incorporate the keyword subtly into only one of the sentences. Use the following format in your response:
+```json
+{"keyword": [{"Definition": "", "Paragraph": ["First sentence", "Second sentence", "Third sentence", "Fourth sentence"]}]}
+```
 Ensure the paragraphs use British English spelling.
 '''
