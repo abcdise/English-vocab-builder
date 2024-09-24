@@ -258,7 +258,7 @@ class Definition(Exercise):
                         sentence_with_gap, solution_list = replace_term(
                             original_string=definition, 
                             old_value=word,
-                            new_value=f'\\fillin[{word}][{0.12*len(word):.2f}in]'
+                            new_value=f'\\fillin[{word}][{0.12*len(word):.2f + 0.48}in]'
                         )
                         if sentence_with_gap != definition and sentence_with_gap and solution_list:
                             sentence_with_gap = sentence_with_gap.replace('...', r'{[\ldots] }')
@@ -384,7 +384,7 @@ class FillInTheGapExercise(Exercise):
                     question, sol_list = replace_term(
                         original_string=sentence,
                         old_value=word,
-                        new_value=f'\\fillin[{word}][{0.12*len(word):.2f}in]'
+                        new_value=f'\\fillin[{word}][{0.12*len(word):.2f + 0.48}in]'
                     )
                     if question != sentence:
                         exercise_list.append((question, ', '.join(sol_list), entry['Definition']))
@@ -586,7 +586,7 @@ class ClozeExercise(Exercise):
 
 
     def __create_prompt(self):
-        self.generation_prompt = f'''For each word and for each definition, write an elaborate one-paragraph book review in which the word is used. The book review should be based on false books. Incorporate each word subtly into the passage by using it only once. Ensure the word in the passage matches the given definition. Your passsages should adhere to the British English spelling rules. Format the response as follows
+        self.generation_prompt = f'''For each word and definition, write a elaborate paragraph containing the script of a news item for the BBC Hourly News. Focus on the narrative development. Incorporate each word subtly into the passage by using it only once. Ensure the word in the passage matches the given definition. Your passsages should adhere to the British English spelling rules. Format the response as follows
         ```json
         {self.passage_dict}
         ```

@@ -106,18 +106,18 @@ Your audience are British primary school pupils. Ensure that they are able to an
 Example input:
 ```
 {
-    "teach": ["If you teach someone something, you are helping them to learn about it."],
+    "remind": ["If something reminds you of a fact or event, it makes you think about it."],
     "lazy": ["If someone is lazy, they do not want to work or make any effort to do anything."]
 }
 ```
 Example response:
 ```json
 {
-    "teach": [
+    "remind": [
         {
-            "Definition": "If you teach someone something, you are helping them to learn about it.",
-            "Yes Question": "Do you teach the grammar rules to your students by providing examples?",
-            "No Question": "Does a father teach her son to swim by forbidding him to go near the water?"
+            "Definition": "If something reminds you of a fact or event, it makes you think about it.",
+            "Yes Question": "Does a picture remind you of a happy memory?",
+            "No Question": "Does a picture remind you of the future?"
         }
     ],
     "lazy": [
@@ -131,7 +131,7 @@ Example response:
 ```
 '''
 
-sentence_order_prompt = r'''For each definition of each keyword, write a story for BBC hourly news consisting of four sentences. Incorporate the keyword subtly into only one of the sentences. Use the following format in your response:
+sentence_order_prompt = r'''For each definition of each keyword, write a story in the British history consisting of four elaborate sentences. Only one of the sentences should contain the keyword. Use a straightforward tone. Ensure the four sentences are coherent. Use the following format in your response:
 ```json
 {"keyword": [{"Definition": "", "Paragraph": ["First sentence", "Second sentence", "Third sentence", "Fourth sentence"]}]}
 ```
