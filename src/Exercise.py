@@ -258,7 +258,7 @@ class Definition(Exercise):
                         sentence_with_gap, solution_list = replace_term(
                             original_string=definition, 
                             old_value=word,
-                            new_value=f'\\fillin[{word}][{0.12*len(word)+ 0.48:.2f}in]'
+                            new_value=f'\\fillin[{word}][{len(word) ** 0.1 - 0.3:.2f}in]'
                         )
                         if sentence_with_gap != definition and sentence_with_gap and solution_list:
                             sentence_with_gap = sentence_with_gap.replace('...', r'{[\ldots] }')
@@ -384,7 +384,7 @@ class FillInTheGapExercise(Exercise):
                     question, sol_list = replace_term(
                         original_string=sentence,
                         old_value=word,
-                        new_value=f'\\fillin[{word}][{0.12*len(word) + 0.48:.2f}in]'
+                        new_value=f'\\fillin[{word}][{len(word) ** 0.1 - 0.3:.2f}in]'
                     )
                     if question != sentence:
                         exercise_list.append((question, ', '.join(sol_list), entry['Definition']))
