@@ -361,7 +361,7 @@ class FillInTheGapExercise(Exercise):
 
     def create_prompt(self):
         prompt = prompts.example_sentences_prompt + '\n'
-        prompt += f'Use the spelling rules for British English to create two example sentences with each definition in the following list: {self.word_entries}'
+        prompt += f'Use the spelling rules for British English to create one example sentences with each definition in the following list: {self.word_entries}'
         self.generation_prompt = prompt
 
     
@@ -380,14 +380,14 @@ class FillInTheGapExercise(Exercise):
         exercise_list = []
         for word in aug_dict:
             for entry in aug_dict[word]:
-                for sentence in entry['Example']:
-                    question, sol_list = replace_term(
-                        original_string=sentence,
-                        old_value=word,
-                        new_value=f'\\fillin[{word}][{len(word) ** 0.1 - 0.3:.2f}in]'
-                    )
-                    if question != sentence:
-                        exercise_list.append((question, ', '.join(sol_list), entry['Definition']))
+                sentence = entry['Example']
+                question, sol_list = replace_term(
+                    original_string=sentence,
+                    old_value=word,
+                    new_value=f'\\fillin[{word}][{len(word) ** 0.1 - 0.3:.2f}in]'
+                )
+                if question != sentence:
+                    exercise_list.append((question, ', '.join(sol_list), entry['Definition']))
     
         random.shuffle(exercise_list)
         ex = ''

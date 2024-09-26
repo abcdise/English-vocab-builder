@@ -13,14 +13,14 @@ Example response:
 {
     "positive": [{
         "Definition": "If you are positive about something, you are completely sure about it.",
-        "Example": ["After the test, I was positive that I had passed.", "I am positive that I locked the door before I left the house."]
+        "Example": "I am positive that I locked the door before I left the house."
     }, {
         "Definition": "A positive number is greater than zero.",
-        "Example": ["The number 5 is positive."]
+        "Example": "The number 5 is positive."
     }],
     "remote": [{
         "Definition": "Remote areas are far away from cities and towns.",
-        "Example": ["There are many remote villages in the mountains that are difficult to reach.", "The house is so remote that you can't even see the neighbours."]
+        "Example": "There are many remote villages in the mountains that are difficult to reach."
     }]
 }
 ```
@@ -99,7 +99,7 @@ Example response:
 ```
 '''
 
-comprehension_prompt = r'''For each word-definition pair, write a short question using the word, whose answer is Yes. Then write a short question using the word, whose answer is No. 
+comprehension_prompt = r'''For each definition of each word, write a short question using the word, whose answer is Yes. Then write a short question using the word, whose answer is No. 
 
 Your audience are British primary school pupils. Ensure that they are able to answer the questions using only their knowledge of the definitions of the words, without any other expertise. Ensure both sentences use present tense and adhere to spelling conventions of British English. Format your output as a JSON code block.
 

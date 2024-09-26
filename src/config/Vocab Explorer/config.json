@@ -2386,21 +2386,6 @@
         "peak"
     ],
     "new": [
-        "antonym",
-        "transition",
-        "wee",
-        "oblique",
-        "repress",
-        "deduct",
-        "legislator",
-        "hexagon",
-        "lobster",
-        "avocation",
-        "blunder",
-        "raconteur",
-        "refusal",
-        "grasshopper",
-        "canny",
         "opaque",
         "prosecute",
         "oscillate",
@@ -4701,9 +4686,7 @@
         "assemble",
         "relinquish",
         "plumb",
-        "intelligible"
-    ],
-    "last change": [
+        "intelligible",
         "antonym",
         "transition",
         "wee",
@@ -4718,7 +4701,9 @@
         "raconteur",
         "refusal",
         "grasshopper",
-        "canny",
+        "canny"
+    ],
+    "last change": [
         "opaque",
         "prosecute",
         "oscillate",
