@@ -2386,26 +2386,6 @@
         "peak"
     ],
     "new": [
-        "opaque",
-        "prosecute",
-        "oscillate",
-        "nutrition",
-        "efficacy",
-        "intercede",
-        "subsequent",
-        "ether",
-        "perfunctory",
-        "ostensible",
-        "nauseous",
-        "subsistence",
-        "maneuver",
-        "zealot",
-        "gibber",
-        "abbreviate",
-        "transcribe",
-        "occasion",
-        "abate",
-        "comparison",
         "preposterous",
         "ironic",
         "impact",
@@ -4701,9 +4681,7 @@
         "raconteur",
         "refusal",
         "grasshopper",
-        "canny"
-    ],
-    "last change": [
+        "canny",
         "opaque",
         "prosecute",
         "oscillate",
@@ -4723,7 +4701,9 @@
         "transcribe",
         "occasion",
         "abate",
-        "comparison",
+        "comparison"
+    ],
+    "last change": [
         "preposterous",
         "ironic",
         "impact",

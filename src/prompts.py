@@ -1,4 +1,4 @@
-example_sentences_prompt = r'''Generate two example sentences for each term and definition below. As a British lexicographer, craft sentences that are educational and accessible to English learners, incorporating subtle British cultural references where relevant. Ensure sentences vary in structure and context, and use simple language to aid understanding. Format your response as a JSON block.
+example_sentences_prompt = r'''Generate one example sentence for each term and definition below. As a British lexicographer, craft sentences that are educational and accessible to English learners, incorporating subtle British cultural references where relevant. Ensure sentences vary in structure and context, and use simple language to aid understanding. Format your response as a JSON block.
 
 Example input:
 ```
@@ -101,7 +101,7 @@ Example response:
 
 comprehension_prompt = r'''For each definition of each word, write a short question using the word, whose answer is Yes. Then write a short question using the word, whose answer is No. 
 
-Your audience are British primary school pupils. Ensure that they are able to answer the questions using only their knowledge of the definitions of the words, without any other expertise. Ensure both sentences use present tense and adhere to spelling conventions of British English. Format your output as a JSON code block.
+Your audience are British sixth form students. Ensure that they are able to answer the questions using only their knowledge of the definitions of the words, without any other expertise. Ensure both sentences use present tense and adhere to spelling conventions of British English. Format your output as a JSON code block.
 
 Example input:
 ```
