@@ -137,3 +137,27 @@ sentence_order_prompt = r'''For each definition of each keyword, write a story i
 ```
 Ensure the paragraphs use British English spelling.
 '''
+
+spelling_prompt = r'''
+For each definition of each word, write a word with resemblance in sound with the original word, especially in initial and final syllables. Then write a question with both words, whose answer is the original word.
+
+Ensure the questions adhere to spelling conventions of British English. Format your output as a JSON code block.
+
+Example input:
+```
+{"remind": ["If something reminds you of a fact or event, it makes you think about it."]}
+```
+Example response:
+```json
+{
+    "remind": [
+        {
+            "Definition": "If something reminds you of a fact or event, it makes you think about it.",
+            "Similar word": "rewind",
+            "Question": "Does your diary remind or rewind you of your childhood?",
+            "Answer": "remind"
+        }
+    ]
+}
+```
+'''

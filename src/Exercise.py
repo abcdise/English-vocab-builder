@@ -40,6 +40,15 @@ def replace_term(original_string: str, old_value: str, new_value: str):
     doc = nlp(original_string)
     new_string = []
     old_value_list = []
+    # Handle the case where the old value is a multi-word term
+    if '-' in old_value:
+        units = original_string.split(' ')
+        for unit in units:
+            if old_value in unit:
+                new_string.append(unit.replace(old_value, new_value))
+                old_value_list.append(old_value)
+            else:
+                new_string.append(unit)
 
     for token in doc:
         if token.lemma_.lower() == old_value or token.text.lower() == old_value:
@@ -703,7 +712,7 @@ class ComprehensionExercise(Exercise):
 
     def create_prompt(self):
         prompt = prompts.comprehension_prompt + '\n'
-        prompt += f'Here is the list of terms and their definitions: {self.word_entries}'
+        prompt += f'Now try the following: {self.word_entries}'
         self.generation_prompt = prompt
 
 
@@ -780,6 +789,41 @@ class SentenceOrderExercise(Exercise):
         self.exercise_dict['solution'] = self.solution
 
 
+class SpellingExercise(Exercise):
+    def __init__(self, word_entries: dict):
+        super().__init__(word_entries)
+        self.create_prompt()
+
+    def create_prompt(self):
+        prompt = prompts.spelling_prompt + '\n'
+        prompt += f'Now try the following' + '\n'
+        prompt += f'```json\n{self.word_entries}\n```'
+        self.prompt = prompt
+
+
+    def import_exercise(self, text:str):
+        imported_dict = json_string_to_dict(text)
+        solution_list = []
+        definition_list = []
+        exercise = ''
+        for term, entry_list in imported_dict.items():
+            for entry in entry_list:
+                question = self._string_processing(entry['Question'])
+                definition_list.append((term, entry['Definition']))
+                solution_list.append(entry['Answer'])
+                exercise += f'\\question ' + question + f' \\answerline[{entry['Answer']}]' + '\n'
+
+        solution = r'\begin{enumerate}' + '\n'
+        for solution in solution_list:
+            solution += f'\\item {solution}' + '\n'
+        solution += r'\end{enumerate}' + '\n'
+
+        self.exercise = exercise
+        self.solution = solution
+
+        
+
+
 class ExerciseFactory:
     def create_exercise(self, exercise_type:str, word_entries:dict):
         '''
@@ -814,6 +858,8 @@ class ExerciseFactory:
             return ComprehensionExercise(word_entries=word_entries)
         elif exercise_type == 'Sentence Order':
             return SentenceOrderExercise(word_entries=word_entries)
+        elif exercise_type == 'Spelling':
+            return SpellingExercise(word_entries=word_entries)
         raise ValueError('Invalid exercise type!')
     
 
