@@ -813,13 +813,13 @@ class SpellingExercise(Exercise):
                 solution_list.append(entry['Answer'])
                 exercise += f'\\question ' + question + f' \\answerline[{entry['Answer']}]' + '\n'
 
-        solution = r'\begin{enumerate}' + '\n'
+        solution_text = r'\begin{enumerate}' + '\n'
         for solution in solution_list:
-            solution += f'\\item {solution}' + '\n'
-        solution += r'\end{enumerate}' + '\n'
+            solution_text += f'\\item {solution}' + '\n'
+        solution_text += r'\end{enumerate}' + '\n'
 
         self.exercise = exercise
-        self.solution = solution
+        self.solution = solution_text
 
     def finish_import(self):
         self.exercise_dict['exercise'] = self.exercise
