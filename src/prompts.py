@@ -99,7 +99,7 @@ Example response:
 ```
 '''
 
-comprehension_prompt = r'''For each definition of each word, write a short question using the word, whose answer is Yes. Then write a short question using the word, whose answer is No. 
+comprehension_prompt = r'''For each definition of each word, write a short question using the word, whose answer is Yes. Then write a short question using the word, whose answer is No. Both sentences should begin with be or do.
 
 Your audience are British sixth form students. Ensure that they are able to answer the questions using only their knowledge of the definitions of the words, without any other expertise. Ensure both sentences use present tense and adhere to spelling conventions of British English. Format your output as a JSON code block.
 
@@ -139,8 +139,7 @@ Ensure the paragraphs use British English spelling.
 '''
 
 spelling_prompt = r'''
-For each definition of each word, write a word with resemblance in sound with the original word, especially in initial and final syllables. Then write a question with both words, whose answer is the original word.
-
+For each definition of each word, write a word with resemblance in sound with the original word, especially in initial and final syllables. Then write a question with both words, whose answer is the original word. The question should begin with an introducing situation followed by a question.
 Ensure the questions adhere to spelling conventions of British English. Format your output as a JSON code block.
 
 Example input:
@@ -154,7 +153,7 @@ Example response:
         {
             "Definition": "If something reminds you of a fact or event, it makes you think about it.",
             "Similar word": "rewind",
-            "Question": "Does your diary remind or rewind you of your childhood?",
+            "Question": "You opened the drawer and saw an old diary of yours. Does the diary remind or rewind you of your childhood?",
             "Answer": "remind"
         }
     ]

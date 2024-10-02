@@ -2386,26 +2386,6 @@
         "peak"
     ],
     "new": [
-        "momentum",
-        "recline",
-        "nadir",
-        "callow",
-        "abrupt",
-        "occurrence",
-        "divulge",
-        "apparition",
-        "composure",
-        "embellish",
-        "pomp",
-        "occupant",
-        "pugnacious",
-        "wearisome",
-        "unconscious",
-        "impropriety",
-        "overwhelming",
-        "tangible",
-        "accommodate",
-        "conception",
         "demolish",
         "alderman",
         "concoct",
@@ -4701,9 +4681,7 @@
         "permeable",
         "convert",
         "disparage",
-        "squabble"
-    ],
-    "last change": [
+        "squabble",
         "momentum",
         "recline",
         "nadir",
@@ -4723,7 +4701,9 @@
         "overwhelming",
         "tangible",
         "accommodate",
-        "conception",
+        "conception"
+    ],
+    "last change": [
         "demolish",
         "alderman",
         "concoct",

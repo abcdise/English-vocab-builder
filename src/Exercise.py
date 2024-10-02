@@ -791,14 +791,14 @@ class SentenceOrderExercise(Exercise):
 
 class SpellingExercise(Exercise):
     def __init__(self, word_entries: dict):
-        super().__init__(word_entries)
+        super().__init__(word_entries=word_entries)
         self.create_prompt()
 
     def create_prompt(self):
         prompt = prompts.spelling_prompt + '\n'
         prompt += f'Now try the following' + '\n'
         prompt += f'```json\n{self.word_entries}\n```'
-        self.prompt = prompt
+        self.generation_prompt = prompt
 
 
     def import_exercise(self, text:str):
@@ -820,6 +820,10 @@ class SpellingExercise(Exercise):
 
         self.exercise = exercise
         self.solution = solution
+
+    def finish_import(self):
+        self.exercise_dict['exercise'] = self.exercise
+        self.exercise_dict['solution'] = self.solution
 
         
 
