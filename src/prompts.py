@@ -93,7 +93,8 @@ Example response:
 ```json
 {
   "take part in": [
-    {"usage": "take part in the sports day", "Chinese": "参加运动会"}
+    {"usage": "take part in the school play", "Chinese": "参加学校的戏剧表演"},
+    {"usage": "take part in the sports day", "Chinese": "参加运动会"} 
   ]
 }
 ```
