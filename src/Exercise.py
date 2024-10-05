@@ -104,7 +104,6 @@ def int_to_roman(num):
 class Exercise(ABC):
 
     def __init__(self, word_entries:dict):
-
         self.word_entries = word_entries
         # For each key in the dictionary, use `self._get_british_spelling` to get the British spelling and replace the key with the British spelling.
         self.word_entries = {self._get_british_spelling(key): list(map(remove_brackets_and_contents, value)) for key, value in self.word_entries.items()}
@@ -671,7 +670,12 @@ class ClozeExercise(Exercise):
 
 class TranslationExercise(Exercise):
     def __init__(self, word_entries: dict):
-        super().__init__(word_entries)
+        self.word_entries = word_entries
+        self.word_list = list(self.word_entries.keys())
+        self.generation_prompt = None
+        self.exercise: str = None
+        self.exercise_dict: dict = dict()
+        self.solution: str = None
         self.example_sentences = dict()
         self.create_prompt()
 
@@ -679,7 +683,7 @@ class TranslationExercise(Exercise):
     def create_prompt(self):
         word_entries = {word: [{'usage': entry['usage'], 'Chinese': entry['Chinese']} for entry in self.word_entries[word][1]] for word in self.word_entries}
         prompt = prompts.translation_prompt + '\n'
-        json_string = json.dumps(self.word_entries, ensure_ascii=False)
+        json_string = json.dumps(word_entries, ensure_ascii=False)
         prompt += f'Now try the following: {json_string}'
         self.generation_prompt = prompt
 
