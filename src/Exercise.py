@@ -38,29 +38,34 @@ def remove_brackets_and_contents(text):
 
 def replace_term(original_string: str, old_value: str, new_value: str):
     doc = nlp(original_string)
-    new_string = []
+    new_string_list = []
     old_value_list = []
     # Handle the case where the old value is a multi-word term
     if '-' in old_value:
         units = original_string.split(' ')
         for unit in units:
             if old_value in unit:
-                new_string.append(unit.replace(old_value, new_value))
+                new_string_list.append(unit.replace(old_value, new_value))
                 old_value_list.append(old_value)
             else:
-                new_string.append(unit)
-
-    for token in doc:
-        if token.lemma_.lower() == old_value or token.text.lower() == old_value:
-            new_string.append(new_value + token.whitespace_)
-            # Append the solution to a list
-            old_value_list.append(token.text)
-        else: 
-            new_string.append(token.text_with_ws)
-    if new_string:
-        new_string = ''.join(new_string)
+                new_string_list.append(unit)
+        if new_string_list:
+            new_string = ' '.join(new_string_list)
+        else:
+            new_string = ''
+        
     else:
-        new_string = ''
+        for token in doc:
+            if token.lemma_.lower() == old_value or token.text.lower() == old_value:
+                new_string_list.append(new_value + token.whitespace_)
+                # Append the solution to a list
+                old_value_list.append(token.text)
+            else: 
+                new_string_list.append(token.text_with_ws)
+        if new_string_list:
+            new_string = ''.join(new_string_list)
+        else:
+            new_string = ''
     return new_string, old_value_list
 
 
@@ -667,15 +672,15 @@ class ClozeExercise(Exercise):
 class TranslationExercise(Exercise):
     def __init__(self, word_entries: dict):
         super().__init__(word_entries)
-        self.word_list = [term for term in self.word_list if len(term.split(' ')) == 1]
-        self.box = r'\centering ' + self._write_box(word_list=self.word_list)
         self.example_sentences = dict()
         self.create_prompt()
 
 
     def create_prompt(self):
+        word_entries = {word: [{'usage': entry['usage'], 'Chinese': entry['Chinese']} for entry in self.word_entries[word][1]] for word in self.word_entries}
         prompt = prompts.translation_prompt + '\n'
-        prompt += f'Here is the list of terms and their definitions: {self.word_entries}'
+        json_string = json.dumps(self.word_entries, ensure_ascii=False)
+        prompt += f'Now try the following: {json_string}'
         self.generation_prompt = prompt
 
     
@@ -686,21 +691,19 @@ class TranslationExercise(Exercise):
 
     
     def generate_exercise(self, aug_dict: dict):
-        exercise = r'\begin{enumerate}' + '\n'
+        exercise = ''
         solution = r'\begin{enumerate}' + '\n'
         for word in aug_dict:
             for entry in aug_dict[word]:
-                solution += r'\item ' + self._string_processing(entry['Example']) + '\n'
-                exercise += r'\item ' + entry['Colloquial Chinese'] + '\n' + r'\vspace{10ex}' + '\n'
+                solution += r'\item ' + self._string_processing(entry['usage']) + '\n'
+                exercise += r'\question ' + entry['Chinese'] + '\n' + r'\vspace{10ex}' + '\n'
 
-        exercise += r'\end{enumerate}' + '\n'
         solution += r'\end{enumerate}' + '\n'
         return exercise, solution
 
     
     def finish_import(self):
         self.exercise_dict['exercise'] = self.exercise
-        self.exercise_dict['box'] = self.box
         self.exercise_dict['solution'] = self.solution
 
 
@@ -810,12 +813,13 @@ class SpellingExercise(Exercise):
             for entry in entry_list:
                 question = self._string_processing(entry['Question'])
                 definition_list.append((term, entry['Definition']))
-                solution_list.append(entry['Answer'])
-                exercise += f'\\question ' + question + f' \\answerline[{entry['Answer']}]' + '\n'
+                answer = entry['Answer']
+                solution_list.append(answer)
+                exercise += f'\\question ' + question + f' \\answerline[{answer}]' + '\n'
 
         solution_text = r'\begin{enumerate}' + '\n'
-        for solution in solution_list:
-            solution_text += f'\\item {solution}' + '\n'
+        for i, solution in enumerate(solution_list):
+            solution_text += f'\\item {solution}: {definition_list[i][1]}' + '\n' 
         solution_text += r'\end{enumerate}' + '\n'
 
         self.exercise = exercise
@@ -824,8 +828,6 @@ class SpellingExercise(Exercise):
     def finish_import(self):
         self.exercise_dict['exercise'] = self.exercise
         self.exercise_dict['solution'] = self.solution
-
-        
 
 
 class ExerciseFactory:

@@ -2386,26 +2386,6 @@
         "peak"
     ],
     "new": [
-        "demolish",
-        "alderman",
-        "concoct",
-        "practitioner",
-        "transfer",
-        "tenacity",
-        "retroactive",
-        "absent-minded",
-        "qualm",
-        "accountant",
-        "incorrigible",
-        "tonic",
-        "brusque",
-        "infuse",
-        "bacteria",
-        "monotone",
-        "comparable",
-        "untimely",
-        "lifelong",
-        "ante-room",
         "unaffected",
         "enchant",
         "theoretical",
@@ -4701,9 +4681,7 @@
         "overwhelming",
         "tangible",
         "accommodate",
-        "conception"
-    ],
-    "last change": [
+        "conception",
         "demolish",
         "alderman",
         "concoct",
@@ -4723,7 +4701,9 @@
         "comparable",
         "untimely",
         "lifelong",
-        "ante-room",
+        "anteroom"
+    ],
+    "last change": [
         "unaffected",
         "enchant",
         "theoretical",

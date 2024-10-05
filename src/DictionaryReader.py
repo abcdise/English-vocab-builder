@@ -42,6 +42,13 @@ class DictionaryReader(ABC):
                 definitions.append(definition)
             concise_dictionary[word] = definitions
         return concise_dictionary
+    
+    def get_full_dictionary(self):
+        full_dictionary = dict()
+        for word in word_list:
+            word_item = self.dictionary.get(word, [])
+            full_dictionary[word] = word_item
+        return full_dictionary
 
 
     @abstractmethod
