@@ -818,7 +818,7 @@ class SpellingExercise(Exercise):
         exercise = ''
         for term, entry_list in imported_dict.items():
             for entry in entry_list:
-                assert(entry['Similar word'] != term, 'The similar word cannot be the same as the term.')
+                assert entry['Similar word'] != term, 'The similar word cannot be the same as the term.'
                 question = self._string_processing(entry['Question'])
                 definition_list.append((term, entry['Definition']))
                 answer = entry['Answer']
