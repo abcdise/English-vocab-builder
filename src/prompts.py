@@ -84,7 +84,7 @@ inference_options_prompt = r'''
 Now try the following:
 '''
 
-translation_prompt = r'''For each term in the list, extend the phrase in a short sentence. Ensure the sentence adheres to the British English spelling. Then extend the Chinese translation. Keep the original Chinese translation as intact as possible. Format your response in a JSON code block.
+translation_prompt = r'''For each term in the list, make a short conversational Chinese sentence using the Chinese phrase. Then translate the Chinese sentence into English using the key. Ensure the sentence adheres to the British English spelling. Format your response in a JSON code block.
 Example input:
 ```json
 {"take part in": [{"usage": "take part in the school play", "Chinese": "参加学校的戏剧表演"}]}
@@ -93,7 +93,7 @@ Example response:
 ```json
 {
   "take part in": [
-    {"usage": "take part in the school play", "sentence": "I don't plan to take part in the school play tomorrow", "Chinese": "我不打算参加明天学校的戏剧表演"}
+    {"Chinese": "我明天不打算参加学校的戏剧表演。", "sentence": "I don't plan to take part in the school play tomorrow", }
   ]
 }
 ```
