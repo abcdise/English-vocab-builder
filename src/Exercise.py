@@ -373,8 +373,9 @@ class FillInTheGapExercise(Exercise):
  
 
     def create_prompt(self):
+        word_entries_str = json.dumps(self.word_entries, ensure_ascii=False)
         prompt = prompts.example_sentences_prompt + '\n'
-        prompt += f'Use the spelling rules for British English to create one example sentences with each definition in the following list: {self.word_entries}'
+        prompt += f'Use the spelling rules for British English to create one example sentences with each definition in the following list: {word_entries_str}'
         self.generation_prompt = prompt
 
     
@@ -421,7 +422,8 @@ class InferenceExercise(Exercise):
 
     
     def create_prompt(self):
-        prompt = prompts.inference_example_prompt + f'\n```json\n{self.word_entries}\n```'
+        word_entries_str = json.dumps(self.word_entries, ensure_ascii=False)
+        prompt = prompts.inference_example_prompt + f'\n```json\n{word_entries_str}\n```'
         self.generation_prompt = prompt
 
 
@@ -802,9 +804,10 @@ class SpellingExercise(Exercise):
         self.create_prompt()
 
     def create_prompt(self):
+        word_entries_str = json.dumps(self.word_entries, ensure_ascii=False)
         prompt = prompts.spelling_prompt + '\n'
         prompt += f'Now try the following' + '\n'
-        prompt += f'```json\n{self.word_entries}\n```'
+        prompt += f'```json\n{word_entries_str}\n```'
         self.generation_prompt = prompt
 
 
@@ -815,6 +818,7 @@ class SpellingExercise(Exercise):
         exercise = ''
         for term, entry_list in imported_dict.items():
             for entry in entry_list:
+                assert(entry['Similar word'] != term, 'The similar word cannot be the same as the term.')
                 question = self._string_processing(entry['Question'])
                 definition_list.append((term, entry['Definition']))
                 answer = entry['Answer']

@@ -84,7 +84,7 @@ inference_options_prompt = r'''
 Now try the following:
 '''
 
-translation_prompt = r'''For each term in the list, slightly alter the context where the term is used. Modify the Chinese translation correspondingly. Ensure the Chinese translation remains colloquial, prioritising natural and authentic flow over literal accuracy. Format your response in a JSON code block.
+translation_prompt = r'''For each term in the list, slightly alter the context where the term is used. Emulate the Chinese translation correspondingly. Format your response in a JSON code block.
 Example input:
 ```json
 {"take part in": [{"usage": "take part in the school play", "Chinese": "参加学校的戏剧表演"}]}
@@ -140,8 +140,7 @@ Ensure the paragraphs use British English spelling.
 '''
 
 spelling_prompt = r'''
-For each definition of each word, write a word with resemblance in sound with the original word, especially in initial and final syllables. Then write a question with both words, whose answer is the original word. The question should begin with an introducing situation followed by a question.
-Ensure the questions adhere to spelling conventions of British English. Format your output as a JSON code block.
+Create a JSON file by following the instructions. For each definition of each word, write a word with resemblance in sound with the original word, especially in initial and final syllables. Put the word in the field `Similar word`. Then write a question with both words, whose answer is the original word. Ensure the questions adhere to spelling conventions of British English. Put the question in the field `Question`.
 
 Example input:
 ```

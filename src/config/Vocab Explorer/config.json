@@ -2386,26 +2386,6 @@
         "peak"
     ],
     "new": [
-        "unaffected",
-        "enchant",
-        "theoretical",
-        "solicitude",
-        "allude",
-        "hydrocarbon",
-        "subside",
-        "photography",
-        "daunt",
-        "terrify",
-        "turgid",
-        "calculable",
-        "germane",
-        "subvert",
-        "coercive",
-        "opprobrium",
-        "enthrall",
-        "wary",
-        "buffer",
-        "pedal",
         "relent",
         "menace",
         "comprehensible",
@@ -4701,9 +4681,7 @@
         "comparable",
         "untimely",
         "lifelong",
-        "anteroom"
-    ],
-    "last change": [
+        "anteroom",
         "unaffected",
         "enchant",
         "theoretical",
@@ -4723,7 +4701,9 @@
         "enthrall",
         "wary",
         "buffer",
-        "pedal",
+        "pedal"
+    ],
+    "last change": [
         "relent",
         "menace",
         "comprehensible",
