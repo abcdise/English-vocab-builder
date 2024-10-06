@@ -720,8 +720,9 @@ class ComprehensionExercise(Exercise):
 
 
     def create_prompt(self):
+        word_entries_str = json.dumps(self.word_entries, ensure_ascii=False)
         prompt = prompts.comprehension_prompt + '\n'
-        prompt += f'Now try the following: {self.word_entries}'
+        prompt += f'Now try the following: {word_entries_str}'
         self.generation_prompt = prompt
 
 
@@ -818,7 +819,6 @@ class SpellingExercise(Exercise):
         exercise = ''
         for term, entry_list in imported_dict.items():
             for entry in entry_list:
-                assert entry['Similar word'] != term, 'The similar word cannot be the same as the term.'
                 question = self._string_processing(entry['Question'])
                 definition_list.append((term, entry['Definition']))
                 answer = entry['Answer']

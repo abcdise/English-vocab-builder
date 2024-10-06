@@ -99,7 +99,7 @@ Example response:
 ```
 '''
 
-comprehension_prompt = r'''For each definition of each word, write a short question using the word, whose answer is Yes. Then write a short question using the word, whose answer is No. Both sentences should begin with be or do.
+comprehension_prompt = r'''For each definition of each word, write a short question with the correct application of the word, whose answer is Yes. Then write a short question using the word, whose answer is No because the meaning of the word is distorted. Both sentences should begin with be or do verb.
 
 Your audience are British sixth form students. Ensure that they are able to answer the questions using only their knowledge of the definitions of the words, without any other expertise. Ensure both sentences use present tense and adhere to spelling conventions of British English. Format your output as a JSON code block.
 
@@ -138,9 +138,7 @@ sentence_order_prompt = r'''For each definition of each keyword, write a story i
 Ensure the paragraphs use British English spelling.
 '''
 
-spelling_prompt = r'''
-Create a JSON file by following the instructions. For each definition of each word, write a word with resemblance in sound with the original word, especially in initial and final syllables. Put the word in the field `Similar word`. Then write a question with both words, whose answer is the original word. Ensure the questions adhere to spelling conventions of British English. Put the question in the field `Question`.
-
+spelling_prompt = r'''Create a JSON file by following the instructions. For each definition of each given word, think of another word with resemblance in sound with the given word, especially in initial and final syllables. Then write a question asking which variant is correct, whose answer is the original word. Begin the question with a short sentence describing of a scenario. Ensure the questions adhere to spelling conventions of British English. Put the question in the field `Question`.
 Example input:
 ```
 {"remind": ["If something reminds you of a fact or event, it makes you think about it."]}
@@ -151,8 +149,7 @@ Example response:
     "remind": [
         {
             "Definition": "If something reminds you of a fact or event, it makes you think about it.",
-            "Similar word": "rewind",
-            "Question": "You opened the drawer and saw an old diary of yours. Does the diary remind or rewind you of your childhood?",
+            "Question": "You opened the drawer and saw an old diary of yours. Does the diary remind or rewind you of your childhood?"
             "Answer": "remind"
         }
     ]

@@ -2386,26 +2386,6 @@
         "peak"
     ],
     "new": [
-        "relent",
-        "menace",
-        "comprehensible",
-        "strait",
-        "epitome",
-        "mitigate",
-        "licentious",
-        "subliminal",
-        "atheism",
-        "vegetate",
-        "complaisant",
-        "fecund",
-        "ambiguous",
-        "cohesive",
-        "accomplish",
-        "terse",
-        "pulley",
-        "faction",
-        "insulin",
-        "inert",
         "illiterate",
         "dissension",
         "inspiration",
@@ -4701,9 +4681,7 @@
         "enthrall",
         "wary",
         "buffer",
-        "pedal"
-    ],
-    "last change": [
+        "pedal",
         "relent",
         "menace",
         "comprehensible",
@@ -4723,7 +4701,9 @@
         "pulley",
         "faction",
         "insulin",
-        "inert",
+        "inert"
+    ],
+    "last change": [
         "illiterate",
         "dissension",
         "inspiration",
