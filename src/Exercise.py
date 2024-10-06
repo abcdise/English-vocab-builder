@@ -700,8 +700,8 @@ class TranslationExercise(Exercise):
         exercise = ''
         solution = r'\begin{enumerate}' + '\n'
         for word in aug_dict:
-            for entry in aug_dict[word][1:]:
-                solution += r'\item ' + self._string_processing(entry['usage']) + '\n'
+            for entry in aug_dict[word]:
+                solution += r'\item ' + self._string_processing(entry['sentence']) + '\n'
                 exercise += r'\question ' + entry['Chinese'] + '\n' + r'\vspace{10ex}' + '\n'
 
         solution += r'\end{enumerate}' + '\n'
