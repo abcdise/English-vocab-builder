@@ -99,32 +99,32 @@ Example response:
 ```
 '''
 
-comprehension_prompt = r'''For each definition of each word, write a short question with the correct application of the word, whose answer is Yes. Then write a short question using the word, whose answer is No because the meaning of the word is distorted. Both sentences should begin with be or do verb.
+comprehension_prompt = r'''For each definition of each word, write a concise question with the correct application of the word, whose answer is Yes. Then write a concise question using the word, whose answer is No because the meaning of the word is distorted. Formulate both questions beginning with `be` or `do`.
 
 Your audience are British sixth form students. Ensure that they are able to answer the questions using only their knowledge of the definitions of the words, without any other expertise. Ensure both sentences use present tense and adhere to spelling conventions of British English. Format your output as a JSON code block.
 
 Example input:
 ```
 {
-    "remind": ["If something reminds you of a fact or event, it makes you think about it."],
+    "deal": ["If you deal with something, you take action in order to solve a problem."],
     "lazy": ["If someone is lazy, they do not want to work or make any effort to do anything."]
 }
 ```
 Example response:
 ```json
 {
-    "remind": [
+    "deal": [
         {
-            "Definition": "If something reminds you of a fact or event, it makes you think about it.",
-            "Yes Question": "Does a picture remind you of a happy memory?",
-            "No Question": "Does a picture remind you of the future?"
+            "Definition": "If you deal with something, you take action in order to solve a problem.",
+            "Yes Question": "Do you deal with a problem by taking action?",
+            "No Question": "Do you deal with a problem by ignoring it?"
         }
     ],
     "lazy": [
         {
             "Definition": "If someone is lazy, they do not want to work or make any effort to do anything.",
-            "Yes Question": "Does a lazy student like finishing his homework early?",
-            "No Question": "Is a lazy person hardworking?"
+            "Yes Question": "Is someone lazy if they do not want to work?",
+            "No Question": "Is someone lazy if they work hard?"
         }
     ]
 }
@@ -141,7 +141,7 @@ Ensure the paragraphs use British English spelling.
 spelling_prompt = r'''Create a JSON file by following the instructions. For each definition of each given word, think of another word with resemblance in sound with the given word, especially in initial and final syllables. Then write a question asking which variant is correct, whose answer is the original word. Begin the question with a short sentence describing of a scenario. Ensure the questions adhere to spelling conventions of British English. Put the question in the field `Question`.
 Example input:
 ```
-{"remind": ["If something reminds you of a fact or event, it makes you think about it."]}
+{"remind": ["If something reminds you of a fact or event, it makes you think about it."], "lazy": ["If someone is lazy, they do not want to work or make any effort to do anything."]}
 ```
 Example response:
 ```json
@@ -151,6 +151,13 @@ Example response:
             "Definition": "If something reminds you of a fact or event, it makes you think about it.",
             "Question": "You opened the drawer and saw an old diary of yours. Does the diary remind or rewind you of your childhood?"
             "Answer": "remind"
+        }
+    ],
+    "lazy": [
+        {
+            "Definition": "If someone is lazy, they do not want to work or make any effort to do anything.",
+            "Question": "You saw your friend lying on the sofa all day. Is your friend hazy or lazy?"
+            "Answer": "lazy"
         }
     ]
 }
