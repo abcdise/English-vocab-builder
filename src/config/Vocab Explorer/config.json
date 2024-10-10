@@ -2386,26 +2386,6 @@
         "peak"
     ],
     "new": [
-        "affected",
-        "impasse",
-        "apprentice",
-        "periodical",
-        "microorganism",
-        "admonition",
-        "harbinger",
-        "scruple",
-        "psychic",
-        "asperity",
-        "voracious",
-        "chromatic",
-        "rotate",
-        "plaintiff",
-        "suspicion",
-        "observation",
-        "righteous",
-        "brandish",
-        "fortify",
-        "bumptious",
         "despair",
         "affix",
         "contemporary",
@@ -4701,9 +4681,7 @@
         "ancillary",
         "torque",
         "expulsion",
-        "denounce"
-    ],
-    "last change": [
+        "denounce",
         "affected",
         "impasse",
         "apprentice",
@@ -4723,7 +4701,9 @@
         "righteous",
         "brandish",
         "fortify",
-        "bumptious",
+        "bumptious"
+    ],
+    "last change": [
         "despair",
         "affix",
         "contemporary",
