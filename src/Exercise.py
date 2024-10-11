@@ -70,7 +70,8 @@ def replace_term(original_string: str, old_value: str, new_value: str):
 
 
 def swap_words(sentence, word1, word2):
-    """Swaps the positions of two words in a sentence, preserving punctuation.
+    """
+    Swaps the positions of two words in a sentence, preserving punctuation.
 
     Args:
         sentence: The input sentence.
