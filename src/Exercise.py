@@ -69,6 +69,46 @@ def replace_term(original_string: str, old_value: str, new_value: str):
     return new_string, old_value_list
 
 
+def swap_words(sentence, word1, word2):
+    """Swaps the positions of two words in a sentence, preserving punctuation.
+
+    Args:
+        sentence: The input sentence.
+        word1: The first word to swap.
+        word2: The second word to swap.
+
+    Returns:
+        The modified sentence with the words swapped.
+    """
+    # Check if both words are in the sentence (ignoring case)
+    pattern1 = re.compile(r'\b' + re.escape(word1) + r'\b', re.IGNORECASE)
+    pattern2 = re.compile(r'\b' + re.escape(word2) + r'\b', re.IGNORECASE)
+    
+    if not (pattern1.search(sentence) and pattern2.search(sentence)):
+        raise ValueError("Both words must be in the sentence.")
+
+    # Function to replace the word while preserving punctuation and case
+    def replace_word(match, replacement):
+        matched_word = match.group(0)
+        if matched_word.islower():
+            return replacement.lower()
+        elif matched_word.isupper():
+            return replacement.upper()
+        elif matched_word.istitle():
+            return replacement.capitalize()
+        else:
+            return replacement
+
+    # Perform the swap
+    temp_word = "TEMP_WORD_FOR_SWAP"
+    sentence = pattern1.sub(lambda m: replace_word(m, temp_word), sentence)
+    sentence = pattern2.sub(lambda m: replace_word(m, word1), sentence)
+    sentence = re.compile(r'\b' + re.escape(temp_word) + r'\b', re.IGNORECASE).sub(lambda m: replace_word(m, word2), sentence)
+
+    return sentence
+
+
+
 def int_to_roman(num):
         """
         Converts an integer to a Roman numeral.
@@ -819,7 +859,9 @@ class SpellingExercise(Exercise):
         exercise = ''
         for term, entry_list in imported_dict.items():
             for entry in entry_list:
-                question = self._string_processing(entry['Question'])
+                random.shuffle(entry['Options'])
+                question = swap_words(entry['Question'], entry['Options'][0], entry['Options'][1])
+                question = self._string_processing(question)
                 definition_list.append((term, entry['Definition']))
                 answer = entry['Answer']
                 solution_list.append(answer)

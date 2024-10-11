@@ -2386,26 +2386,6 @@
         "peak"
     ],
     "new": [
-        "despair",
-        "affix",
-        "contemporary",
-        "cringe",
-        "forgo",
-        "bucolic",
-        "wane",
-        "cardiac",
-        "ratio",
-        "memorize",
-        "souvenir",
-        "burnish",
-        "amphibious",
-        "delegate",
-        "substantive",
-        "dissipate",
-        "annex",
-        "arbiter",
-        "annuity",
-        "reprimand",
         "mawkish",
         "humility",
         "playwright",
@@ -4701,9 +4681,7 @@
         "righteous",
         "brandish",
         "fortify",
-        "bumptious"
-    ],
-    "last change": [
+        "bumptious",
         "despair",
         "affix",
         "contemporary",
@@ -4723,7 +4701,9 @@
         "annex",
         "arbiter",
         "annuity",
-        "reprimand",
+        "reprimand"
+    ],
+    "last change": [
         "mawkish",
         "humility",
         "playwright",

@@ -141,7 +141,7 @@ Ensure the paragraphs use British English spelling.
 spelling_prompt = r'''Create a JSON file by following the instructions. For each definition of each given word, think of another word with resemblance in sound with the given word, especially in initial and final syllables. Then write a question asking which variant is correct, whose answer is the original word. Begin the question with a short sentence describing of a scenario. Ensure the questions adhere to spelling conventions of British English. Put the question in the field `Question`.
 Example input:
 ```
-{"remind": ["If something reminds you of a fact or event, it makes you think about it."], "lazy": ["If someone is lazy, they do not want to work or make any effort to do anything."]}
+{"remind": ["If something reminds you of a fact or event, it makes you think about it."]}
 ```
 Example response:
 ```json
@@ -149,15 +149,9 @@ Example response:
     "remind": [
         {
             "Definition": "If something reminds you of a fact or event, it makes you think about it.",
-            "Question": "You opened the drawer and saw an old diary of yours. Does the diary remind or rewind you of your childhood?"
-            "Answer": "remind"
-        }
-    ],
-    "lazy": [
-        {
-            "Definition": "If someone is lazy, they do not want to work or make any effort to do anything.",
-            "Question": "You saw your friend lying on the sofa all day. Is your friend hazy or lazy?"
-            "Answer": "lazy"
+            "Question": "You opened the drawer and saw an old diary of yours. Has the diary reminded or rewinded you of your childhood?",
+"Options": ["reminded", "rewinded"],
+            "Answer": "reminded"
         }
     ]
 }
