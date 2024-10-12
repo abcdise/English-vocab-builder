@@ -138,7 +138,16 @@ sentence_order_prompt = r'''For each definition of each keyword, write a story i
 Ensure the paragraphs use British English spelling.
 '''
 
-spelling_prompt = r'''Create a JSON file by following the instructions. For each definition of each given word, think of another word with resemblance in sound with the given word, especially in initial and final syllables. Then write a question asking which variant is correct, whose answer is the original word. Begin the question with a short sentence describing of a scenario. Ensure the questions adhere to spelling conventions of British English. Put the question in the field `Question`.
+spelling_prompt = r'''Create a JSON file by following the instructions. For each definition of each given word, think of another word with resemblance in sound with the given word, especially in initial and final syllables. Then write a question asking which variant is correct, whose answer is the original word. Begin the question with a short sentence describing of a scenario. Ensure the questions adhere to spelling conventions of British English.
+
+Structure the JSON as follows:
+1. Use the original word as the key.
+2.  For each definition, create an object with these fields:
+- "Definition": The provided definition.
+- "Question": The scenario-based question.
+- "Options": An array with the original word and the similar-sounding word.
+- "Answer": The original word.
+
 Example input:
 ```
 {"remind": ["If something reminds you of a fact or event, it makes you think about it."]}
