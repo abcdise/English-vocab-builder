@@ -80,20 +80,55 @@ inference_example_prompt = r'''
 Now try the following:
 '''
 
-inference_options_prompt = r'''
-Now try the following:
+collocation_prompt = r'''Generate a JSON file for each provided word and its definition(s) with the following structure:
+```json
+{
+  "word 1": [
+    {
+      "Definition": "Provided definition",
+      "Correct example": "correct phrase",
+      "Error": "Type of error",
+      "Replace": "part to replace",
+      "Incorrect examples": ["incorrect phrase 1", "incorrect phrase 2", "incorrect phrase 3"]
+    }
+  ],
+  "word 2": ...
+}
+```
+Instructions:
+1. `Correct example` field: a concise phrase starting with 'to' that accurately encapsulates the word's definition
+2. `Error` field: Specify the type of error present in the incorrect phrases.
+    a) collocational errors (e.g. word: `acutely`, incorrect phrase: `to become acutely happy`)
+    b) prepositional errors (e.g. word: `remind`, incorrect phrase: `to remind Tom about the meeting`)
+    c) contextual errors (e.g. word: `write`, incorrect phrase: `to write an apple`)
+3. `Replace` field: the words that should be replaced in the correct example to create the incorrect examples
+4. `Incorrect examples` field: a list of three short phrases after replacing the words in the `Replace` field. These phrases should contain errors of the type specified in the `Error` field.
+4. Ensure all phrases contain the keyword and conform to British English spelling conventions.
+Example:
+```json
+{
+  "remind": [
+        {
+            "Correct example": "If you remind someone of something, you make them remember it.",
+            "Error": "prepositional errors",
+            "Replace": "of",
+            "Incorrect examples": ["to remind him about the meeting", "to remind him to the meeting", "to remind him from the meeting"]
+        }
+    ]
+}
+```
 '''
 
-translation_prompt = r'''For each term in the provided list, retain the term in `usage` intact and replace the other part in `usage` with new information. Then modify the rest of the phrase with new context or details. Update the Chinese translation to match the new usage. Ensure the response follows British English spelling conventions. Format your response in a JSON code block.
+translation_prompt = r'''For each term in the given list, first use a conversational tone to expand the phrase in `Chinese` into a short sentence. Refine the Chinese sentence so that it sounds natural. Then update the English translation in `English` to match the modification. Ensure the response follows British English spelling conventions. Format your response in a JSON code block.
 Example input:
 ```json
-{"take part in": [{"usage": "take part in the school play", "Chinese": "参加学校的戏剧表演"}]}
+{"take part in": [{"Chinese": "参加学校的戏剧表演", "English": "take part in the school play"}]}
 ```
 Example response:
 ```json
 {
   "take part in": [
-    {"usage": "take part in the meeting", "Chinese": "参加会议"}
+    {"Chinese": "你明天要参加学校的戏剧表演吗？", "English": "Are you going to take part in the school play tomorrow?"}
   ]
 }
 ```
@@ -159,7 +194,7 @@ Example response:
         {
             "Definition": "If something reminds you of a fact or event, it makes you think about it.",
             "Question": "You opened the drawer and saw an old diary of yours. Has the diary reminded or rewinded you of your childhood?",
-"Options": ["reminded", "rewinded"],
+            "Options": ["reminded", "rewinded"],
             "Answer": "reminded"
         }
     ]

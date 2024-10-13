@@ -455,7 +455,7 @@ class FillInTheGapExercise(Exercise):
         return ex, sol
 
 
-class InferenceExercise(Exercise):
+class CollocationExercise(Exercise):
     def __init__(self, word_entries:dict):
         super().__init__(word_entries=word_entries)
         self.create_prompt()
@@ -464,53 +464,29 @@ class InferenceExercise(Exercise):
     
     def create_prompt(self):
         word_entries_str = json.dumps(self.word_entries, ensure_ascii=False)
-        prompt = prompts.inference_example_prompt + f'\n```json\n{word_entries_str}\n```'
+        prompt = prompts.collocation_prompt + f'Now try the following \n```json\n{word_entries_str}\n```'
         self.generation_prompt = prompt
 
 
-    def get_exercise_prompt(self):
-        prompt = prompts.inference_options_prompt + f'\n```json\n{self.example_sentences}\n```'
-        pyperclip.copy(prompt)
-
-    
-    def import_sentences(self, text:str):
-        self.exercise_dict = json.loads(text)
-        for word in self.exercise_dict:
-            self.example_sentences[word] = []
-            for entry in self.exercise_dict[word]:
-                self.example_sentences[word].append(entry['Example'])
-
-
     def import_exercise(self, text:str):
-        # First import the text as a dictionary
-        # Combine the options with the definitions and example sentences
-        # Generate the exercise
-        imported_dict = json_string_to_dict(text)
-        for word in self.exercise_dict:
-            for i, entry in enumerate(self.exercise_dict[word]):
-                entry['Unlikely to happen'] = imported_dict[word][i]['Unlikely to happen']
-        self.generate_exercise(self.exercise_dict)
-        
-    
-    def generate_exercise(self, exercise_dict:dict):
-        labels = ['A', 'B', 'C']
+        self.exercise_dict = json_string_to_dict(text)
+        labels = ['A', 'B', 'C', 'D']
         solution_list = []
         definition_list = []
-        exercise = ''
+        exercise = r'\begin{questions}' + '\n'
 
-        for term, question_list in exercise_dict.items():
+        for term, question_list in self.exercise_dict.items():
             for question in question_list:
-                sentence = question['Example']
+                correct_choice = question['Correct example']
                 definition_list.append((term, question['Definition']))
-                answer_options = [question['Unlikely to happen']] + question['Likely to happen']
+                answer_options = [correct_choice] + question['Incorrect examples']
                 random.shuffle(answer_options)
-                solution_list.append(labels[answer_options.index(question['Unlikely to happen'])])
-                exercise += f'\\question {self._string_processing(sentence)}\n'
-                exercise += r'\begin{choices}' + '\n'
+                solution_list.append(labels[answer_options.index(correct_choice)])
+                exercise += r'\question' + '\n' + r'\begin{choices}' + '\n'
                 for option in answer_options:
-                    exercise += '{' + self._string_processing(option) + '}'
+                    exercise += r'\choice ' + self._string_processing(option) + '\n' if option != correct_choice else r'\CorrectChoice ' + self._string_processing(option) + '\n'
                 exercise += r'\end{choices}' + '\n'
-            
+
         solution = self._partition_list(solution_list) + '\n\n'
         solution += r'\vspace{3ex}' + '\n\n'
         solution += r'\begin{enumerate}' + '\n'
@@ -724,7 +700,7 @@ class TranslationExercise(Exercise):
 
 
     def create_prompt(self):
-        word_entries = {word: [{'usage': entry['usage'], 'Chinese': entry['Chinese']} for entry in self.word_entries[word][1]] for word in self.word_entries}
+        word_entries = {word: [{'Chinese': entry['Chinese'], 'English': entry['usage']} for entry in self.word_entries[word][1]] for word in self.word_entries}
         prompt = prompts.translation_prompt + '\n'
         json_string = json.dumps(word_entries, ensure_ascii=False)
         prompt += f'Now try the following: {json_string}'
@@ -899,8 +875,8 @@ class ExerciseFactory:
         '''
         if exercise_type == 'Reading':
             return ReadingExercise(word_entries=word_entries)
-        elif exercise_type == 'Inference':
-            return InferenceExercise(word_entries=word_entries)
+        elif exercise_type == 'Collocation':
+            return CollocationExercise(word_entries=word_entries)
         elif exercise_type == 'Cloze':
             return ClozeExercise(word_entries=word_entries)
         elif exercise_type == 'Fill in the gap':
