@@ -2386,26 +2386,6 @@
         "peak"
     ],
     "new": [
-        "mawkish",
-        "humility",
-        "playwright",
-        "infuriate",
-        "nascent",
-        "protrude",
-        "abstruse",
-        "intermittent",
-        "anterior",
-        "incinerate",
-        "expanse",
-        "monotonous",
-        "heinous",
-        "resent",
-        "cauterize",
-        "foretell",
-        "pastoral",
-        "allot",
-        "countless",
-        "naive",
         "hydrate",
         "decry",
         "right",
@@ -4701,9 +4681,7 @@
         "annex",
         "arbiter",
         "annuity",
-        "reprimand"
-    ],
-    "last change": [
+        "reprimand",
         "mawkish",
         "humility",
         "playwright",
@@ -4723,7 +4701,9 @@
         "pastoral",
         "allot",
         "countless",
-        "naive",
+        "naive"
+    ],
+    "last change": [
         "hydrate",
         "decry",
         "right",

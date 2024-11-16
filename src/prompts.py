@@ -201,3 +201,21 @@ Example response:
 }
 ```
 '''
+
+translation_prompt_2 = '''Generate a JSON file for each provided word and its definition(s) with the following structure:
+```json
+{
+  "word 1": [
+    {
+      "Definition": "Provided definition",
+      "Chinese definition": "Chinese definition",
+      "Chinese sentence": "Chinese sentence"
+    }
+  ],
+  "word 2": ...
+}
+```
+Instructions:
+1. `Chinese definition` field: a Chinese definition of the word
+2. `Chinese sentence` field: a Chinese sentence containing the Chinese definition
+'''
