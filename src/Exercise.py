@@ -7,8 +7,6 @@ import prompts
 import json
 from pathlib import Path
 import spacy
-from breame.spelling import get_american_spelling
-from breame.spelling import get_british_spelling
 
 nlp = spacy.load('en_core_web_sm')
 
@@ -53,7 +51,6 @@ def replace_term(original_string: str, old_value: str, new_value: str):
             new_string = ' '.join(new_string_list)
         else:
             new_string = ''
-        
     else:
         for token in doc:
             if token.lemma_.lower() == old_value or token.text.lower() == old_value:
@@ -109,7 +106,6 @@ def swap_words(sentence, word1, word2):
     return sentence
 
 
-
 def int_to_roman(num):
         """
         Converts an integer to a Roman numeral.
@@ -146,13 +142,9 @@ class Exercise(ABC):
 
     def __init__(self, word_entries:dict):
         self.word_entries = word_entries
-        # For each key in the dictionary, use `self._get_british_spelling` to get the British spelling and replace the key with the British spelling.
-        self.word_entries = {self._get_british_spelling(key): list(map(remove_brackets_and_contents, value)) for key, value in self.word_entries.items()}
         self.word_list = list(self.word_entries.keys())
         self.generation_prompt = None
-        self.exercise: str = None
-        self.exercise_dict: dict = dict()
-        self.solution: str = None
+        self.exercise_dict: dict = dict() # A dictionary to store the exercise. The keys are usually 'exercise', 'solution', etc.
 
 
     @abstractmethod
@@ -160,19 +152,20 @@ class Exercise(ABC):
         pass
 
 
+    @abstractmethod
+    def _flatten_word_entries(self, word_entries:dict):
+        pass
+
+
+    @abstractmethod
+    def _generate_exercise(self, dict:str):
+        pass
+
     def get_prompt(self):
         if self.generation_prompt is not None:
             pyperclip.copy(self.generation_prompt)
         else:
             print('There is no prompt yet.')
-
-
-    def import_exercise(self, text:str):
-        self.exercise = self._string_processing(text)
-
-    
-    def import_solution(self, text:str):
-        self.solution = self._string_processing(text)
 
 
     def _partition_list(self, letters:list, unit_size:int=5):
@@ -242,620 +235,328 @@ class Exercise(ABC):
         return r' \qquad '.join(shuffled_word_list)
     
 
-    def _parse_example_sentences(self, text:str):
-        sentence_list = text.splitlines()
-        return list(filter(lambda x: x, sentence_list))
-    
-
     def _remove_duplicates(self, data: list):
         return list(set(data))
-    
-
-    def _get_british_spelling(self, text:str):
-        text_tokens = text.split(' ')
-        text_tokens = [get_british_spelling(token) for token in text_tokens]
-        return ' '.join(text_tokens)
 
 
-class Definition(Exercise):
-    '''
-    A class representing a definition exercise.
 
-    Inherits from the Exercise class.
+# class Definition(Exercise):
+#     '''
+#     A class representing a definition exercise.
 
-    Attributes:
-    - word_list (list): A list of words for which the definitions need to be imported.
-    - definition (str): The formatted definitions and examples from the dictionary.
-    - exercise (str): The fill-in-the-gap exercise generated from the examples.
-    - solution (str): The solutions for the fill-in-the-gap exercise.
+#     Inherits from the Exercise class.
 
-    Methods:
-    - __init__(self, word_list: list): Initializes a Definition object with the given word list.
-    - import_definition_from_dictionary(self, dictionary_path:str='../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Dictionary/Collins.json') -> None: Imports definitions and examples from the dictionary and generates the fill-in-the-gap exercise.
-    - finish_import(self): Adds the definition, exercise, and solution to the exercise dictionary.
-    '''
+#     Attributes:
+#     - word_list (list): A list of words for which the definitions need to be imported.
+#     - definition (str): The formatted definitions and examples from the dictionary.
+#     - exercise (str): The fill-in-the-gap exercise generated from the examples.
+#     - solution (str): The solutions for the fill-in-the-gap exercise.
 
-    def __init__(self, word_entries: dict):
-        super().__init__(word_entries=word_entries)
-        self.box = self._write_box(word_list=self.word_list)
-        self.definition = None
-        self.definition_dict = dict()
+#     Methods:
+#     - __init__(self, word_list: list): Initializes a Definition object with the given word list.
+#     - import_definition_from_dictionary(self, dictionary_path:str='../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Dictionary/Collins.json') -> None: Imports definitions and examples from the dictionary and generates the fill-in-the-gap exercise.
+#     - finish_import(self): Adds the definition, exercise, and solution to the exercise dictionary.
+#     '''
 
-    def import_definition_from_dictionary(self, dictionary_path:str='../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Dictionary/Collins.json') -> None:
-        '''
-        The method looks for the words in the dictionary and write the definitions and the examples from the dictionary as a form
-        that the LaTeX template is expecting. In the end, the methods gathers the examples and makes the fill-in-the-gap exercise.
+#     def __init__(self, word_entries: dict):
+#         super().__init__(word_entries=word_entries)
+#         self.box = self._write_box(word_list=self.word_list)
+#         self.definition = None
+#         self.definition_dict = dict()
 
-        Args:
-        - dictionary_path (str): The path of the json file that saves the dictionary.
-        '''
-        dictionary_json = Path(dictionary_path)
-        try:
-            with open(dictionary_json) as json_file:
-                dictionary = json.load(json_file)
+#     def import_definition_from_dictionary(self, dictionary_path:str='../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Dictionary/Collins.json') -> None:
+#         '''
+#         The method looks for the words in the dictionary and write the definitions and the examples from the dictionary as a form
+#         that the LaTeX template is expecting. In the end, the methods gathers the examples and makes the fill-in-the-gap exercise.
 
-            def_text = ''
-            ex_text = ''
-            sol_text = r'\begin{enumerate}' + '\n'
-            americanize_word_list = [get_american_spelling(word) for word in self.word_list]
-            exercise_list = []
-            for word in americanize_word_list:
-                if word in dictionary:
-                    def_text += r'\vocabulary{' + word + r'}'
-                    def_text += r'{' + dictionary[word][0] + r'}' + '\n'
-                    for entry in dictionary[word][1]:
-                        def_text += r'\defitem{' + entry['part_of_speech'] + r'}'
-                        definition = entry['definition']
-                        definition = self._string_processing(definition)
-                        definition = remove_brackets_and_contents(definition)
-                        def_text += r'{' + definition + r'}'
-                        sentence_with_gap, solution_list = replace_term(
-                            original_string=definition, 
-                            old_value=word,
-                            new_value=f'\\fillin[{word}][{len(word) ** 0.1 - 0.3:.2f}in]'
-                        )
-                        if sentence_with_gap != definition and sentence_with_gap and solution_list:
-                            sentence_with_gap = sentence_with_gap.replace('...', r'{[\ldots] }')
-                            solution = ', '.join(solution_list)
-                            exercise_list.append((sentence_with_gap, solution))
-                        if entry['example_sentences']:
-                            sentence = entry['example_sentences'][0]
-                            sentence = self._string_processing(sentence)
-                            def_text += r'{' + sentence + r'}' + '\n'
-                        else:
-                            # If there is no example sentence, we still need a `{}` for the LaTeX command.
-                            def_text += r'{}' + '\n'
-                else:
-                    print(f'The word {word} does not exist in the dictionary.')
-            random.shuffle(exercise_list)
-            for pair in exercise_list:
-                sentence_with_gap = self._string_processing(pair[0])
-                solution = self._string_processing(pair[1])
-                ex_text += r'\question ' + sentence_with_gap + '\n'
-                sol_text += r'\item ' + solution + '\n'
-            sol_text += r'\end{enumerate}'
-            self.definition = def_text # No need to preprocess the string because it has be done in the for loop
-            self.exercise = ex_text
-            self.solution = sol_text
+#         Args:
+#         - dictionary_path (str): The path of the json file that saves the dictionary.
+#         '''
+#         dictionary_json = Path(dictionary_path)
+#         try:
+#             with open(dictionary_json) as json_file:
+#                 dictionary = json.load(json_file)
 
-        except FileNotFoundError:
-            print(f"The dictionary file '{dictionary_json}' does not exist.")
+#             def_text = ''
+#             ex_text = ''
+#             sol_text = r'\begin{enumerate}' + '\n'
+#             americanize_word_list = [get_american_spelling(word) for word in self.word_list]
+#             exercise_list = []
+#             for word in americanize_word_list:
+#                 if word in dictionary:
+#                     def_text += r'\vocabulary{' + word + r'}'
+#                     def_text += r'{' + dictionary[word][0] + r'}' + '\n'
+#                     for entry in dictionary[word][1]:
+#                         def_text += r'\defitem{' + entry['part_of_speech'] + r'}'
+#                         definition = entry['definition']
+#                         definition = self._string_processing(definition)
+#                         definition = remove_brackets_and_contents(definition)
+#                         def_text += r'{' + definition + r'}'
+#                         sentence_with_gap, solution_list = replace_term(
+#                             original_string=definition, 
+#                             old_value=word,
+#                             new_value=f'\\fillin[{word}][{len(word) ** 0.1 - 0.3:.2f}in]'
+#                         )
+#                         if sentence_with_gap != definition and sentence_with_gap and solution_list:
+#                             sentence_with_gap = sentence_with_gap.replace('...', r'{[\ldots] }')
+#                             solution = ', '.join(solution_list)
+#                             exercise_list.append((sentence_with_gap, solution))
+#                         if entry['example_sentences']:
+#                             sentence = entry['example_sentences'][0]
+#                             sentence = self._string_processing(sentence)
+#                             def_text += r'{' + sentence + r'}' + '\n'
+#                         else:
+#                             # If there is no example sentence, we still need a `{}` for the LaTeX command.
+#                             def_text += r'{}' + '\n'
+#                 else:
+#                     print(f'The word {word} does not exist in the dictionary.')
+#             random.shuffle(exercise_list)
+#             for pair in exercise_list:
+#                 sentence_with_gap = self._string_processing(pair[0])
+#                 solution = self._string_processing(pair[1])
+#                 ex_text += r'\question ' + sentence_with_gap + '\n'
+#                 sol_text += r'\item ' + solution + '\n'
+#             sol_text += r'\end{enumerate}'
+#             self.definition = def_text # No need to preprocess the string because it has be done in the for loop
+#             self.exercise = ex_text
+#             self.solution = sol_text
 
-    def finish_import(self):
-        self.exercise_dict['definition'] = self.definition
-        self.exercise_dict['exercise'] = self.exercise
-        self.exercise_dict['solution'] = self.solution
-        self.exercise_dict['box'] = self.box
+#         except FileNotFoundError:
+#             print(f"The dictionary file '{dictionary_json}' does not exist.")
 
+#     def finish_import(self):
+#         self.exercise_dict['definition'] = self.definition
+#         self.exercise_dict['exercise'] = self.exercise
+#         self.exercise_dict['solution'] = self.solution
+#         self.exercise_dict['box'] = self.box
 
-class ReadingExercise(Exercise):
-    def __init__(self, word_entries:dict):
-        super().__init__(word_entries=word_entries)
-        # self.passage_dict = {word: [{"Definition": remove_brackets_and_contents(definition), "Passage": "Write the passage here"} for definition in word_entries[word]] for word in word_entries}
-        self.passage: str = None
-        self.question: str = None
-        self.solution: str = None
-
-
-    def create_prompt(self, topic:str):
-        self.generation_prompt = f'''
-        You are Oliver. Given the following terms and a topic, your task is to write a letter to your friend Noah about the topic. Keep the tone of the letter straightforward. Enrich the narrative in your letter. Use the words subtly into your letter. Your writing should follow the rules of British English spelling. Format the response in a txt code block.
-        Inputs:
-        ```json
-        {self.word_entries}
-        ```
-        Starting sentence:
-        {topic}
-        '''
-
-    
-    def import_passage(self, text:str):
-        self.passage = text
-
-
-    def get_second_prompt(self):
-        prompt = '''Based on the following text, write two correct inferences and three false inferences from the text. Ensure all five statements have similar lengths. Format your response in the following format
-        ```json
-        {"Correct inferences": ["Write the inferences here"], "False inferences": ["Write the inferences here"]}
-        ```
-        '''
-        prompt += f'''Passage:
-        {self.passage}'''
-        pyperclip.copy(prompt)
-
-    
-    def import_exercise(self, text: str):
-        imported_dict = json_string_to_dict(text)
-        labels = ['A', 'B', 'C', 'D', 'E']
-
-        self.question = r'Choose two correct statements based on the passage.\\'
-        options = imported_dict['Correct inferences'] + imported_dict['False inferences']
-        random.shuffle(options)
-        options_with_labels = [f'{label}. {item}' for label, item in zip(labels, options)]
-        solutions = [labels[options.index(option)] for option in imported_dict['Correct inferences']]
-        self.solution = ''.join(solutions)
-        self.question += (r'\\' + '\n').join(options_with_labels)
-
-
-    def finish_import(self):
-        self.exercise_dict['passage'] = self.passage
-        self.exercise_dict['question'] = self.question
-        self.exercise_dict['solution'] = self.solution
-  
 
 class FillInTheGapExercise(Exercise):
 
     def __init__(self, word_entries:dict):
         super().__init__(word_entries=word_entries)
-        self.word_list = [term for term in self.word_list if len(term.split(' ')) == 1]
-        self.box = self._write_box(word_list=self.word_list)
-        self.example_sentences = dict()
+        keys = ['exercise', 'solution', 'box']
+        self.exercise_dict = dict.fromkeys(keys)
+        self.exercise_dict['box'] = self._write_box(word_list=self.word_list)
         self.create_prompt()
  
 
     def create_prompt(self):
-        word_entries_str = json.dumps(self.word_entries, ensure_ascii=False)
-        prompt = prompts.example_sentences_prompt + '\n'
-        prompt += f'Use the spelling rules for British English to create one example sentences with each definition in the following list: {word_entries_str}'
+        # Create a list of dictionaries for the prompt
+        flattened_entries = self._flatten_word_entries(self.word_entries) # A list of dictionaries with word and definition
+        random.shuffle(flattened_entries)
+
+
+        dict_for_prompt = [] # A list of dictionaries with words and definitions. The list is used to create the prompt.
+        # Add elements to the list dict_for_prompt
+        for i in range(len(flattened_entries)):
+            if i != len(flattened_entries) - 1:
+                word_1 = flattened_entries[i].keys()[0]
+                definition_1 = flattened_entries[i][word_1]
+                word_2 = flattened_entries[i + 1].keys()[0]
+                definition_2 = flattened_entries[i + 1][word_2]
+            else:
+                word_1 = flattened_entries[i].keys()[0]
+                definition_1 = flattened_entries[i][word_1]
+                word_2 = flattened_entries[0].keys()[0]
+                definition_2 = flattened_entries[0][word_2]
+            dict_for_prompt.append({"words": [word_1, word_2], "definitions": [definition_1, definition_2]})
+        word_entries_str = json.dumps(dict_for_prompt, ensure_ascii=False)
+        # Assemble the prompt
+        prompt = prompts.fill_in_the_gap_prompt + '\n'
+        prompt += f'{word_entries_str}'
         self.generation_prompt = prompt
 
     
-    def import_sentences(self, text: str):
-        self.example_sentences = json.loads(text)
-        self.exercise, self.solution = self.generate_exercise(self.example_sentences)
-
-
-    def finish_import(self):
-        self.exercise_dict['exercise'] = self.exercise
-        self.exercise_dict['box'] = self.box
-        self.exercise_dict['solution'] = self.solution
+    def generate_exercise(self, text: str):
+        imported_dict = json.loads(text)
+        self.exercise_dict['exercise'], self.exercise_dict['solution'] = self._generate_exercise(dicts=imported_dict)
 
     
-    def generate_exercise(self, aug_dict: dict):
-        exercise_list = []
-        for word in aug_dict:
-            for entry in aug_dict[word]:
-                sentence = entry['Example']
-                question, sol_list = replace_term(
-                    original_string=sentence,
-                    old_value=word,
-                    new_value=f'\\fillin[{word}][{len(word) ** 0.1 - 0.3:.2f}in]'
-                )
-                if question != sentence:
-                    exercise_list.append((question, ', '.join(sol_list), entry['Definition']))
-    
+    def _generate_exercise(self, dicts: list):
+        exercise_list = [] # A list to store the questions, solutions, and definitions
+        # Add elements to the list exercise_list
+        for dict in dicts:
+            word = dict['words'][1]
+            sentence = dict['sentences']
+            definition = dict['definitions'][1]
+            question, sol_list = replace_term(
+                original_string=sentence,
+                old_value=word,
+                new_value=f'\\fillin[{word}][{len(word) ** 0.1 - 0.3:.2f}in]'
+            )
+            if question != sentence:
+                exercise_list.append((question, ', '.join(sol_list), definition))
         random.shuffle(exercise_list)
+        # Write the LaTeX code for the exercise and the solution
         ex = ''
         sol = r'\begin{enumerate}' + '\n'
         for exercise in exercise_list:
             ex += r'\question ' + self._string_processing(exercise[0]) + '\n'
             sol += r'\item ' + exercise[1] + '. ' + self._string_processing(exercise[2]) + '\n'
-
         sol += r'\end{enumerate}' + '\n'
         return ex, sol
 
 
-class CollocationExercise(Exercise):
-    def __init__(self, word_entries:dict):
-        super().__init__(word_entries=word_entries)
-        self.create_prompt()
-        self.example_sentences = dict()
-
-    
-    def create_prompt(self):
-        word_entries_str = json.dumps(self.word_entries, ensure_ascii=False)
-        prompt = prompts.collocation_prompt + f'Now try the following \n```json\n{word_entries_str}\n```'
-        self.generation_prompt = prompt
-
-
-    def import_exercise(self, text:str):
-        self.exercise_dict = json_string_to_dict(text)
-        labels = ['A', 'B', 'C', 'D']
-        solution_list = []
-        definition_list = []
-        exercise = r'\begin{questions}' + '\n'
-
-        for term, question_list in self.exercise_dict.items():
-            for question in question_list:
-                correct_choice = question['Correct example']
-                definition_list.append((term, question['Definition']))
-                answer_options = [correct_choice] + question['Incorrect examples']
-                random.shuffle(answer_options)
-                solution_list.append(labels[answer_options.index(correct_choice)])
-                exercise += r'\question' + '\n' + r'\begin{choices}' + '\n'
-                for option in answer_options:
-                    exercise += r'\choice ' + self._string_processing(option) + '\n' if option != correct_choice else r'\CorrectChoice ' + self._string_processing(option) + '\n'
-                exercise += r'\end{choices}' + '\n'
-
-        solution = self._partition_list(solution_list) + '\n\n'
-        solution += r'\vspace{3ex}' + '\n\n'
-        solution += r'\begin{enumerate}' + '\n'
-        for term_def in definition_list:
-            solution += r'\item ' + term_def[0] + ': ' + term_def[1] + '\n'
-        solution += r'\end{enumerate}' + '\n'
-        self.exercise = exercise
-        self.solution = solution
-
-
-    def finish_import(self):
-        self.exercise_dict['exercise'] = self.exercise
-        self.exercise_dict['solution'] = self.solution
-        
-
-class DialogueExercise(Exercise):
-    """
-    Represents a dialogue exercise for vocabulary building.
-
-    Args:
-        word_list (list): A list of words for the exercise.
-
-    Attributes:
-        phrase_dict (dict): A dictionary containing phrases and their definitions.
-        abridged_phrase_dict (dict): A dictionary containing abridged phrases and their definitions.
-        box (str): The write box for the exercise.
-        exercise (str): The generated exercise.
-        solution (str): The solution for the exercise.
-
-    Methods:
-        __init__(self, word_list: list): Initializes a new instance of the DialogueExercise class.
-        __import_dictionary(self, dictionary_path:str='../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Dictionary/Phrase.json'): Imports the dictionary of phrases.
-        create_prompt(self): Creates the prompt for the exercise.
-        generate_exercise(self, dialogue_dict:dict): Generates the exercise based on the dialogue dictionary.
-        finish_import(self): Finishes the import process.
-
-    """
-
-    def __init__(self, word_entries: dict):
-        self.word_entries = word_entries
-        self.word_list = list(self.word_entries.keys())
-        self.generation_prompt = None
-        self.exercise: str = None
-        self.exercise_dict: dict = dict()
-        self.solution: str = None
-        self.phrase_dict = dict()
-        self.abridged_phrase_dict = dict()
-        self.__import_dictionary()
-        self.create_prompt()
-
-    
-    def __import_dictionary(self, dictionary_path:str='../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Dictionary/Phrase.json'):
-        """
-        Imports the dictionary of phrases.
-
-        Args:
-            dictionary_path (str): The path to the dictionary file. Default is the relative path to the Phrase.json file.
-
-        Raises:
-            FileNotFoundError: If the dictionary file does not exist.
-
-        """
-        try:
-            with open(dictionary_path) as file:
-                self.phrase_dict = json.load(file)
-            for word in self.word_list:
-                self.abridged_phrase_dict[word] = self.phrase_dict[word][1][0]['definition']
-        except FileNotFoundError:
-            raise FileNotFoundError(f"The dictionary file '{dictionary_path}' does not exist.")
-    
-
-    def create_prompt(self):
-        """
-        Creates the prompt for the exercise.
-
-        """
-        prompt = prompts.dialogue_exercise_prompt
-        prompt += 'Create the JSON file based on the following inputs\n'
-        prompt += '```json\n'
-        prompt += json.dumps(self.abridged_phrase_dict, ensure_ascii=False)
-        prompt += '\n```'
-        self.generation_prompt = prompt
-
-
-    def generate_exercise(self, dialogue_dict:dict):
-        """
-        Generates the exercise based on the dialogue dictionary.
-
-        Args:
-            dialogue_dict (dict): A dictionary containing dialogues.
-
-        """
-        ex = ''
-        sol = r'\begin{enumerate}' + '\n'
-        index = 1
-        for _, dialogue in dialogue_dict.items():
-            ex += r'\noindent \textbf{Dialogue ' + str(index) + '}\n'
-            ex += r'\vspace{-1ex}' + '\n'
-            ex += r'\begin{dialogue}' '\n'
-            ex += r'\speak{A} ' + dialogue['A'] + '\n'
-            ex += r'\speak{B} ' + dialogue['Paraphrase'] + '\n'
-            ex += r'\end{dialogue}' + '\n'
-            ex += r'\underline{\textsc{' + dialogue['Keyword'] + '}}\n'
-            ex += r'\vspace{10ex}' + '\n\n'
-            sol += r'\item ' + dialogue['B']  + '\n'
-            index += 1
-
-        sol += r'\end{enumerate}' + '\n'
-        self.exercise = ex
-        self.solution = sol
-
-    
-    def finish_import(self):
-        """
-        Finishes the import process.
-
-        """
-        self.exercise_dict['exercise'] = self.exercise
-        self.exercise_dict['solution'] = self.solution
-
-
-class ClozeExercise(Exercise):
-    def __init__(self, word_entries:dict):
-        super().__init__(word_entries=word_entries)
-        self.passage_dict = {word: [{"Definition": remove_brackets_and_contents(definition), "Passage": "Write the passage here"} for definition in word_entries[word]] for word in word_entries}
-        self.__create_prompt()
-        self.passage: str = None
-        self.solution: str = None
-
-
-    def __create_prompt(self):
-        self.generation_prompt = f'''For each word and definition, write a elaborate paragraph containing the script of a news item for the BBC Hourly News. Focus on the narrative development. Incorporate each word subtly into the passage by using it only once. Ensure the word in the passage matches the given definition. Your passsages should adhere to the British English spelling rules. Format the response as follows
-        ```json
-        {self.passage_dict}
-        ```
-        '''
-
-    
-    def import_passage(self, text:str):
-        self.passage_dict = deepcopy(json_string_to_dict(text))
-
-
-    def get_second_prompt(self):
-        passage_list = [passage for def_passage_list in self.passage_dict.values() for passage in def_passage_list]
-        prompt = prompts.cloze_prompt + '\n'
-        prompt += str(passage_list)
-        pyperclip.copy(prompt)
-
-    
-    def import_exercise(self, text: str):
-        imported_dict = json_string_to_dict(text)
-        self.passage = ''
-        self.solution = ''
-        labels = ['A', 'B', 'C', 'D']
-        indices = [1, 2, 3, 4]
-        solution_list = []
-        solution_option_list = []
-        passage_index = 1
-        
-        for passage in imported_dict:
-            question_list = []
-            solution_sub_list = []
-            solution_option_sub_list = []
-            for i, exercise in enumerate(imported_dict[passage]):
-                index = i + 1
-                excerpt = exercise['Phrase']
-                word_to_replace = exercise['Word']
-                sentence_with_gap = excerpt.replace(word_to_replace, f'({index})' + r'\fillin[]')
-                passage = passage.replace(excerpt, sentence_with_gap)
-                answer_options = exercise['Incorrect options'] + [word_to_replace]
-                random.shuffle(indices)
-                solution_sub_list.append(labels[indices.index(4)])
-                solution_option_sub_list.append(word_to_replace)
-                question_list.append([answer_options[i - 1] for i in indices])
-            
-            self.passage += r'\noindent \textbf{Passage ' + str(passage_index) + '} \n\n' + self._string_processing(passage) + '\n\n'
-            self.passage += r'\begin{questions}' + '\n'
-            for i, options in enumerate(question_list):
-                self.passage += r'\question ' + '\n'
-                self.passage += r'\begin{oneparchoices}' + '\n'
-                for option in options:
-                    correct_choice_symbol = r'\CorrectChoice ' if option == solution_option_sub_list[i] else r'\choice '
-                    self.passage += correct_choice_symbol + self._string_processing(option) + '\n'
-                self.passage += r'\end{oneparchoices}' + '\n'
-
-            self.passage += r'\end{questions}' + '\n'
-            solution_list.append(solution_sub_list)
-            passage_index += 1
-            self.passage += r'\vspace{3ex}' + '\n\n'
-
-        self.solution += '\n\n' + r'\vspace{3ex}' + '\n\n'
-        for solution_index, solution in enumerate(solution_list):    
-            self.solution += f' {solution_index + 1}. ' + ''.join(solution) + r' \quad'
-
-
-    def finish_import(self):
-        self.exercise_dict['passage'] = self.passage
-        self.exercise_dict['solution'] = self.solution
+    def _flatten_word_entries(self, word_entries: dict):
+        flattened_entries = []
+        for word in word_entries:
+            for definition in word_entries[word]:
+                flattened_entries.append({word: definition})
+        return flattened_entries
 
 
 class TranslationExercise(Exercise):
     def __init__(self, word_entries: dict):
-        self.word_entries = word_entries
-        self.word_list = list(self.word_entries.keys())
-        self.generation_prompt = None
-        self.exercise: str = None
-        self.exercise_dict: dict = dict()
-        self.solution: str = None
-        self.example_sentences = dict()
-        self.create_prompt()
+        '''
+        The dictionary word_entries should have the following structure:
+        {
+            'word': [
+                        {
+                            'English': '',
+                            'Chinese': ''
+                        }
+                    ]
+        }
+        '''
+        super().__init__(word_entries=word_entries)
+        keys = ['exercise', 'solution']
+        self.exercise_dict = dict.fromkeys(keys)
 
 
-    def create_prompt(self):
-        word_entries = {word: [{'Chinese': entry['Chinese'], 'English': entry['usage']} for entry in self.word_entries[word][1]] for word in self.word_entries}
-        prompt = prompts.translation_prompt + '\n'
-        json_string = json.dumps(word_entries, ensure_ascii=False)
-        prompt += f'Now try the following: {json_string}'
-        self.generation_prompt = prompt
-
-    
-    def import_sentences(self, text: str):
-        self.exercise = text
-        self.example_sentences = json.loads(self.exercise)
-        self.exercise, self.solution = self.generate_exercise(aug_dict=self.example_sentences)
+    def generate_exercise(self):
+        imported_dict = self._flatten_word_entries(self.word_entries)
+        random.shuffle(imported_dict)
+        self.exercise_dict['exercise'], self.exercise_dict['solution'] = self._generate_exercise(dicts=imported_dict)
 
     
-    def generate_exercise(self, aug_dict: dict):
+    def _generate_exercise(self, dicts: list):
         exercise = ''
         solution = r'\begin{enumerate}' + '\n'
-        for word in aug_dict:
-            for entry in aug_dict[word]:
-                solution += r'\item ' + self._string_processing(entry['usage']) + '\n'
-                exercise += r'\question ' + entry['Chinese'] + '\n' + r'\vspace{10ex}' + '\n'
-
+        for dictionary in dicts:
+            solution += r'\item ' + self._string_processing(dictionary['English']) + '\n'
+            exercise += r'\question ' + dictionary['Chinese'] + '\n'
+            exercise += r'\begin{solutionbox}{10ex}' + '\n'
+            exercise += self._string_processing(dictionary['English']) + '\n'
+            exercise += r'\end{solutionbox}' + '\n'
         solution += r'\end{enumerate}' + '\n'
         return exercise, solution
 
     
-    def finish_import(self):
-        self.exercise_dict['exercise'] = self.exercise
-        self.exercise_dict['solution'] = self.solution
+    def _flatten_word_entries(self, word_entries: dict):
+        flattened_entries = []
+        # For each word, randomly select a sentence to include in the exercise
+        for word in word_entries:
+            list_of_sentences = []
+            for sentence in word_entries[word]:
+                list_of_sentences.append({word: sentence})
+            flattened_entries.append(random.choice(list_of_sentences))
+        return flattened_entries
+                
 
-
-class ComprehensionExercise(Exercise):
+class SentenceCorrectionExercise(Exercise):
     def __init__(self, word_entries:dict):
         super().__init__(word_entries=word_entries)
+        keys = ['exercise', 'solution']
+        self.exercise_dict = dict.fromkeys(keys)
         self.create_prompt()
 
-
+    
     def create_prompt(self):
-        word_entries_str = json.dumps(self.word_entries, ensure_ascii=False)
-        prompt = prompts.comprehension_prompt + '\n'
-        prompt += f'Now try the following: {word_entries_str}'
+        # Create a list of dictionaries for the prompt
+        flattened_entries = self._flatten_word_entries(self.word_entries)
+        random.shuffle(flattened_entries)
+        prompt = prompts.sentence_correction_prompt + '\n'
+        prompt += f'{json.dumps(flattened_entries, ensure_ascii=False)}'
         self.generation_prompt = prompt
 
+    
+    def generate_exercise(self, text: str):
+        imported_dict = json.loads(text)
+        self.exercise_dict['exercise'], self.exercise_dict['solution'] = self._generate_exercise(dicts=imported_dict)
+    
 
-    def import_exercise(self, text:str):
-        imported_dict = json_string_to_dict(text)
-        keys = ['Yes Question', 'No Question']
-        solution_list = []
-        definition_list = []
+    def _generate_exercise(self, dicts: list):
         exercise = ''
-
-        for term, question_list in imported_dict.items():
-            for question in question_list:
-                true_of_false = random.choice(keys)
-                label = 'Y' if true_of_false == 'Yes Question' else 'N'
-                sentence = self._string_processing(question[true_of_false])
-                definition_list.append((term, question['Definition']))
-                solution_list.append(label)
-                exercise += f'\\question \\tf[{label}] ' + sentence + '\n'
-        
-        solution = self._partition_list(solution_list) + '\n\n'
-        solution += r'\vspace{3ex}' + '\n\n'
-        solution += r'\begin{enumerate}' + '\n'
-        for term_def in definition_list:
-            solution += r'\item ' + term_def[0] + ': ' + term_def[1] + '\n'
+        solution = r'\begin{enumerate}' + '\n'
+        for dictionary in dicts:
+            correct_sentence = dictionary['correct sentence']
+            incorrect_sentence = dictionary['incorrect sentence']
+            option = random.choice([0, 1])
+            exercise += r'\question ' + (correct_sentence if option == 0 else incorrect_sentence) + r'\answerline' + '\n'
+            solution += r'\item ' + ('Correct' if option == 0 else correct_sentence) + '\n'
         solution += r'\end{enumerate}' + '\n'
-        self.exercise = exercise
-        self.solution = solution
+        return exercise, solution
 
     
-    def finish_import(self):
-        self.exercise_dict['exercise'] = self.exercise
-        self.exercise_dict['solution'] = self.solution
+    def _flatten_word_entries(self, word_entries: dict):
+        flattened_entries = []
+        for word in word_entries:
+            for entries in word_entries[word]:
+                for pattern in entries['patterns']:
+                    flattened_entries.append({'word': word, 'definition': entries['definition'], 'pattern': pattern['pattern']})
+        return flattened_entries
 
 
-class SentenceOrderExercise(Exercise):
+class VocabMultipleChoiceExercise(Exercise):
     def __init__(self, word_entries:dict):
         super().__init__(word_entries=word_entries)
+        keys = ['exercise', 'solution']
+        self.exercise_dict = dict.fromkeys(keys)
         self.create_prompt()
-
-
-    def create_prompt(self):
-        prompt = prompts.sentence_order_prompt + '\n'
-        prompt += f'Try the following' + '\n'
-        prompt += f'```json\n{self.word_entries}\n```'
-        self.generation_prompt = prompt
 
     
-    def import_exercise(self, text:str):
-        imported_dict = json_string_to_dict(text)
-        solution_list = []
-        definition_list = []
-        exercise = ''
-        solution = ''
-        for term, entry_list in imported_dict.items():
-            for entry in entry_list:
-                index = [1, 2, 3, 4]
-                definition_list.append((term, entry['Definition']))
-                paragraph = entry['Paragraph']
-                random.shuffle(index)
-                solution_list.append(''.join([str(i) for i in index]))
-                exercise += f'\\question \\tf[{index[0]}] ' + self._string_processing(paragraph[index[0] - 1]) + '\n\n'
-                exercise += f'\\tf[{index[1]}] ' + self._string_processing(paragraph[index[1] - 1]) + '\n\n'
-                exercise += f'\\tf[{index[2]}] ' + self._string_processing(paragraph[index[2] - 1]) + '\n\n'
-                exercise += f'\\tf[{index[3]}] ' + self._string_processing(paragraph[index[3] - 1]) + '\n\n'
-
-        for i, ordering in enumerate(solution_list):
-            solution += f'{i + 1}. {ordering}' + r' \quad '
-
-        self.exercise = exercise
-        self.solution = solution
-
-    def finish_import(self):
-        self.exercise_dict['exercise'] = self.exercise
-        self.exercise_dict['solution'] = self.solution
-
-
-class SpellingExercise(Exercise):
-    def __init__(self, word_entries: dict):
-        super().__init__(word_entries=word_entries)
-        self.create_prompt()
-
     def create_prompt(self):
-        word_entries_str = json.dumps(self.word_entries, ensure_ascii=False)
-        prompt = prompts.spelling_prompt + '\n'
-        prompt += f'Now try the following' + '\n'
-        prompt += f'```json\n{word_entries_str}\n```'
+        # Create a list of dictionaries for the prompt
+        flattened_entries = self._flatten_word_entries(self.word_entries)
+        random.shuffle(flattened_entries)
+        prompt = prompts.multiple_choice_prompt + '\n'
+        prompt += f'{json.dumps(flattened_entries, ensure_ascii=False)}'
         self.generation_prompt = prompt
 
 
-    def import_exercise(self, text:str):
-        imported_dict = json_string_to_dict(text)
-        solution_list = []
-        definition_list = []
+    def generate_exercise(self, text: str):
+        imported_dict = json.loads(text)
+        self.exercise_dict['exercise'], self.exercise_dict['solution'] = self._generate_exercise(dicts=imported_dict)
+
+    
+    def _generate_exercise(self, dicts: list):
         exercise = ''
-        for term, entry_list in imported_dict.items():
-            for entry in entry_list:
-                random.shuffle(entry['Options'])
-                question = swap_words(entry['Question'], entry['Options'][0], entry['Options'][1])
-                question = self._string_processing(question)
-                definition_list.append((term, entry['Definition']))
-                answer = entry['Answer']
-                solution_list.append(answer)
-                exercise += f'\\question ' + question + f' \\answerline[{answer}]' + '\n'
-
-        solution_text = r'\begin{enumerate}' + '\n'
-        for i, solution in enumerate(solution_list):
-            solution_text += f'\\item {solution}: {definition_list[i][1]}' + '\n' 
-        solution_text += r'\end{enumerate}' + '\n'
-
-        self.exercise = exercise
-        self.solution = solution_text
-
-    def finish_import(self):
-        self.exercise_dict['exercise'] = self.exercise
-        self.exercise_dict['solution'] = self.solution
-
+        solution = r'\begin{enumerate}' + '\n'
+        for dictionary in dicts:
+            word = dictionary['word']
+            sentence = dictionary['sentence']
+            definition = dictionary['definition']
+            question, _ = replace_term(
+                original_string=sentence,
+                old_value=word,
+                new_value='\\fillin'
+            )
+            options = dictionary['other received pronunciations'] + [dictionary['received pronunciation']]
+            random.shuffle(options)
+            correct_answer_index = options.index(dictionary['received pronunciation'])
+            option_labels = ['A', 'B', 'C', 'D']
+            exercise += '\\question ' + question + '\n\n'
+            exercise += r'\begin{oneparchoices}' + '\n'
+            for option in options:
+                if option == dictionary['received pronunciation']:
+                    exercise += r'\CorrectChoice ' + option + '\n'
+                else:
+                    exercise += r'\choice ' + option + '\n'
+            exercise += r'\end{oneparchoices}' + '\n'
+            exercise += r'\answerline' + '\n'
+            solution += r'\item ' + option_labels[correct_answer_index] + r' \\qquad ' + word + '. ' + definition + '\n'
+        solution += r'\end{enumerate}' + '\n'
+        return exercise, solution
+        
+    
+    def _flatten_word_entries(self, word_entries: dict):
+        flattened_entries = []
+        for word in word_entries:
+            for definition in word_entries[word]:
+                flattened_entries.append({word: definition})
+        return flattened_entries
+             
 
 class ExerciseFactory:
     def create_exercise(self, exercise_type:str, word_entries:dict):
@@ -873,26 +574,12 @@ class ExerciseFactory:
         Raises:
             ValueError: If the exercise type is invalid.
         '''
-        if exercise_type == 'Reading':
-            return ReadingExercise(word_entries=word_entries)
-        elif exercise_type == 'Collocation':
-            return CollocationExercise(word_entries=word_entries)
-        elif exercise_type == 'Cloze':
-            return ClozeExercise(word_entries=word_entries)
-        elif exercise_type == 'Fill in the gap':
+        if exercise_type == 'Fill in the gap':
             return FillInTheGapExercise(word_entries=word_entries)
-        elif exercise_type == 'Definition':
-            return Definition(word_entries=word_entries)
-        elif exercise_type == 'Dialogue':
-            return DialogueExercise(word_entries=word_entries)
         elif exercise_type == 'Translation':
             return TranslationExercise(word_entries=word_entries)
-        elif exercise_type == 'Comprehension':
-            return ComprehensionExercise(word_entries=word_entries)
-        elif exercise_type == 'Sentence Order':
-            return SentenceOrderExercise(word_entries=word_entries)
-        elif exercise_type == 'Spelling':
-            return SpellingExercise(word_entries=word_entries)
+        elif exercise_type == 'Correction':
+            return SentenceCorrectionExercise(word_entries=word_entries)
         raise ValueError('Invalid exercise type!')
     
 

@@ -5,6 +5,7 @@ import requests
 from numpy import random
 import csv
 import re
+from abc import ABC, abstractmethod
 
 
 class Configurator:
@@ -101,7 +102,6 @@ class AnkiCommunicator:
         return response
 
 
-
 class AnkiCardWriter:
     '''
     The writer takes a list of word entries as an input. The user can use the method `write_cards` to create a csv file that are suitable for Anki imports.
@@ -134,6 +134,7 @@ class AnkiCardWriter:
             Chinese = stack[card_id]['Chinese']
             examples = stack[card_id]['examples']
             part_of_speech = stack[card_id]['part of speech']
+            pronunciation = stack[card_id]['received pronunciation']
             front += '<b>' + word + '</b>' + '<br>' + '<br>'
             for sentence in examples:
                 front += '<i>' + sentence + '</i>' + '<br>'
@@ -145,4 +146,29 @@ class AnkiCardWriter:
             anki_card.append(back)
             self.Anki_cards_string.append(anki_card)
 
+
+class StackOrganizer(ABC):
+    def __init__(self, stack:dict):
+        self.stack = deepcopy(stack)
+
+    def reorganize(self):
+        return self._reorganize(self.stack)
+
+    @abstractmethod
+    def _reorganize(self, stack:dict):
+        pass
+
+
+class StackOrganizerForFillInTheGap(StackOrganizer):
+    def __init__(self, stack: dict):
+        super().__init__(stack)
     
+    def _reorganize(self, stack: dict):
+        result = {}
+        for card_id in stack:
+            word = stack[card_id]['word']
+            if word in result:
+                result['word'].append(stack[card_id]['definition'])
+            else:
+                result['word'] = [stack[card_id]['definition']]
+        return result
