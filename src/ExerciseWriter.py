@@ -73,3 +73,4 @@ class ExerciseWriter():
         rendered_template = template.render(**kwargs)
         with open(output_file_path, 'w') as f:
             f.write(rendered_template)
+        print(f'File written to {output_file_path}')
