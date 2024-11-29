@@ -1,8 +1,34 @@
 {
-    "": {
-        "Definition": "",
-        "Example": "",
-        "Usage": "",
-        "Chinese": ""
+    "20000101": {
+        "word": "vocabulary",
+        "part of speech": "variable noun",
+        "received pronunciation": "voh-KAB-yuh-lair-ee",
+        "forms": "vocabularies",
+        "Chinese": "词汇量",
+        "definition": "Your vocabulary is the total number of words you know in a particular language.",
+        "patterns": [],
+        "explanation": "“vocabulary”的意思是词汇量。",
+        "collocations": {
+            "adjective": [
+                {
+                    "English": "extensive vocabulary",
+                    "Chinese": "丰富的词汇量"
+                },
+                {
+                    "English": "limited vocabulary",
+                    "Chinese": "有限的词汇量"
+                },
+                {
+                    "English": "vast vocabulary",
+                    "Chinese": "丰富的词汇量"
+                }
+            ]
+        },
+        "examples": [
+            {
+                "sentence": "He has an extensive vocabulary.",
+                "Chinese": "他的词汇量很丰富。"
+            }
+        ]
     }
 }

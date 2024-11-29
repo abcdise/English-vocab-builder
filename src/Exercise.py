@@ -106,38 +106,6 @@ def swap_words(sentence, word1, word2):
     return sentence
 
 
-def int_to_roman(num):
-        """
-        Converts an integer to a Roman numeral.
-
-        Args:
-            num (int): The integer to be converted.
-
-        Returns:
-            str: The Roman numeral representation of the integer.
-        """
-        val = [
-            1000, 900, 500, 400,
-            100, 90, 50, 40,
-            10, 9, 5, 4,
-            1
-        ]
-        syms = [
-            "M", "CM", "D", "CD",
-            "C", "XC", "L", "XL",
-            "X", "IX", "V", "IV",
-            "I"
-        ]
-        roman_numeral = ''
-        i = 0
-        while num > 0:
-            for _ in range(num // val[i]):
-                roman_numeral += syms[i]
-                num -= val[i]
-            i += 1
-        return roman_numeral
-
-
 class Exercise(ABC):
 
     def __init__(self, word_entries:dict):
@@ -580,10 +548,9 @@ class ExerciseFactory:
             return TranslationExercise(word_entries=word_entries)
         elif exercise_type == 'Correction':
             return SentenceCorrectionExercise(word_entries=word_entries)
+        elif exercise_type == 'Multiple choice':
+            return VocabMultipleChoiceExercise(word_entries=word_entries)
         raise ValueError('Invalid exercise type!')
-    
-
-class ExerciseGatherer:
     """
     A class that represents an exercise gatherer.
 
@@ -614,19 +581,3 @@ class ExerciseGatherer:
         """
         exercise_ = deepcopy(exercise)
         self.exercise_set.append(exercise_)
-
-    def get_exercise_set(self, set_index, last_set=True):
-        """
-        Retrieves an exercise set based on the set index.
-
-        Args:
-            set_index (int): The index of the exercise set.
-            last_set (bool): Flag indicating whether to retrieve the last set or not.
-
-        Returns:
-            tuple: A tuple containing the set index (in Roman numeral) and the exercise set.
-        """
-        if last_set:
-            return int_to_roman(set_index), self.exercise_set[-1]
-        else:
-            return int_to_roman(set_index), self.exercise_set[set_index-1]
