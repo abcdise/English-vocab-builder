@@ -5,6 +5,7 @@
 \usepackage[french,british,german]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
+\usepackage[]{mdframed}
 \usepackage{multicol}
 \usepackage{dialogue}
 \usepackage[a4paper, margin={1in, 3cm}]{geometry}
@@ -20,23 +21,23 @@
 
 \newcommand{\trianglebullet}{$\triangleright$ }
 
-\newcommand{\vocabulary}[2]{
+\newcommand{\Vocabulary}[7]{
 
 \vspace{4ex}
 
-\noindent \textbf{{#1}} \quad {#2} 
+\noindent \textbf{{#1}}
 
-}
+\noindent \trianglebullet \textsc{#2} \qquad  {#3} \qquad {#4}
 
-\newcommand{\defitem}[3]{\noindent \trianglebullet \textsc{#1}. \ {#2} 
+\noindent \textit {#5} 
 
-\vspace{-1.5ex}
-
-\begin{displayquote}
-\textit{#3}
-\end{displayquote}
-
-
+\begin{mdframed}
+{#6} 
+\vspace{-2ex}
+\begin{itemize}[label=-]
+	{#7}
+\end{itemize}
+\end{mdframed}
 }
 
 \newcommand{\tf}[1][{}]{%
@@ -48,6 +49,7 @@
 \begin{document}
 
 \section{Vocabulary Preview}
+\begin{CJK*}{UTF8}{gbsn}
 
 %\subfile{./Definition/output_1.tex}
 %\subfile{./Definition/output_2.tex}
@@ -69,6 +71,9 @@
 %\subfile{./Definition/output_18.tex}
 %\subfile{./Definition/output_19.tex}
 %\subfile{./Definition/output_20.tex}
+
+	
+\end{CJK*}
 
 
 \newpage
@@ -101,76 +106,7 @@
 \newpage
 \section{Exercise}
 
-\noindent \textit{1. Answer the following questions with Y for yes or N for no.}
-
-%\subfile{./Comprehension/output_1.tex}
-%\subfile{./Comprehension/output_2.tex}
-%\subfile{./Comprehension/output_3.tex}
-%\subfile{./Comprehension/output_4.tex}
-%\subfile{./Comprehension/output_5.tex}
-%\subfile{./Comprehension/output_6.tex}
-%\subfile{./Comprehension/output_7.tex}
-%\subfile{./Comprehension/output_8.tex}
-%\subfile{./Comprehension/output_9.tex}
-%\subfile{./Comprehension/output_10.tex}
-%\subfile{./Comprehension/output_11.tex}
-%\subfile{./Comprehension/output_12.tex}
-%\subfile{./Comprehension/output_13.tex}
-%\subfile{./Comprehension/output_14.tex}
-%\subfile{./Comprehension/output_15.tex}
-%\subfile{./Comprehension/output_16.tex}
-%\subfile{./Comprehension/output_17.tex}
-%\subfile{./Comprehension/output_18.tex}
-%\subfile{./Comprehension/output_19.tex}
-%\subfile{./Comprehension/output_20.tex}
-
-\noindent \textit{2. Choose the option that makes the most sense.}
-
-%\subfile{./Collocation/output_1.tex}
-%\subfile{./Collocation/output_2.tex}
-%\subfile{./Collocation/output_3.tex}
-%\subfile{./Collocation/output_4.tex}
-%\subfile{./Collocation/output_5.tex}
-%\subfile{./Collocation/output_6.tex}
-%\subfile{./Collocation/output_7.tex}
-%\subfile{./Collocation/output_8.tex}
-%\subfile{./Collocation/output_9.tex}
-%\subfile{./Collocation/output_10.tex}
-%\subfile{./Collocation/output_11.tex}
-%\subfile{./Collocation/output_12.tex}
-%\subfile{./Collocation/output_13.tex}
-%\subfile{./Collocation/output_14.tex}
-%\subfile{./Collocation/output_15.tex}
-%\subfile{./Collocation/output_16.tex}
-%\subfile{./Collocation/output_17.tex}
-%\subfile{./Collocation/output_18.tex}
-%\subfile{./Collocation/output_19.tex}
-%\subfile{./Collocation/output_20.tex}
-
-\noindent \textit{3. Answer the following questions.}
-
-%\subfile{./Spelling/output_1.tex}
-%\subfile{./Spelling/output_2.tex}
-%\subfile{./Spelling/output_3.tex}
-%\subfile{./Spelling/output_4.tex}
-%\subfile{./Spelling/output_5.tex}
-%\subfile{./Spelling/output_6.tex}
-%\subfile{./Spelling/output_7.tex}
-%\subfile{./Spelling/output_8.tex}
-%\subfile{./Spelling/output_9.tex}
-%\subfile{./Spelling/output_10.tex}
-%\subfile{./Spelling/output_11.tex}
-%\subfile{./Spelling/output_12.tex}
-%\subfile{./Spelling/output_13.tex}
-%\subfile{./Spelling/output_14.tex}
-%\subfile{./Spelling/output_15.tex}
-%\subfile{./Spelling/output_16.tex}
-%\subfile{./Spelling/output_17.tex}
-%\subfile{./Spelling/output_18.tex}
-%\subfile{./Spelling/output_19.tex}
-%\subfile{./Spelling/output_20.tex}
-
-\noindent \textit{4. Fill in the gaps below using the terms inside the box.}
+\noindent \textit{1. Fill in the gaps below using the terms inside the box.}
 
 %\subfile{./Fill-in-the-gap/output_1.tex}
 %\subfile{./Fill-in-the-gap/output_2.tex}
@@ -193,8 +129,79 @@
 %\subfile{./Fill-in-the-gap/output_19.tex}
 %\subfile{./Fill-in-the-gap/output_20.tex}
 
+ \noindent \textit{2. Read each sentence carefully. If the sentence is grammatically correct, write ``Correct". If you find an error, underline it and write the correct version.}
 
-% \noindent \textit{5. Translate the following sentences using the words inside the box.}
+%\subfile{./Correction/output_1.tex}
+%\subfile{./Correction/output_2.tex}
+%\subfile{./Correction/output_3.tex}
+%\subfile{./Correction/output_4.tex}
+%\subfile{./Correction/output_5.tex}
+%\subfile{./Correction/output_6.tex}
+%\subfile{./Correction/output_7.tex}
+%\subfile{./Correction/output_8.tex}
+%\subfile{./Correction/output_9.tex}
+%\subfile{./Correction/output_10.tex}
+%\subfile{./Correction/output_11.tex}
+%\subfile{./Correction/output_12.tex}
+%\subfile{./Correction/output_13.tex}
+%\subfile{./Correction/output_14.tex}
+%\subfile{./Correction/output_15.tex}
+%\subfile{./Correction/output_16.tex}
+%\subfile{./Correction/output_17.tex}
+%\subfile{./Correction/output_18.tex}
+%\subfile{./Correction/output_19.tex}
+%\subfile{./Correction/output_20.tex}
+
+\noindent \textit{3. Choose the best answer that fits the blank.}
+
+%\subfile{./Collocation/output_1.tex}
+%\subfile{./Collocation/output_2.tex}
+%\subfile{./Collocation/output_3.tex}
+%\subfile{./Collocation/output_4.tex}
+%\subfile{./Collocation/output_5.tex}
+%\subfile{./Collocation/output_6.tex}
+%\subfile{./Collocation/output_7.tex}
+%\subfile{./Collocation/output_8.tex}
+%\subfile{./Collocation/output_9.tex}
+%\subfile{./Collocation/output_10.tex}
+%\subfile{./Collocation/output_11.tex}
+%\subfile{./Collocation/output_12.tex}
+%\subfile{./Collocation/output_13.tex}
+%\subfile{./Collocation/output_14.tex}
+%\subfile{./Collocation/output_15.tex}
+%\subfile{./Collocation/output_16.tex}
+%\subfile{./Collocation/output_17.tex}
+%\subfile{./Collocation/output_18.tex}
+%\subfile{./Collocation/output_19.tex}
+%\subfile{./Collocation/output_20.tex}
+
+\noindent \textit{4. Choose the correct pronunciation for each blank, then write the corresponding word in the space provided.}
+
+%\subfile{./Spelling/output_1.tex}
+%\subfile{./Spelling/output_2.tex}
+%\subfile{./Spelling/output_3.tex}
+%\subfile{./Spelling/output_4.tex}
+%\subfile{./Spelling/output_5.tex}
+%\subfile{./Spelling/output_6.tex}
+%\subfile{./Spelling/output_7.tex}
+%\subfile{./Spelling/output_8.tex}
+%\subfile{./Spelling/output_9.tex}
+%\subfile{./Spelling/output_10.tex}
+%\subfile{./Spelling/output_11.tex}
+%\subfile{./Spelling/output_12.tex}
+%\subfile{./Spelling/output_13.tex}
+%\subfile{./Spelling/output_14.tex}
+%\subfile{./Spelling/output_15.tex}
+%\subfile{./Spelling/output_16.tex}
+%\subfile{./Spelling/output_17.tex}
+%\subfile{./Spelling/output_18.tex}
+%\subfile{./Spelling/output_19.tex}
+%\subfile{./Spelling/output_20.tex}
+
+
+
+
+ \noindent \textit{5. Translate the following sentences into English.}
 
 \begin{CJK*}{UTF8}{gbsn}
 %\subfile{./Translation/output_1.tex}
@@ -219,51 +226,9 @@
 %\subfile{./Translation/output_20.tex}
 \end{CJK*}
 
-% \noindent \textit{6. Read the passages and decide which answer (A, B, C or D) best fits each gap.}
-
-%\subfile{./Cloze/output_1.tex}
-%\subfile{./Cloze/output_2.tex}
-%\subfile{./Cloze/output_3.tex}
-%\subfile{./Cloze/output_4.tex}
-%\subfile{./Cloze/output_5.tex}
-%\subfile{./Cloze/output_6.tex}
-%\subfile{./Cloze/output_7.tex}
-%\subfile{./Cloze/output_8.tex}
-%\subfile{./Cloze/output_9.tex}
-%\subfile{./Cloze/output_10.tex}
-%\subfile{./Cloze/output_11.tex}
-%\subfile{./Cloze/output_12.tex}
-%\subfile{./Cloze/output_13.tex}
-%\subfile{./Cloze/output_14.tex}
-%\subfile{./Cloze/output_15.tex}
-%\subfile{./Cloze/output_16.tex}
-%\subfile{./Cloze/output_17.tex}
-%\subfile{./Cloze/output_18.tex}
-%\subfile{./Cloze/output_19.tex}
-%\subfile{./Cloze/output_20.tex}
 
 
-% \noindent \textit{7. Put the sentences in the correct order.}
 
-%\subfile{./SentenceOrder/output_1.tex}
-%\subfile{./SentenceOrder/output_2.tex}
-%\subfile{./SentenceOrder/output_3.tex}
-%\subfile{./SentenceOrder/output_4.tex}
-%\subfile{./SentenceOrder/output_5.tex}
-%\subfile{./SentenceOrder/output_6.tex}
-%\subfile{./SentenceOrder/output_7.tex}
-%\subfile{./SentenceOrder/output_8.tex}
-%\subfile{./SentenceOrder/output_9.tex}
-%\subfile{./SentenceOrder/output_10.tex}
-%\subfile{./SentenceOrder/output_11.tex}
-%\subfile{./SentenceOrder/output_12.tex}
-%\subfile{./SentenceOrder/output_13.tex}
-%\subfile{./SentenceOrder/output_14.tex}
-%\subfile{./SentenceOrder/output_15.tex}
-%\subfile{./SentenceOrder/output_16.tex}
-%\subfile{./SentenceOrder/output_17.tex}
-%\subfile{./SentenceOrder/output_18.tex}
-%\subfile{./SentenceOrder/output_19.tex}
-%\subfile{./SentenceOrder/output_20.tex}
+
 
 \end{document}

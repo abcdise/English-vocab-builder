@@ -5,7 +5,6 @@ import requests
 from numpy import random
 import csv
 import re
-from abc import ABC, abstractmethod
 
 
 class Configurator:
@@ -131,44 +130,39 @@ class AnkiCardWriter:
             word = stack[card_id]['word']
             forms = stack[card_id]['forms']
             definition = stack[card_id]['definition']
-            Chinese = stack[card_id]['Chinese']
+            Chinese_def = stack[card_id]['Chinese']
             examples = stack[card_id]['examples']
             part_of_speech = stack[card_id]['part of speech']
             pronunciation = stack[card_id]['received pronunciation']
             front += '<b>' + word + '</b>' + '<br>' + '<br>'
-            for sentence in examples:
-                front += '<i>' + sentence + '</i>' + '<br>'
+            for example in examples:
+                front += '<i>' + example['English'] + '</i>' + '<br>'
             back += (part_of_speech + '<br>' + '<br>') if part_of_speech else ''
+            back += pronunciation + '<br>' + '<br>'
             back += (forms + '<br>' + '<br>') if forms else ''
             back += definition
-            back += '<br>' + '<br>' + Chinese + '<br>' + '<br>'
+            back += '<br>' + '<br>' + Chinese_def + '<br>' + '<br>'
             anki_card.append(front)
             anki_card.append(back)
             self.Anki_cards_string.append(anki_card)
 
 
-class StackOrganizer(ABC):
-    def __init__(self, stack:dict):
+class StackOrganizer:
+    def __init__(self, stack: dict, only_single_word=False):
         self.stack = deepcopy(stack)
+        self.only_single_word = only_single_word
 
     def reorganize(self):
-        return self._reorganize(self.stack)
+        return self._reorganize(self.stack, only_single_word=self.only_single_word)
 
-    @abstractmethod
-    def _reorganize(self, stack:dict):
-        pass
-
-
-class StackOrganizerForFillInTheGap(StackOrganizer):
-    def __init__(self, stack: dict):
-        super().__init__(stack)
-    
-    def _reorganize(self, stack: dict):
+    def _reorganize(self, stack: dict, only_single_word: bool):
         result = {}
         for card_id in stack:
             word = stack[card_id]['word']
-            if word in result:
-                result['word'].append(stack[card_id]['definition'])
-            else:
-                result['word'] = [stack[card_id]['definition']]
+            word_count = len(word.split(' '))
+            if only_single_word and word_count > 1:
+                continue
+            if word not in result:
+                result[word] = []
+            result[word].append(stack[card_id])
         return result

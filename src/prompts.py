@@ -1,4 +1,4 @@
-fill_in_the_gap_prompt = r'''You are given a list of JSON files, each containing two terms and their definitions. For each file, write three sentences: the first sentence should introduce the topic, the second sentence should contain the first term, and the third sentence should contain the second term. These sentences should follow each other seamlessly, creating a logical flow that improves comprehension. Use a conversational tone. Always follow the rules of British English spelling in your response. Use the following format for your response:
+fill_in_the_gap_prompt = r'''You are given a list of JSON files, each containing two terms and their definitions. For each file, write three sentences describing a life scene: the first sentence should introduce the topic, the second sentence should contain the first term, and the third sentence should contain the second term. These sentences should follow each other seamlessly, creating a logical flow that improves comprehension. Use a conversational tone. Always follow the rules of British English spelling in your response. Use the following format for your response:
 ```json
 [{"words": ["word 1", "word 2"], "definitions": ["definition 1", "definition 2"], "sentences": "write three sentences here"}]
 ```
@@ -26,25 +26,50 @@ sentence_completion_prompt = r'''You will be provided with a list of phrases. Yo
 Input:
 '''
 
-sentence_correction_prompt = r'''You will receive a list of words, each accompanied by its definition and usage patterns. For each usage pattern, do the following:
-1. Write a grammatically correct sentence that demonstrates the pattern.
-2. Write an incorrect sentence that violates the pattern (e.g., misuse of prepositions, omission of necessary words, or confusion between verb forms such as "to do" vs. "doing"). 
-Format your response using the following structure:
+sentence_correction_prompt = r'''Help me identify common collocation errors made by English learners. You will be provided a list of words along with their collocations in the following structure
+```
+[{"word": "", "pattern":{"key": "", "usage": "", "example": ""}}]
+```
+Your task is to extend the json file. Format your response in the following structure:
 ```json
-[{"word": "write the word", "definition": "write the definition", "pattern": "write the pattern", "correct sentence": "write the correct sentence here", "incorrect sentence": "write the incorrect sentence here"}]
+[{"word": "provided word",  "pattern": {provided pattern}, "incorrect pattern": {"key": "an alternative key that an English learner might mistakenly use in the provided example", "usage": "an incorrect variant of the provided usage", "example": "Replace the original key with the improper keys in the provided example. Ensure the example is not idiomatic in English in ANY context.", "explanation": "Provide a brief explanation of why the incorrect pattern is not idiomatic in English, irrespective of the context."}}]
+```
+Your response should adhere to British English spelling conventions.
+
+Input:
+'''
+
+multiple_choice_prompt = r'''You are a BBC radio presenter. Help me identify words with similar received pronunciations (RP). You will be provided with a list of words with the following structure:
+```
+[{"word": "", "definition": "", "received pronunciation": ""}]
+```
+Your task is to extend the json file. Format your response in the following structure:
+```json
+[{"word": "provided word", "definition": "provided definition", "received pronunciation": "provided pronunciation", "sentence": "Write a sentence using the provided word in its original form, reflecting its given definition.", "similar words": [List three words whose pronunciations share some syllables with the provided word but have different meanings.], "similar received pronunciations": [Write the RPs for the three similar words.]}]
 ```
 
 Input:
 '''
 
-multiple_choice_prompt = r'''You will be provided with a list of words, along with their definitions and received pronunciations (RP). For each word, perform the following tasks:
-1. Write a sentence using the word in its original form, reflecting its given definition.
-2. Identify three other words whose pronunciations share some syllables with the original word but have different meanings.
-3. Write the RPs for these three different words.
-Follow British English spelling conventions when composing the sentences. Format your response as follows:
-```json
-[{"word": "write the word", "definition": "write the definition", "received pronunciation": "write the pronunciation of the word", "sentence": "write the sentence using the word", "other words", ["word 1, "word 2", "word 3"], "other received pronunciations": ["pronunciation 1", "pronunciation 2", "pronunciation 3"]}]
-```
 
+collocation_prompt = r'''Help me identify common collocation errors made by German speakers in English. You will be provided a list of words along with their collocations in the following structure
+```
+[{"word": "", "key": "", "example": ""}]
+```
+Your task is to extend the JSON file with possible collocation errors commonly made by German speakers in English. Format your response in the following structure:
+```json
+[
+    {  
+        "word": "provided word",  
+        "key": "provided key",  
+        "example": "provided example",  
+        "improper keys": ["List two plausible alternatives to the provided key that a German speaker might mistakenly use in the provided example. These should reflect common linguistic patterns, such as direct translations from German or overgeneralised English grammar rules."],  
+        "improper examples": ["Replace the original key with the improper keys in the provided example. Ensure these examples not idiomatic in English in ANY context. Do not list correct collocations as errors."]
+        "explanation": "Provide a brief explanation of why the three keys are not idiomatic in English, irrespective of the context."
+    }  
+]
+
+```
+Your response should adhere to British English spelling conventions.
 Input:
 '''

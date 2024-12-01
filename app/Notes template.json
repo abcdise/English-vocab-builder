@@ -6,29 +6,60 @@
         "forms": "vocabularies",
         "Chinese": "词汇量",
         "definition": "Your vocabulary is the total number of words you know in a particular language.",
+        "examples": [
+            {
+                "English": "He has a good vocabulary.",
+                "Chinese": "他的词汇量很大。"
+            }
+        ],
         "patterns": [],
         "explanation": "“vocabulary”的意思是词汇量。",
         "collocations": {
             "adjective": [
                 {
-                    "English": "extensive vocabulary",
-                    "Chinese": "丰富的词汇量"
-                },
-                {
-                    "English": "limited vocabulary",
-                    "Chinese": "有限的词汇量"
-                },
-                {
-                    "English": "vast vocabulary",
-                    "Chinese": "丰富的词汇量"
+                    "key": "extensive",
+                    "example": {
+                        "English": "extensive vocabulary",
+                        "Chinese": "丰富的词汇量"
+                    }
                 }
             ]
-        },
+        }
+    },
+    "20000102": {
+        "word": "learn",
+        "part of speech": "verb",
+        "received pronunciation": "lurn",
+        "forms": "learns, learning, learned",
+        "Chinese": "学习",
+        "definition": "If you learn something, you find out about it and understand it.",
         "examples": [
             {
-                "sentence": "He has an extensive vocabulary.",
-                "Chinese": "他的词汇量很丰富。"
+                "English": "You can learn a lot from books.",
+                "Chinese": "你可以从书中学到很多东西。"
             }
-        ]
+        ],
+        "patterns": [
+            {
+                "key": "(transitive)",
+                "usage": "learn something",
+                "example": {
+                    "English": "He learned several languages when he was young.",
+                    "Chinese": "他年轻时学会了几门语言。"
+                }
+            }
+        ],
+        "explanation": "“learn”的意思是学习。它是一个及物动词，也可以与动词不定式连用，表示学会做某事。",
+        "collocations": {
+            "noun": [
+                {
+                    "key": "language",
+                    "example": {
+                        "English": "Many mathematicians are not good at learning languages.",
+                        "Chinese": "许多数学家不擅长学习语言。"
+                    }
+                }
+            ]
+        }
     }
 }

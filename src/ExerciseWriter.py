@@ -50,15 +50,14 @@ def int_to_roman(num):
         return roman_numeral
 
 class ExerciseWriter():
-    def __init__(self, exercise: Exercise, template_path:str, output_folder:str):
-        self.exercise = exercise
+    def __init__(self, template_path:str, output_folder:str):
         self.template_file = Path(template_path)
         self.output_folder = Path(output_folder)
 
     
-    def render_template(self, set_index:int):
+    def render_template(self, exercise, set_index:int):
         output_file_path = self.output_folder / f'output_{set_index}.tex'
-        output_dict = self.exercise.exercise_dict
+        output_dict = exercise.get_outputs()
         self.__render_template(output_file_path=output_file_path, 
                                part_name = int_to_roman(set_index),
                                **output_dict
