@@ -31,6 +31,7 @@ sentence_correction_prompt = r'''Assist in developing Sentence Correction questi
 [{"word": "", "pattern":{"usage": "", "example": ""}}]
 ```
 Your task is to extend the json file. Format your response in the following structure:
+## Result
 ```json
 [
   {
@@ -43,7 +44,10 @@ Your task is to extend the json file. Format your response in the following stru
   }
 ]
 ```
-Make sure your response adheres to British English spelling conventions.
+## Explanation
+Write the reasons why you chose the synonyms.
+
+Note: Make sure your response adheres to British English spelling conventions.
 
 Input:
 '''
