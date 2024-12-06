@@ -480,7 +480,7 @@ class CollocationMultipleChoiceExercise(Exercise):
             options = dictionary['improper keys'] + [key]
             random.shuffle(options)
             correct_answer_index = options.index(key)
-            option_labels = ['A', 'B', 'C']
+            option_labels = ['A', 'B', 'C', 'D']
             solution_list.append(option_labels[correct_answer_index])
             exercise += '\\question ' + self._string_processing(question) + '\n\n'
             exercise += r'\begin{oneparchoices}' + '\n'
@@ -498,11 +498,12 @@ class CollocationMultipleChoiceExercise(Exercise):
         flattened_entries = []
         for word in word_entries:
             for entry in word_entries[word]:
+                definition = entry['definition']
                 collocations = entry['collocations']
                 for category in collocations:
                     if category != 'noun':
                         for collocation in collocations[category]:
-                            flattened_entries.append({word: {'key': collocation['key'], 'example': collocation['example']['English']}})
+                            flattened_entries.append({word: {'category': category, 'definition': definition, 'key': collocation['key']}})
         return flattened_entries
              
 
