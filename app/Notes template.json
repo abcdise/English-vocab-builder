@@ -41,11 +41,17 @@
         ],
         "patterns": [
             {
-                "key": "(transitive)",
-                "usage": "learn something",
+                "usage": "someone learns something",
                 "example": {
                     "English": "He learned several languages when he was young.",
                     "Chinese": "他年轻时学会了几门语言。"
+                }
+            },
+            {
+                "usage": "someone learns to do something",
+                "example": {
+                    "English": "I learned to swim when I was a child.",
+                    "Chinese": "我小时候学会了游泳。"
                 }
             }
         ],

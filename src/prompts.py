@@ -26,7 +26,7 @@ sentence_completion_prompt = r'''You will be provided with a list of phrases. Yo
 Input:
 '''
 
-sentence_correction_prompt = r'''Help me identify common pattern errors made by English learners. You will be provided with a list of words along with their usage patterns using the following structure:
+sentence_correction_prompt = r'''Assist in developing Sentence Correction questions for the upcoming SAT exam by identifying and expanding upon common pattern errors in English. You will receive a list of words with their usage patterns, structured as follows:
 ```
 [{"word": "", "pattern":{"usage": "", "example": ""}}]
 ```
@@ -35,15 +35,15 @@ Your task is to extend the json file. Format your response in the following stru
 [
   {
     "word": "provided word",
-    "pattern": {provided pattern},
+    "pattern": {"usage": "provided usage", "example": "provided example"},
     "incorrect pattern": {
-      "usage": "a variant of the provided usage containing grammatical errors, such as incorrect prepositions, confusion between transitive and intransitive verbs, or mixing up infinitives and gerunds. Be creative in inventing errors.",
-      "example": "Rewrite the provided example using the incorrect usage."
+      "usage": "Introduce grammatical errors by altering the provided usage. For example, use a transitive verb intransitively, or modify an infinitive to a gerund. Be creative in crafting errors.",
+      "example": "Revise the provided example to reflect the incorrect usage."
     }
   }
 ]
 ```
-Your response should adhere to British English spelling conventions.
+Make sure your response adheres to British English spelling conventions.
 
 Input:
 '''
@@ -61,23 +61,21 @@ Input:
 '''
 
 
-collocation_prompt = r'''Help me identify common collocation errors in English. You will be provided a list of words along with their collocations in the following structure
-```
-[{"word": "", "key": "", "example": ""}]
-```
-Your task is to extend the JSON file with collocation errors. Format your response in the following structure:
-```json
-[
-    {
-        "word": "provided word",
-        "key": "provided key",
-        "example": "provided example",
-        "improper keys": ["Identify two synonyms of the provided key that, when used to replace the key in the provided example, result in clear collocation errors. Be creative in your choices."],
-        "improper examples": ["Replace the original key in the example with the incorrect keys."]
-    }
-]
-```
+collocation_prompt = r'''Assist in developing Sentence Correction questions for the upcoming English exam by identifying common collocation errors in English. You will be provided a list of words along with their definitions in the structure
+"""
+[{"word": "", "definition": "", "category": "", "key": ""}]
+"""
+Your task is to choose three synonym of the provided key that never collocate with the "word" in standard British English. Be creative in your choices.
 
-Your response should adhere to British English spelling conventions.
+Note:
+- Your response should adhere to British English spelling conventions. 
+- Use the following structure for your response
+ ## Result
+```
+[{"word": "provided word", "category": "provided category", "key": "provided key", "synonym": ["three synonyms of the provided that don't collocate with the provided word"]}]
+```
+## Explanation
+Write the reasons why you chose the synonyms.
+
 Input:
 '''

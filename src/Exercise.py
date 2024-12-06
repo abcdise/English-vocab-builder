@@ -372,7 +372,7 @@ class SentenceCorrectionExercise(Exercise):
         for word in word_entries:
             for entries in word_entries[word]:
                 for pattern in entries['patterns']:
-                    flattened_entries.append({'word': word, 'definition': entries['definition'], 'pattern': {'key': pattern['key'], 'usage': pattern['usage'], 'example': pattern['example']['English']}})
+                    flattened_entries.append({'word': word, 'pattern': {'usage': pattern['usage'], 'example': pattern['example']['English']}})
         return flattened_entries
 
 
