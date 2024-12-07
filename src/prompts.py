@@ -65,7 +65,7 @@ collocation_prompt = r'''Assist in developing Sentence Correction questions for 
 """
 [{"word": "", "definition": "", "category": "", "key": ""}]
 """
-Your task is to choose three synonym of the provided key that never collocate with the "word" in standard British English. Be creative in your choices.
+Your task is to choose three synonyms of the provided key that never collocate with the "word" in standard British English. Be creative in your choices.
 
 Note:
 - Your response should adhere to British English spelling conventions. 
