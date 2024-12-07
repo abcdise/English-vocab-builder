@@ -5,6 +5,7 @@ import requests
 from numpy import random
 import csv
 import re
+from abc import ABC, abstractmethod
 
 
 class Configurator:
@@ -101,30 +102,45 @@ class AnkiCommunicator:
         return response
 
 
-class AnkiCardWriter:
+class AnkiCardWriter(ABC):
     '''
     The writer takes a list of word entries as an input. The user can use the method `write_cards` to create a csv file that are suitable for Anki imports.
     '''
     def __init__(self, stack: dict):
         self.stack = stack
+        self.anki_cards_front : list = []
+        self.anki_cards_back : list = []
         self.Anki_cards_string = []
 
 
     def write_cards(self, csv_path = str, shuffle_cards=True):
-        self.__write_cards(self.stack)
+        self.anki_cards_front, self.anki_cards_back = self.__write_cards(self.stack)
+        for i in range(len(self.anki_cards_front)):
+            self.Anki_cards_string.append(self.anki_cards_front[i])
+            self.Anki_cards_string.append(self.anki_cards_back[i])
         if shuffle_cards:
             random.shuffle(self.Anki_cards_string)
         with open(csv_path, 'w', encoding='utf-8') as file:
             writer = csv.writer(file, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
             writer.writerows(self.Anki_cards_string)
 
+    @abstractmethod
+    def __write_cards(self, stack: dict):
+        pass
+
+    
+
+class PassiveAnkiCardWriter(AnkiCardWriter):
+    def __init__(self, stack):
+        super().__init__(stack)
 
     def __write_cards(self, stack: dict):
         '''
         Updates the list `self.Anki_cards`.
         '''
         for card_id in stack:
-            anki_card = []
+            anki_card_front = []
+            anki_card_back = []
             front = ''
             back = '<i>' + card_id + '</i>' + '<br>' + '<br>'
             word = stack[card_id]['word']
@@ -142,9 +158,37 @@ class AnkiCardWriter:
             back += (forms + '<br>' + '<br>') if forms else ''
             back += definition
             back += '<br>' + '<br>' + Chinese_def + '<br>' + '<br>'
-            anki_card.append(front)
-            anki_card.append(back)
-            self.Anki_cards_string.append(anki_card)
+            anki_card_front.append(front)
+            anki_card_back.append(back)
+        return anki_card_front, anki_card_back
+    
+    
+def ActiveAnkiCardWriter(AnkiCardWriter):
+    def __init__(self, stack):
+        super().__init__(stack)
+
+    def __write_cards(self, stack: dict):
+        '''
+        Updates the list `self.Anki_cards`.
+        '''
+        for card_id in stack:
+            anki_card_front = []
+            anki_card_back = []
+            front = ''
+            back = '<i>' + card_id + '</i>' + '<br>' + '<br>'
+            word = stack[card_id]['word']
+            definition = stack[card_id]['definition']
+            assert len(stack[card_id]['examples']) > 0, f'No examples found for the word {word}'
+            example = stack[card_id]['examples'][0]
+            front += example['Chinese'] + '<br>' + '<br>'
+            back += example['English'] + '<br>' + '<br>'
+            back += '<b>' + word + '</b>' + '<br>' + '<br>'
+            back += '<i>' + definition + '</i>'
+            anki_card_front.append(front)
+            anki_card_back.append(back)
+        return anki_card_front, anki_card_back
+
+
 
 
 class StackOrganizer:
