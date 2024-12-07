@@ -5,7 +5,6 @@ from copy import deepcopy
 import random
 import prompts
 import json
-from pathlib import Path
 import spacy
 
 nlp = spacy.load('en_core_web_sm')
