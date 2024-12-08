@@ -163,7 +163,7 @@ class PassiveAnkiCardWriter(AnkiCardWriter):
         return anki_card_front, anki_card_back
     
     
-def ActiveAnkiCardWriter(AnkiCardWriter):
+class ActiveAnkiCardWriter(AnkiCardWriter):
     def __init__(self, stack):
         super().__init__(stack)
 
@@ -187,8 +187,6 @@ def ActiveAnkiCardWriter(AnkiCardWriter):
             anki_card_front.append(front)
             anki_card_back.append(back)
         return anki_card_front, anki_card_back
-
-
 
 
 class StackOrganizer:

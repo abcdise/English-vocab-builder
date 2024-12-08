@@ -148,5 +148,37 @@ def string_processing_for_latex(text):
     text = text.replace('£', '\\pounds')
 
     return text
+
+
+def int_to_roman(num):
+        """
+        Converts an integer to a Roman numeral.
+
+        Args:
+            num (int): The integer to be converted.
+
+        Returns:
+            str: The Roman numeral representation of the integer.
+        """
+        val = [
+            1000, 900, 500, 400,
+            100, 90, 50, 40,
+            10, 9, 5, 4,
+            1
+        ]
+        syms = [
+            "M", "CM", "D", "CD",
+            "C", "XC", "L", "XL",
+            "X", "IX", "V", "IV",
+            "I"
+        ]
+        roman_numeral = ''
+        i = 0
+        while num > 0:
+            for _ in range(num // val[i]):
+                roman_numeral += syms[i]
+                num -= val[i]
+            i += 1
+        return roman_numeral
     
 
