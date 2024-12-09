@@ -114,7 +114,7 @@ class AnkiCardWriter(ABC):
 
 
     def write_cards(self, csv_path = str, shuffle_cards=True):
-        self.anki_cards_front, self.anki_cards_back = self.__write_cards(self.stack)
+        self.anki_cards_front, self.anki_cards_back = self._write_cards(self.stack)
         for i in range(len(self.anki_cards_front)):
             self.Anki_cards_string.append(self.anki_cards_front[i])
             self.Anki_cards_string.append(self.anki_cards_back[i])
@@ -125,7 +125,7 @@ class AnkiCardWriter(ABC):
             writer.writerows(self.Anki_cards_string)
 
     @abstractmethod
-    def __write_cards(self, stack: dict):
+    def _write_cards(self, stack: dict):
         pass
 
     
@@ -134,7 +134,7 @@ class PassiveAnkiCardWriter(AnkiCardWriter):
     def __init__(self, stack):
         super().__init__(stack)
 
-    def __write_cards(self, stack: dict):
+    def _write_cards(self, stack: dict):
         '''
         Updates the list `self.Anki_cards`.
         '''
@@ -167,7 +167,7 @@ class ActiveAnkiCardWriter(AnkiCardWriter):
     def __init__(self, stack):
         super().__init__(stack)
 
-    def __write_cards(self, stack: dict):
+    def _write_cards(self, stack: dict):
         '''
         Updates the list `self.Anki_cards`.
         '''
