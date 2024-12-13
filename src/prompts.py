@@ -3,7 +3,7 @@ fill_in_the_gap_prompt = r'''You are given a list of JSON files, each containing
 [{"words": ["word 1", "word 2"], "definitions": ["definition 1", "definition 2"], "sentences": "write the sentences here"}]
 ```
 
-Input:
+Try the following:
 '''
 
 reading_prompt = r'''You will be provided with a list of JSON files, where each file contains a word and its definition. Your task is to write a detailed diary entry in one paragraph that incorporates all the words. Ensure each word appears only once in your diary. Before writing the diary, create a clear outline to organise your thoughts. Use a conversational and straightforward tone in your writing, adhering to British English spelling conventions. Format your response as follows:
@@ -15,7 +15,7 @@ reading_prompt = r'''You will be provided with a list of JSON files, where each 
 }
 ```
 
-Input:
+Try the following:
 '''
 
 sentence_completion_prompt = r'''You will be provided with a list of phrases. Your task is to write a full sentence for each given phrase. The sentence should adhere to British English spelling conventions. Format your response as follows:
@@ -23,7 +23,7 @@ sentence_completion_prompt = r'''You will be provided with a list of phrases. Yo
 [{"phrase": "write the phrase", "sentence": "write the sentence containing the phrase"}]
 ```
 
-Input:
+Try the following:
 '''
 
 sentence_correction_prompt = r'''Assist in developing Sentence Correction questions for the upcoming SAT exam by identifying and expanding upon common pattern errors in English. You will receive a list of words with their usage patterns, structured as follows:
@@ -31,7 +31,6 @@ sentence_correction_prompt = r'''Assist in developing Sentence Correction questi
 [{"word": "", "pattern":{"usage": "", "example": ""}}]
 ```
 Your task is to extend the json file. Format your response in the following structure:
-## Result
 ```json
 [
   {
@@ -44,12 +43,8 @@ Your task is to extend the json file. Format your response in the following stru
   }
 ]
 ```
-## Explanation
-Write the reasons why you chose the synonyms.
 
-Note: Make sure your response adheres to British English spelling conventions.
-
-Input:
+Try the following:
 '''
 
 multiple_choice_prompt = r'''You are a BBC radio presenter. Help me identify words with similar received pronunciations (RP). You will be provided with a list of words with the following structure:
@@ -61,25 +56,19 @@ Your task is to extend the json file. Format your response in the following stru
 [{"word": "provided word", "definition": "provided definition", "received pronunciation": "provided pronunciation", "sentence": "Write a sentence using the provided word in its original form, reflecting its given definition.", "similar words": [List three words whose pronunciations share some syllables with the provided word but have different meanings.], "similar received pronunciations": [Write the RPs for the three similar words.]}]
 ```
 
-Input:
+Try the following:
 '''
 
 
-collocation_prompt = r'''Assist in developing Sentence Correction questions for the upcoming English exam by identifying common collocation errors in English. You will be provided a list of words along with their definitions in the structure
-"""
-[{"word": "", "definition": "", "category": "", "key": ""}]
-"""
-Your task is to choose three synonyms of the provided key that never collocate with the "word" in standard British English. Be creative in your choices.
-
-Note:
-- Your response should adhere to British English spelling conventions. 
-- Use the following structure for your response
- ## Result
+collocation_prompt = r'''You will be provided with a list of words, a "key" (a word that collocates correctly with the given word), and an example sentence in the following format:
+```json
+[{"word": "", "key": "", "example": ""}]
 ```
-[{"word": "provided word", "category": "provided category", "key": "provided key", "synonym": ["three synonyms of the provided that don't collocate with the provided word"]}]
-```
-## Explanation
-Write the reasons why you chose the synonyms.
 
-Input:
+Based on the given sentence, write an elaborate sentence where the "word" is paired with the correct "key". Use British English spelling and grammar conventions throughout your response. Provide your response in the following JSON structure:
+```json
+[{"word": "provided word", "key": "provided key","new example": "new example sentence", "where": "the collocation in the new example"}]
+```
+
+Try the following:
 '''
