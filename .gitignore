@@ -2,9 +2,6 @@
 .venv
 **/__pycache__/
 
-# Jupyter Notebook
-playground.ipynb
-
 # OS generated files
 .DS_Store
 .vscode

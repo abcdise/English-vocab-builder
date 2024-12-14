@@ -157,27 +157,34 @@ class FillInTheGapExercise(Exercise):
         # Add elements to the list exercise_list
         for dict in dicts:
             word = dict['words'][1]
-            sentence = dict['sentences']
-            sentences = sentence.split('. ')
-            first_sentence = string_processing_for_latex(sentences[0]) + '.'
-            second_sentence = string_processing_for_latex(sentences[1]) + '.'
-            third_sentence = string_processing_for_latex(sentences[2])
+            conversation = dict['conversation']
+            dialogue_A = conversation[0]
+            dialogue_B = conversation[1]
+            # Preprocess the dialogues
+            if 'A:' in dialogue_A and 'B:' in dialogue_B:
+                dialogue_A = dialogue_A.replace('A:', '').strip()
+                dialogue_B = dialogue_B.replace('B:', '').strip()
+                dialogue_A = string_processing_for_latex(dialogue_A)
+                dialogue_B = string_processing_for_latex(dialogue_B)
             definition = dict['definitions'][1]
-            question, sol_list = replace_term(
-                original_string=second_sentence,
+            dialogue_B_gap, sol_list = replace_term(
+                original_string=dialogue_B,
                 old_value=word,
                 new_value=f'\\fillin[{word}][{len(word) ** 0.1 - 0.3:.2f}in]'
             )
-            if question != second_sentence:
-                question = first_sentence + ' ' + question + ' ' + third_sentence
+            if dialogue_B_gap != dialogue_B:
+                question = '\\begin{dialogue} ' + '\\speak{A} ' + dialogue_A + ' \\speak{B} ' + dialogue_B_gap + ' \\end{dialogue}'
                 exercise_list.append((question, ', '.join(sol_list), definition))
         random.shuffle(exercise_list)
         # Write the LaTeX code for the exercise and the solution
         ex = ''
         sol = r'\begin{enumerate}' + '\n'
         for exercise in exercise_list:
-            ex += r'\question ' + exercise[0] + '\n'
-            sol += r'\item ' + exercise[1] + '. ' + self._string_processing(exercise[2]) + '\n'
+            question = exercise[0]
+            solution = exercise[1]
+            definition = exercise[2]
+            ex += '\\question\\ ' + question + '\n'
+            sol += '\\item ' + solution + '. ' + '\\textit{' + string_processing_for_latex(definition) + '}' + '\n'
         sol += r'\end{enumerate}' + '\n'
         return ex, sol
 
@@ -209,10 +216,10 @@ class TranslationExercise(Exercise):
         exercise = ''
         solution = r'\begin{enumerate}' + '\n'
         for dictionary in dicts:
-            solution += r'\item ' + self._string_processing(dictionary['English']) + '\n'
+            solution += r'\item ' + string_processing_for_latex(dictionary['English']) + '\n'
             exercise += r'\question ' + dictionary['Chinese'] + '\n'
             exercise += r'\begin{solutionbox}{10ex}' + '\n'
-            exercise += self._string_processing(dictionary['English']) + '\n'
+            exercise += string_processing_for_latex(dictionary['English']) + '\n'
             exercise += r'\end{solutionbox}' + '\n'
         solution += r'\end{enumerate}' + '\n'
         return exercise, solution
@@ -330,7 +337,7 @@ class VocabMultipleChoiceExercise(Exercise):
                     exercise += r'\choice ' + option + '\n'
             exercise += r'\end{oneparchoices}' + '\n'
             exercise += r'\answerline' + '\n'
-            solution += r'\item ' + option_labels[correct_answer_index] + ' \\qquad ' + solution_list[0] + '. \n\n' + definition + '\n'
+            solution += r'\item ' + option_labels[correct_answer_index] + ' \\qquad ' + solution_list[0] + '. \n\n' + '\\textit{' + string_processing_for_latex(definition) + '}' + '\n'
         solution += r'\end{enumerate}' + '\n'
         return exercise, solution
         

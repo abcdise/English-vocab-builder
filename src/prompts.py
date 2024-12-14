@@ -1,6 +1,7 @@
-fill_in_the_gap_prompt = r'''You are given a list of JSON files, each containing two terms and their definitions. For each file, write three sentences describing a scene: the first sentence should contain the first term, and the second sentence should contain the second term. Use a straightforward tone. Always follow the rules of British English spelling in your response. Use the following format for your response:
+fill_in_the_gap_prompt = r'''You are given a list of JSON files, each containing two terms and their definitions. For each file, create a dialogue consisting of two exchanges between two British men. The first man should use the first term, while the second man should use the second term. Follow the rules of British English spelling in your response. Use the following format for your response:
+
 ```json
-[{"words": ["word 1", "word 2"], "definitions": ["definition 1", "definition 2"], "sentences": "write the sentences here"}]
+[{"words": ["word 1", "word 2"], "definitions": ["definition 1", "definition 2"], "background": "brief description of the background of the conversation", "conversation": ["what A says", "what B says"]}]
 ```
 
 Try the following:
