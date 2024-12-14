@@ -5,6 +5,7 @@ import requests
 from numpy import random
 import csv
 import re
+import datetime
 from abc import ABC, abstractmethod
 
 
@@ -38,6 +39,14 @@ class Configurator:
         return list_to_return
     
 
+    def revert_last_study(self):
+        self.config['timestamp'] = self.config['last timestamp']
+        self.config['unlearned'] += self.config['last learned']
+        self.config['learned'] = [word for word in self.config['learned'] if word not in self.config['last learned']]
+        self.__export()
+
+    
+
     def study_n_words(self, n:int):
         new_list = self.config['unlearned']
         review_list = self.config['learned']
@@ -46,6 +55,10 @@ class Configurator:
         new_list = [word for word in new_list if word not in new_word_list]
         self.config['learned'] = deepcopy(review_list)
         self.config['unlearned'] = deepcopy(new_list)
+        self.config['last learned'] = new_word_list
+        assert self.config['timestamp'] != datetime.datetime.now(), 'You have already studied today.'
+        self.config['last timestamp'] = self.config['timestamp']
+        self.config['timestamp'] = datetime.datetime.now()
         self.__export()
 
 

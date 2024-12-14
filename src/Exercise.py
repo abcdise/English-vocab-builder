@@ -410,7 +410,7 @@ class CollocationFillInTheGap(Exercise):
                             key = collocation['key']
                             flattened_entries.append({word: {'key': key, 'example': example}})
         return flattened_entries
-             
+            
 
 class ExerciseFactory:
     def create_exercise(self, exercise_type:str, word_entries:dict):
