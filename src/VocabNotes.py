@@ -23,7 +23,7 @@ class VocabNotes:
                 examples = note['examples']
                 patterns = note['patterns']
                 explanation = note['explanation']
-                pronunciation = note['received pronunciation']
+                pronunciation = note['British received pronunciation']
                 def_text += '\\Vocabulary{' + word + '}'
                 def_text += '{' + part_of_speech + '}'
                 def_text += '{/' + pronunciation + '/}' if pronunciation else '{}'
@@ -39,7 +39,8 @@ class VocabNotes:
                         items_1.append((collocation['example']['English'], collocation['example']['Chinese']))
                 items_2 = []
                 for pattern in patterns:
-                    items_2.append((pattern['usage'], pattern['example']['English'], pattern['example']['Chinese']))
+                    if pattern:
+                        items_2.append((pattern['usage'], pattern['example']['English'], pattern['example']['Chinese']))
                 for item in items_2:
                     def_text += '\\item ' + self._string_processing(item[0]) + '\n\\begin{displayquote}' + self._string_processing(item[1]) + '\n\n' + item[2] + '\n\\end{displayquote}\n'
                 for item in items_1:
