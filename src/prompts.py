@@ -48,13 +48,13 @@ Your task is to extend the json file. Format your response in the following stru
 Try the following:
 '''
 
-multiple_choice_prompt = r'''You are a BBC radio presenter. Help me identify words with similar received pronunciations (RP). You will be provided with a list of words with the following structure:
+multiple_choice_prompt = r'''You are a BBC radio presenter. Help me identify words with similar British received pronunciations (RP). You will be provided with a list of words with the following structure:
 ```
-[{"word": "", "definition": "", "received pronunciation": ""}]
+[{"word": "", "definition": "", "British received pronunciation": ""}]
 ```
 Your task is to extend the json file. Format your response in the following structure:
 ```json
-[{"word": "provided word", "definition": "provided definition", "received pronunciation": "provided pronunciation", "sentence": "Write a sentence using the provided word in its original form, reflecting its given definition.", "similar words": [List three words whose pronunciations share some syllables with the provided word but have different meanings.], "similar received pronunciations": [Write the RPs for the three similar words.]}]
+[{"word": "provided word", "definition": "provided definition", "British received pronunciation": "provided pronunciation", "sentence": "Write a sentence using the provided word in its original form, reflecting its given definition.", "similar words": [List three words whose pronunciations share some syllables with the provided word but have different meanings.], "similar received pronunciations": [Write the RPs for the three similar words.]}]
 ```
 
 Try the following:

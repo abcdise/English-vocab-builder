@@ -162,7 +162,7 @@ class PassiveAnkiCardWriter(AnkiCardWriter):
             Chinese_def = stack[card_id]['Chinese']
             examples = stack[card_id]['examples']
             part_of_speech = stack[card_id]['part of speech']
-            pronunciation = stack[card_id]['received pronunciation']
+            pronunciation = stack[card_id]['British received pronunciation']
             front += '<b>' + word + '</b>' + '<br>' + '<br>'
             for example in examples:
                 front += '<i>' + example['English'] + '</i>' + '<br>'

@@ -319,19 +319,20 @@ class VocabMultipleChoiceExercise(Exercise):
             word = dictionary['word']
             sentence = dictionary['sentence']
             definition = dictionary['definition']
+            correct_pronunciation = dictionary['British received pronunciation']
             question, solution_list = replace_term(
                 original_string=sentence,
                 old_value=word,
                 new_value='\\fillin[]'
             )
-            options = dictionary['similar received pronunciations'] + [dictionary['received pronunciation']]
+            options = dictionary['similar received pronunciations'] + [correct_pronunciation]
             random.shuffle(options)
-            correct_answer_index = options.index(dictionary['received pronunciation'])
+            correct_answer_index = options.index(correct_pronunciation)
             option_labels = ['A', 'B', 'C', 'D']
             exercise += '\\question ' + question + '\n\n'
             exercise += r'\begin{oneparchoices}' + '\n'
             for option in options:
-                if option == dictionary['received pronunciation']:
+                if option == correct_pronunciation:
                     exercise += r'\CorrectChoice ' + option + '\n'
                 else:
                     exercise += r'\choice ' + option + '\n'
@@ -347,8 +348,8 @@ class VocabMultipleChoiceExercise(Exercise):
         for word in word_entries:
             for definition_entry in word_entries[word]:
                 definition = definition_entry['definition']
-                pronunciation = definition_entry['received pronunciation']
-                flattened_entries.append({'word': word, 'definition': definition, 'received pronunciation': pronunciation})
+                pronunciation = definition_entry['British received pronunciation']
+                flattened_entries.append({'word': word, 'definition': definition, 'British received pronunciation': pronunciation})
         return flattened_entries
     
 
