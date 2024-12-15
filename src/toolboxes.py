@@ -5,7 +5,7 @@ import requests
 from numpy import random
 import csv
 import re
-import datetime
+from datetime import date
 from abc import ABC, abstractmethod
 
 
@@ -27,8 +27,11 @@ class Configurator:
         '''
         The method set the `review` list to an empty list and set the `new` list to the whole list.
         '''
-        self.config['unlearned'] += self.config['learned']
+        self.config['unlearned'] = self.config['learned'] + self.config['unlearned']
         self.config['learned'] = []
+        self.config['last learned'] = []
+        self.config['last timestamp'] = '2000-01-01'
+        self.config['timestamp'] = '2000-01-01'
         self.__export()
 
     
@@ -56,9 +59,9 @@ class Configurator:
         self.config['learned'] = deepcopy(review_list)
         self.config['unlearned'] = deepcopy(new_list)
         self.config['last learned'] = new_word_list
-        assert self.config['timestamp'] != datetime.datetime.now(), 'You have already studied today.'
+        assert self.config['timestamp'] != str(date.today()), 'You have already studied today.'
         self.config['last timestamp'] = self.config['timestamp']
-        self.config['timestamp'] = datetime.datetime.now()
+        self.config['timestamp'] = str(date.today())
         self.__export()
 
 
@@ -121,16 +124,15 @@ class AnkiCardWriter(ABC):
     '''
     def __init__(self, stack: dict):
         self.stack = stack
-        self.anki_cards_front : list = []
-        self.anki_cards_back : list = []
-        self.Anki_cards_string = []
+        self.anki_cards_front : list[str] = []
+        self.anki_cards_back : list[str] = []
+        self.Anki_cards_string: list[list[str]] = []
 
 
     def write_cards(self, csv_path = str, shuffle_cards=True):
         self.anki_cards_front, self.anki_cards_back = self._write_cards(self.stack)
         for i in range(len(self.anki_cards_front)):
-            self.Anki_cards_string.append(self.anki_cards_front[i])
-            self.Anki_cards_string.append(self.anki_cards_back[i])
+            self.Anki_cards_string.append([self.anki_cards_front[i], self.anki_cards_back[i]])
         if shuffle_cards:
             random.shuffle(self.Anki_cards_string)
         with open(csv_path, 'w', encoding='utf-8') as file:
@@ -151,9 +153,9 @@ class PassiveAnkiCardWriter(AnkiCardWriter):
         '''
         Updates the list `self.Anki_cards`.
         '''
+        anki_card_front = []
+        anki_card_back = []
         for card_id in stack:
-            anki_card_front = []
-            anki_card_back = []
             front = ''
             back = '<i>' + card_id + '</i>' + '<br>' + '<br>'
             word = stack[card_id]['word']
@@ -167,7 +169,7 @@ class PassiveAnkiCardWriter(AnkiCardWriter):
             for example in examples:
                 front += '<i>' + example['English'] + '</i>' + '<br>'
             back += (part_of_speech + '<br>' + '<br>') if part_of_speech else ''
-            back += pronunciation + '<br>' + '<br>'
+            back += '/' + pronunciation + '/' + '<br>' + '<br>' if pronunciation else ''
             back += (forms + '<br>' + '<br>') if forms else ''
             back += definition
             back += '<br>' + '<br>' + Chinese_def + '<br>' + '<br>'
