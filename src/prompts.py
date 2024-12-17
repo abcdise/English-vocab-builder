@@ -19,13 +19,6 @@ reading_prompt = r'''You will be provided with a list of JSON files, where each 
 Try the following:
 '''
 
-sentence_completion_prompt = r'''You will be provided with a list of phrases. Your task is to write a full sentence for each given phrase. The sentence should adhere to British English spelling conventions. Format your response as follows:
-```json
-[{"phrase": "write the phrase", "sentence": "write the sentence containing the phrase"}]
-```
-
-Try the following:
-'''
 
 sentence_correction_prompt = r'''Assist in developing Sentence Correction questions for the upcoming SAT exam by identifying and expanding upon common pattern errors in English. You will receive a list of words with their usage patterns, structured as follows:
 ```
@@ -39,7 +32,7 @@ Your task is to extend the json file. Format your response in the following stru
     "pattern": {"usage": "provided usage", "example": "provided example"},
     "incorrect pattern": {
       "usage": "Introduce grammatical errors by altering the provided usage. For example, use a transitive verb intransitively, or modify an infinitive to a gerund. Be creative in crafting errors.",
-      "example": "Revise the provided example to reflect the incorrect usage."
+      "example": "Revise the provided example to reflect the incorrect usage. Make only necessary changes to the example sentence."
     }
   }
 ]
@@ -54,7 +47,7 @@ multiple_choice_prompt = r'''You are a BBC radio presenter. Help me identify wor
 ```
 Your task is to extend the json file. Format your response in the following structure:
 ```json
-[{"word": "provided word", "definition": "provided definition", "British received pronunciation": "provided pronunciation", "sentence": "Write a sentence using the provided word in its original form, reflecting its given definition.", "similar words": [List three words whose pronunciations share some syllables with the provided word but have different meanings.], "similar received pronunciations": [Write the RPs for the three similar words.]}]
+[{"word": "provided word", "definition": "provided definition", "British received pronunciation": "provided pronunciation", "sentence": "Write a sentence using the provided word in its original form.", "similar words": [List three words whose pronunciations share some syllables with the provided word but have different meanings.], "similar received pronunciations": [Write the RPs for the three similar words.]}]
 ```
 
 Try the following:
@@ -66,9 +59,9 @@ collocation_prompt = r'''You will be provided with a list of words, a "key" (a w
 [{"word": "", "key": "", "example": ""}]
 ```
 
-Based on the given sentence, write an elaborate sentence where the "word" is paired with the correct "key". Use British English spelling and grammar conventions throughout your response. Provide your response in the following JSON structure:
+Based on the given sentence, write a sentence where the "word" is paired with the correct "key". Use British English spelling and grammar conventions throughout your response. Provide your response in the following JSON structure:
 ```json
-[{"word": "provided word", "key": "provided key","new example": "new example sentence", "where": "the collocation in the new example"}]
+[{"word": "provided word", "key": "provided key","new example": "new example sentence", "where": "quote the collocation in the new example"}]
 ```
 
 Try the following:
