@@ -275,8 +275,12 @@ class SentenceCorrectionExercise(Exercise):
             correct_sentence = correct_pattern['example']
             incorrect_sentence = incorrect_pattern['example']
             option = random.choice([0, 1])
-            exercise += r'\question ' + (correct_sentence if option == 0 else incorrect_sentence) + r'\answerline' + '\n'
-            solution += r'\item ' + ('Correct' if option == 0 else correct_sentence) + '\n'
+            if option == 0:
+                exercise += r'\question ' + correct_sentence + '\\hfill \\begin{oneparcheckboxes} \\correctchoice Correct \\end{oneparcheckboxes} \\vspace{10ex}' + '\n'
+                solution += r'\item Correct' + '\n'
+            else:
+                exercise += r'\question ' + incorrect_sentence + '\\hfill \\begin{oneparcheckboxes} \\choice Correct \\end{oneparcheckboxes} \\vspace{10ex}' + '\n'
+                solution += r'\item ' + correct_sentence + '\n'
         solution += r'\end{enumerate}' + '\n'
         return exercise, solution
 

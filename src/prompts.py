@@ -24,15 +24,15 @@ sentence_correction_prompt = r'''Assist in developing Sentence Correction questi
 ```
 [{"word": "", "pattern":{"usage": "", "example": ""}}]
 ```
-Your task is to extend the json file. Format your response in the following structure:
+Your task is to extend the json file. Ensure your response adheres to the British English spelling conventions. Format your response in the following structure:
 ```json
 [
   {
-    "word": "provided word",
-    "pattern": {"usage": "provided usage", "example": "provided example"},
-    "incorrect pattern": {
-      "usage": "Introduce grammatical errors by altering the provided usage. For example, use a transitive verb intransitively, or modify an infinitive to a gerund. Be creative in crafting errors.",
-      "example": "Revise the provided example to reflect the incorrect usage. Make only necessary changes to the example sentence."
+    "word": "provided word (e.g. remind)",
+    "provided usage": "provided usage (e.g. someone reminds someone of something)", 
+    "incorrect usage": "altered provided usage with grammatical error. For example, use a transitive verb intransitively, or modify an infinitive to a gerund. Be creative in crafting errors.(e.g. someone reminds someone with something)",
+      "correct sentence": "a entirely new sentence using the provided pattern. (e.g. Anna reminds me of her mother.)",
+"incorrect sentence": "Make minor modification to the new sentence to introduce the incorrect pattern (e.g. Anna reminds me with her mother.)"
     }
   }
 ]
