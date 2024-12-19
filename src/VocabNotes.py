@@ -40,6 +40,7 @@ class VocabNotes:
                 items_2 = []
                 for pattern in patterns:
                     if pattern:
+                        assert 'usage' in pattern, f'usage key not found in {pattern}'
                         items_2.append((pattern['usage'], pattern['example']['English'], pattern['example']['Chinese']))
                 for item in items_2:
                     def_text += '\\item ' + self._string_processing(item[0]) + '\n\\begin{displayquote}' + self._string_processing(item[1]) + '\n\n' + item[2] + '\n\\end{displayquote}\n'

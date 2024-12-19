@@ -20,20 +20,26 @@ Try the following:
 '''
 
 
-sentence_correction_prompt = r'''Assist in developing Sentence Correction questions for the upcoming SAT exam by identifying and expanding upon common pattern errors in English. You will receive a list of words with their usage patterns, structured as follows:
+sentence_correction_prompt = r'''Assist in developing multiple choice questions for the English exam by identifying common pattern errors in English. You will receive a list of words with their usage patterns.
+Your task is to generate multiple-choice questions that test students' understanding of the correct usage of these words. For each word, you should:
+1. Provide two consecutive new example sentences, where the first sentence introduces context and the second sentence correctly demonstrates the given usage pattern.
+2. Identify a plausible incorrect usage pattern for the word.
+3. Create a question with a gap in the sentence where the word is used, and provide two answer options: one correct and one incorrect.
+Ensure your response adheres to the British English spelling conventions. 
+Example inputs:
 ```
-[{"word": "", "pattern":{"usage": "", "example": ""}}]
+[{"word": "remind", "pattern":{"usage": "someone reminds someone of something", "example": "Please remind me of the money tomorrow."}}]
 ```
-Your task is to extend the json file. Ensure your response adheres to the British English spelling conventions. Format your response in the following structure:
+Example outputs:
 ```json
 [
   {
-    "word": "provided word (e.g. remind)",
-    "provided usage": "provided usage (e.g. someone reminds someone of something)", 
-    "incorrect usage": "altered provided usage with grammatical error. For example, use a transitive verb intransitively, or modify an infinitive to a gerund. Be creative in crafting errors.(e.g. someone reminds someone with something)",
-      "correct sentence": "a entirely new sentence using the provided pattern. (e.g. Anna reminds me of her mother.)",
-"incorrect sentence": "Make minor modification to the new sentence to introduce the incorrect pattern (e.g. Anna reminds me with her mother.)"
-    }
+    "word": "remind",
+    "provided usage": "someone reminds someone of something", 
+    "new example": "I happened to see Anna this evening. She reminded me of her mother.",
+    "incorrect usage": "someone reminds someone with something",
+    "question": "I happened to see Anna this evening. She [gap] her mother.",
+    "options": ["reminded me of", "reminded me with"]
   }
 ]
 ```

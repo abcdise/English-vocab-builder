@@ -259,6 +259,7 @@ class SentenceCorrectionExercise(Exercise):
         prompt = prompts.sentence_correction_prompt + '\n'
         prompt += f'{json.dumps(flattened_entries, ensure_ascii=False)}'
         self.generation_prompt = prompt
+        print(f'There will be {len(flattened_entries)} questions in the exercise.')
 
     
     def generate_exercise(self, text: str):
@@ -270,16 +271,14 @@ class SentenceCorrectionExercise(Exercise):
         exercise = ''
         solution = r'\begin{enumerate}' + '\n'
         for dictionary in dicts:
-            correct_pattern = dictionary['pattern']
-            incorrect_pattern = dictionary['incorrect pattern']
-            correct_sentence = correct_pattern['example']
-            incorrect_sentence = incorrect_pattern['example']
+            correct_sentence = dictionary['new example']
+            incorrect_sentence = dictionary['question'].replace(r'[gap]', dictionary['options'][1])
             option = random.choice([0, 1])
             if option == 0:
-                exercise += r'\question ' + correct_sentence + '\\hfill \\begin{oneparcheckboxes} \\correctchoice Correct \\end{oneparcheckboxes} \\vspace{10ex}' + '\n'
+                exercise += r'\question ' + correct_sentence + '\n\n \\begin{oneparcheckboxes} \\correctchoice Correct \\end{oneparcheckboxes} \\vspace{10ex}' + '\n'
                 solution += r'\item Correct' + '\n'
             else:
-                exercise += r'\question ' + incorrect_sentence + '\\hfill \\begin{oneparcheckboxes} \\choice Correct \\end{oneparcheckboxes} \\vspace{10ex}' + '\n'
+                exercise += r'\question ' + incorrect_sentence + '\n\n \\begin{oneparcheckboxes} \\choice Correct \\end{oneparcheckboxes} \\vspace{10ex}' + '\n'
                 solution += r'\item ' + correct_sentence + '\n'
         solution += r'\end{enumerate}' + '\n'
         return exercise, solution
@@ -309,6 +308,7 @@ class VocabMultipleChoiceExercise(Exercise):
         prompt = prompts.multiple_choice_prompt + '\n'
         prompt += f'{json.dumps(flattened_entries, ensure_ascii=False)}'
         self.generation_prompt = prompt
+        print(f'There will be {len(flattened_entries)} questions in the exercise.')
 
 
     def generate_exercise(self, text: str):
@@ -372,6 +372,7 @@ class CollocationFillInTheGap(Exercise):
         prompt = prompts.collocation_prompt + '\n'
         prompt += f'{json.dumps(flattened_entries, ensure_ascii=False)}'
         self.generation_prompt = prompt
+        print(f'There will be {len(flattened_entries)} questions in the exercise.')
 
     
     def generate_exercise(self, text: str):
