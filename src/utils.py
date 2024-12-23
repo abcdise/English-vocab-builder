@@ -3,6 +3,20 @@ import re
 import spacy
 nlp = spacy.load('en_core_web_sm')
 
+def get_gap_length(text: str):
+    """
+    Get the length of the gap in a sentence.
+
+    Args:
+        text (str): The input sentence.
+
+    Returns:
+        int: The length of the gap in inches.
+    """
+    exponent = 0.1 if len(text) < 10 else 0.3
+    return len(text) ** exponent - 0.3
+
+
 def json_string_to_dict(json_string: str):
     try:
         # Convert the JSON string to a Python dictionary

@@ -1,4 +1,4 @@
-fill_in_the_gap_prompt = r'''You are given a list of JSON files, each containing two terms and their definitions. For each file, create a dialogue consisting of two exchanges between two British men. The first man should use the first term, while the second man should use the second term. Follow the rules of British English spelling in your response. Use the following format for your response:
+fill_in_the_gap_prompt = r'''You are given a list of JSON files, each containing two terms and their definitions. For each file, create a dialogue consisting of two exchanges between two Britons. The first man should use the first term, while the second man should use the second term. Follow the rules of British English spelling in your response. Use the following format for your response:
 
 ```json
 [{"words": ["word 1", "word 2"], "definitions": ["definition 1", "definition 2"], "background": "brief description of the background of the conversation", "conversation": ["what A says", "what B says"]}]
@@ -68,6 +68,24 @@ collocation_prompt = r'''You will be provided with a list of words, a "key" (a w
 Based on the given sentence, write a sentence where the "word" is paired with the correct "key". Use British English spelling and grammar conventions throughout your response. Provide your response in the following JSON structure:
 ```json
 [{"word": "provided word", "key": "provided key","new example": "new example sentence", "where": "quote the collocation in the new example"}]
+```
+
+Try the following:
+'''
+
+dialogue_completion_prompt = r'''You will be given a list of JSON files. For each file, your task is to make a Dialogue Completion question. Do the following for each JSON file:
+1. Write a dialogue between two Britons containing two exchanges using the term.
+2. Replace the term in the dialogue with `[gap]`.
+3. Provide the solution for the gap.
+Provide your response in the JSON structure as in the following example outputs. Ensure the British spelling conventions are used throughout your response.
+
+Example inputs:
+```json
+[{"term": "go with", "definition": "If you say you will go with a dish, you mean you will order it.", "example": "I'll go with the steak."}]
+```
+Example outputs:
+```json
+[{"term": "go with", "definition": "If you say you will go with a dish, you mean you will order it.","dialogue": ["What would you like to order?","I think I'll go with the fish and chips."],"dialogue with gap": ["What would you like to order?","I think I'll [gap] the fish and chips."],"solution": "go with"}]
 ```
 
 Try the following:

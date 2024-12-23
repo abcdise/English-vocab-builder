@@ -6,7 +6,7 @@ import random
 import prompts
 import json
 import spacy
-from utils import replace_term, string_processing_for_latex
+from utils import replace_term, string_processing_for_latex, get_gap_length
 
 nlp = spacy.load('en_core_web_sm')
 
@@ -170,7 +170,7 @@ class FillInTheGapExercise(Exercise):
             dialogue_B_gap, sol_list = replace_term(
                 original_string=dialogue_B,
                 old_value=word,
-                new_value=f'\\fillin[{word}][{len(word) ** 0.1 - 0.3:.2f}in]'
+                new_value=f'\\fillin[{word}][{get_gap_length(word):.2f}in]'
             )
             if dialogue_B_gap != dialogue_B:
                 question = '\\begin{dialogue} ' + '\\speak{A} ' + dialogue_A + ' \\speak{B} ' + dialogue_B_gap + ' \\end{dialogue}'
@@ -389,7 +389,7 @@ class CollocationFillInTheGap(Exercise):
             incomplete_collocation, sol_list = replace_term(
                 original_string=collocation,
                 old_value=key,
-                new_value=f'\\fillin[{key}][{len(key) ** 0.1 - 0.3:.2f}in]'
+                new_value=f'\\fillin[{key}][{get_gap_length(key):.2f}in]'
             )
             if incomplete_collocation != collocation:
                 question = example.replace(collocation, incomplete_collocation)
@@ -399,8 +399,8 @@ class CollocationFillInTheGap(Exercise):
         ex = ''
         sol = r'\begin{enumerate}' + '\n'
         for exercise in exercise_list:
-            ex += r'\question ' + exercise[0] + '\n'
-            sol += r'\item ' + exercise[1] + '\n'
+            ex += '\\question ' + exercise[0] + '\n'
+            sol += '\\item ' + exercise[1] + '\n'
         sol += r'\end{enumerate}' + '\n'
         return ex, sol
     
@@ -417,7 +417,70 @@ class CollocationFillInTheGap(Exercise):
                             key = collocation['key']
                             flattened_entries.append({word: {'key': key, 'example': example}})
         return flattened_entries
-            
+
+
+class DialogueCompletionExercise(Exercise):
+    def __init__(self, word_entries:dict):
+        super().__init__(word_entries=word_entries)
+        self.flattened_entries = self._flatten_word_entries(self.word_entries)
+        keys = ['exercise', 'solution']
+        self.exercise_dict = dict.fromkeys(keys)
+        self.create_prompt()
+
+    
+    def create_prompt(self):
+        # Create a list of dictionaries for the prompt
+        random.shuffle(self.flattened_entries)
+        flattened_entries = [{'term': entry['term'], 'definition': entry['definition'], 'example': entry['example']} for entry in self.flattened_entries]
+        prompt = prompts.dialogue_completion_prompt + '\n'
+        prompt += r'```json' + '\n'
+        prompt += f'{json.dumps(flattened_entries, ensure_ascii=False)}'
+        prompt += r'```'
+        self.generation_prompt = prompt
+        print(f'There will be {len(flattened_entries)} questions in the exercise.')
+
+    
+    def generate_exercise(self, text: str):
+        imported_dict = json.loads(text)
+        for i, dictionary in enumerate(imported_dict):
+            dictionary.update(self.flattened_entries[i])
+        self.exercise_dict['exercise'], self.exercise_dict['solution'] = self._generate_exercise(dicts=imported_dict)
+
+    
+    def _generate_exercise(self, dicts: list):
+        exercise_list = [] # A list to store the questions and solutions
+        for dictionary in dicts:
+            word = dictionary['term']
+            conversation = dictionary['dialogue with gap']
+            solution = dictionary['solution']
+            hint = dictionary['Chinese']
+            length_of_gap = get_gap_length(solution)
+            dialogue_A = conversation[0].replace(r'[gap]', f'\\fillin[{word}][{length_of_gap:.2f}in]')
+            dialogue_B = conversation[1].replace(r'[gap]', f'\\fillin[{word}][{length_of_gap:.2f}in]')
+            question = '\\begin{dialogue} ' + '\\speak{A} ' + dialogue_A + ' \\speak{B} ' + dialogue_B + ' \\end{dialogue}'
+            exercise_list.append((question, solution, hint))
+        random.shuffle(exercise_list)
+        ex = ''
+        sol = r'\begin{enumerate}' + '\n'
+        for exercise in exercise_list:
+            question = exercise[0]
+            solution = exercise[1]
+            hint = exercise[2]
+            ex += f'\\question （{hint}）\\par ' + question + '\n'
+            sol += '\\item ' + solution + '\n'
+        sol += r'\end{enumerate}' + '\n'
+        return ex, sol
+
+    
+    def _flatten_word_entries(self, word_entries: dict):
+        flattened_entries = []
+        for word in word_entries:
+            for entry in word_entries[word]:
+                definition = entry['definition']
+                example = entry['examples'][0]['English']
+                flattened_entries.append({'term': word, 'definition': definition, 'example': example, 'Chinese': entry['Chinese']})
+        return flattened_entries
+
 
 class ExerciseFactory:
     def create_exercise(self, exercise_type:str, word_entries:dict):
@@ -445,6 +508,8 @@ class ExerciseFactory:
             return VocabMultipleChoiceExercise(word_entries=word_entries)
         elif exercise_type == 'Collocation fill in the gap':
             return CollocationFillInTheGap(word_entries=word_entries)
+        elif exercise_type == 'Dialogue completion':
+            return DialogueCompletionExercise(word_entries=word_entries)
         raise ValueError('Invalid exercise type!')
     """
     A class that represents an exercise gatherer.

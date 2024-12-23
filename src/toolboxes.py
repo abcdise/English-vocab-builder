@@ -186,9 +186,9 @@ class ActiveAnkiCardWriter(AnkiCardWriter):
         '''
         Updates the list `self.Anki_cards`.
         '''
+        anki_card_front = []
+        anki_card_back = []
         for card_id in stack:
-            anki_card_front = []
-            anki_card_back = []
             front = ''
             back = '<i>' + card_id + '</i>' + '<br>' + '<br>'
             word = stack[card_id]['word']

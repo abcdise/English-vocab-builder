@@ -8,5 +8,10 @@
         "schedule": "../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Schedules/Vocab Activator.json",
         "cards": "../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Cards/Vocab Activator.json",
         "notes": "../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Notes/Vocab Activator.json"
+    },
+    "English Conversation": {
+        "schedule": "../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Schedules/English Conversation.json",
+        "cards": "../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Cards/English Conversation.json",
+        "notes": "../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Notes/English Conversation.json"
     }
 }
