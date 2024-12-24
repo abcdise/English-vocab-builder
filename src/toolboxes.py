@@ -205,19 +205,23 @@ class ActiveAnkiCardWriter(AnkiCardWriter):
 
 
 class StackOrganizer:
-    def __init__(self, stack: dict, only_single_word=False):
+    def __init__(self, stack: dict, only_single_word=False, only_multiple_word=False):
         self.stack = deepcopy(stack)
         self.only_single_word = only_single_word
+        self.only_multiple_word = only_multiple_word
+        assert not (only_single_word and only_multiple_word), 'You cannot set both only_single_word and only_multiple_word to True.'
 
     def reorganize(self):
-        return self._reorganize(self.stack, only_single_word=self.only_single_word)
+        return self._reorganize(self.stack, only_single_word=self.only_single_word, only_multiple_word=self.only_multiple_word)
 
-    def _reorganize(self, stack: dict, only_single_word: bool):
+    def _reorganize(self, stack: dict, only_single_word: bool, only_multiple_word: bool):
         result = {}
         for card_id in stack:
             word = stack[card_id]['word']
             word_count = len(word.split(' '))
             if only_single_word and word_count > 1:
+                continue
+            if only_multiple_word and word_count == 1:
                 continue
             if word not in result:
                 result[word] = []

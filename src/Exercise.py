@@ -450,23 +450,25 @@ class DialogueCompletionExercise(Exercise):
     def _generate_exercise(self, dicts: list):
         exercise_list = [] # A list to store the questions and solutions
         for dictionary in dicts:
-            word = dictionary['term']
-            conversation = dictionary['dialogue with gap']
+            conversation = dictionary['dialogue']
+            matching_part = dictionary['matching part']
             solution = dictionary['solution']
-            hint = dictionary['Chinese']
+            topic = dictionary['Chinese']
+            hint = dictionary['hint']
             length_of_gap = get_gap_length(solution)
-            dialogue_A = conversation[0].replace(r'[gap]', f'\\fillin[{word}][{length_of_gap:.2f}in]')
-            dialogue_B = conversation[1].replace(r'[gap]', f'\\fillin[{word}][{length_of_gap:.2f}in]')
+            dialogue_A = conversation[0].replace(matching_part, f'\\fillin[{matching_part}][{length_of_gap:.2f}in]')
+            dialogue_B = conversation[1].replace(matching_part, f'\\fillin[{matching_part}][{length_of_gap:.2f}in]')
             question = '\\begin{dialogue} ' + '\\speak{A} ' + dialogue_A + ' \\speak{B} ' + dialogue_B + ' \\end{dialogue}'
-            exercise_list.append((question, solution, hint))
+            question += f' \\textit{{Hint: {hint}}}'
+            exercise_list.append((question, solution, topic))
         random.shuffle(exercise_list)
         ex = ''
         sol = r'\begin{enumerate}' + '\n'
         for exercise in exercise_list:
             question = exercise[0]
             solution = exercise[1]
-            hint = exercise[2]
-            ex += f'\\question （{hint}）\\par ' + question + '\n'
+            topic = exercise[2]
+            ex += f'\\question （{topic}）\\par ' + question + '\n'
             sol += '\\item ' + solution + '\n'
         sol += r'\end{enumerate}' + '\n'
         return ex, sol

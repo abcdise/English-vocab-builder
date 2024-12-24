@@ -67,25 +67,27 @@ collocation_prompt = r'''You will be provided with a list of words, a "key" (a w
 
 Based on the given sentence, write a sentence where the "word" is paired with the correct "key". Use British English spelling and grammar conventions throughout your response. Provide your response in the following JSON structure:
 ```json
-[{"word": "provided word", "key": "provided key","new example": "new example sentence", "where": "quote the collocation in the new example"}]
+[{"word": "provided word", "key": "provided key","new example": "new example sentence", "matching part": "pinpoint the part of the new example sentence that corresponds to the collocation of the provided word"}]
 ```
 
 Try the following:
 '''
 
-dialogue_completion_prompt = r'''You will be given a list of JSON files. For each file, your task is to make a Dialogue Completion question. Do the following for each JSON file:
-1. Write a dialogue between two Britons containing two exchanges using the term.
-2. Replace the term in the dialogue with `[gap]`.
-3. Provide the solution for the gap.
-Provide your response in the JSON structure as in the following example outputs. Ensure the British spelling conventions are used throughout your response.
+dialogue_completion_prompt = r'''You will be provided with a list of JSON objects, each containing a term, its definition, and an example sentence. Your task is to create Dialogue Completion questions based on the given data. For each JSON object, perform the following steps:
+
+1. Write a dialogue: Create a natural-sounding dialogue between two Britons that includes two exchanges and uses the given term correctly in context.
+2. Identify the matching part: Pinpoint the part of the sentence in the dialogue that corresponds to the given term. This part will later be converted into a gap for the test.
+3. Write a hint: Write a hint by rephrasing the matching part in a more detailed or descriptive way to help users understand its meaning.
+
+Ensure your responses strictly follow British spelling conventions and are formatted in JSON structure as shown in the example below.
 
 Example inputs:
 ```json
-[{"term": "go with", "definition": "If you say you will go with a dish, you mean you will order it.", "example": "I'll go with the steak."}]
+[{"term": "go with sth.", "definition": "If you say you will go with a dish, you mean you will order it.", "example": "I'll go with the steak."}]
 ```
 Example outputs:
 ```json
-[{"term": "go with", "definition": "If you say you will go with a dish, you mean you will order it.","dialogue": ["What would you like to order?","I think I'll go with the fish and chips."],"dialogue with gap": ["What would you like to order?","I think I'll [gap] the fish and chips."],"solution": "go with"}]
+[{"term": "go with sth.", "definition": "If you say you will go with a dish, you mean you will order it.","dialogue": ["What would you like to order?","I think I'll go with the fish and chips."],"matching part": "go with the fish and chips"}, hint: "order fish and chips"]
 ```
 
 Try the following:
