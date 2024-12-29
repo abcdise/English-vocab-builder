@@ -44,7 +44,7 @@ class Configurator:
 
     def revert_last_study(self):
         self.config['timestamp'] = self.config['last timestamp']
-        self.config['unlearned'] += self.config['last learned']
+        self.config['unlearned'] = self.config['last learned'] + self.config['unlearned']
         self.config['learned'] = [word for word in self.config['learned'] if word not in self.config['last learned']]
         self.__export()
 

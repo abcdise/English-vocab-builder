@@ -1,6 +1,5 @@
 import pyperclip
 from abc import ABC, abstractmethod
-import re
 from copy import deepcopy
 import random
 import prompts
@@ -236,7 +235,7 @@ class TranslationExercise(Exercise):
                     sentence = example
                     list_of_sentences.append(sentence)
                 collocations = definition_entry['collocations']
-                if 'noun' in collocations:
+                if 'noun' in collocations or 'idiom' in collocations:
                     for collocation in collocations['noun'] + collocations['idiom']:
                         sentence = collocation['example']
                         list_of_sentences.append(sentence)
@@ -337,13 +336,13 @@ class VocabMultipleChoiceExercise(Exercise):
             correct_answer_index = options.index(correct_pronunciation)
             option_labels = ['A', 'B', 'C', 'D']
             exercise += '\\question ' + question + '\n\n'
-            exercise += r'\begin{oneparchoices}' + '\n'
+            exercise += r'\begin{choices}' + '\n'
             for option in options:
                 if option == correct_pronunciation:
-                    exercise += r'\CorrectChoice ' + option + '\n'
+                    exercise += r'\CorrectChoice ' + option + ' '
                 else:
-                    exercise += r'\choice ' + option + '\n'
-            exercise += r'\end{oneparchoices}' + '\n'
+                    exercise += r'\choice ' + option + ' '
+            exercise += r'\end{choices}' + '\n'
             exercise += r'\answerline' + '\n'
             solution += r'\item ' + option_labels[correct_answer_index] + ' \\qquad ' + solution_list[0] + '. \n\n' + '\\textit{' + string_processing_for_latex(definition) + '}' + '\n'
         solution += r'\end{enumerate}' + '\n'
@@ -388,7 +387,7 @@ class CollocationFillInTheGap(Exercise):
         for dictionary in dicts:
             key = dictionary['key']
             example = string_processing_for_latex(dictionary['new example'])
-            collocation = dictionary['where']
+            collocation = dictionary['matching part']
             incomplete_collocation, sol_list = replace_term(
                 original_string=collocation,
                 old_value=key,
@@ -455,7 +454,7 @@ class DialogueCompletionExercise(Exercise):
         for dictionary in dicts:
             conversation = dictionary['dialogue']
             matching_part = dictionary['matching part']
-            solution = dictionary['solution']
+            solution = matching_part
             topic = dictionary['Chinese']
             hint = dictionary['hint']
             length_of_gap = get_gap_length(solution)
