@@ -92,3 +92,41 @@ Example outputs:
 
 Try the following:
 '''
+
+rephrasing_prompt = r'''You will be provided with a list of JSON objects, each containing a term, its definition, and an example sentence. For each JSON object, perform the following steps:
+
+1. Write a short sentence using the term reflecting the given definition.
+2. Rephrase the short sentence without using the given term. Ensure the rephrased sentence has similar sentence structure and meaning as the original sentence.
+
+Ensure your responses strictly follow British spelling conventions and are formatted in JSON structure as shown in the example below.
+
+Example inputs:
+```json
+[{"term": "a piece of cake", "definition": "something that is very easy to do", "example": "The exam was a piece of cake."}]
+```
+Example outputs:
+```json
+[{"term": "a piece of cake", "definition": "something that is very easy to do", "short sentence": "Cooking the dish is a piece of cake for me.", "rephrased sentence": "Cooking the dish is very easy for me."}]
+```
+
+Try the following:
+'''
+
+phrase_fill_in_the_gap_prompt = r'''You will be provided with a list of JSON objects, each containing a term and its definition. For each JSON object, perform the following steps:
+
+1. Write a sentence using the term in context.
+2. Identify the matching part of the sentence that corresponds to the given term. 
+3. Based on the sentence, create an engaging dialogue between two Britons without using the given term. The dialogue should be two exchanges.
+Ensure your responses strictly follow British spelling conventions and are formatted in JSON structure as shown in the example below.
+
+Example inputs:
+```json
+[{"term": "a piece of cake", "definition": "something that is very easy to do"}]
+```
+Example outputs:
+```json
+[{"term": "a piece of cake", "definition": "something that is very easy to do", "sentence": "The exam will be a piece of cake for James.", "matching part": "a piece of cake", "dialogue": ["James, don’t you need to revise for Monday’s exam?", "I suppose so, but it’s hardly worth worrying about."]}]
+```
+
+Try the following:
+'''

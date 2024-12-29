@@ -237,7 +237,7 @@ class TranslationExercise(Exercise):
                     list_of_sentences.append(sentence)
                 collocations = definition_entry['collocations']
                 if 'noun' in collocations:
-                    for collocation in collocations['noun']:
+                    for collocation in collocations['noun'] + collocations['idiom']:
                         sentence = collocation['example']
                         list_of_sentences.append(sentence)
             flattened_entries.append(random.choice(list_of_sentences))
@@ -288,8 +288,11 @@ class SentenceCorrectionExercise(Exercise):
         flattened_entries = []
         for word in word_entries:
             for entries in word_entries[word]:
-                for pattern in entries['patterns']:
-                    flattened_entries.append({'word': word, 'pattern': {'usage': pattern['usage'], 'example': pattern['example']['English']}})
+                if len(word.split(' ')) > 1 and not entries['patterns']: # if the word is a phrase and there are no patterns, use the example sentence
+                    flattened_entries.append({'word': word, 'pattern': {'usage': {word}, 'example': entries['examples'][0]['English']}})
+                else:
+                    for pattern in entries['patterns']:
+                        flattened_entries.append({'word': word, 'pattern': {'usage': pattern['usage'], 'example': pattern['example']['English']}})
         return flattened_entries
 
 
