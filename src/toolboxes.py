@@ -27,7 +27,7 @@ class Configurator:
         '''
         The method set the `review` list to an empty list and set the `new` list to the whole list.
         '''
-        self.config['unlearned'] = self.config['learned'] + self.config['unlearned']
+        self.config['unlearned'] = (self.config['learned'] + self.config['unlearned']).sort()
         self.config['learned'] = []
         self.config['last learned'] = []
         self.config['last timestamp'] = '2000-01-01'
