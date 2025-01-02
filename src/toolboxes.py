@@ -85,11 +85,23 @@ class AnkiCommunicator:
 
     
     def get_words_for_today(self, deck_name) -> list:
-        return self.get_words_in_n_days(0, deck_name)
+        query = f'deck:"{deck_name}" is:due'
+        card_ids = self.__invoke('findCards', {'query': query})
+        if not card_ids:
+            return []
+        cards_info = self.__invoke('cardsInfo', {'cards': card_ids})
+        result_list = [self._extract_card_id_from_field(card['fields']['Back']['value']) for card in cards_info if card and card['deckName'] == deck_name]
+        return result_list
 
 
     def get_words_for_tomorrow(self, deck_name) -> list:
-        return self.get_words_in_n_days(1, deck_name)
+        query = 'prop:due=1'
+        card_ids = self.__invoke('findCards', {'query': query})
+        if not card_ids:
+            return []
+        cards_info = self.__invoke('cardsInfo', {'cards': card_ids})
+        result_list = [self._extract_card_id_from_field(card['fields']['Back']['value']) for card in cards_info if card and card['deckName'] == deck_name]
+        return result_list
 
 
     def _extract_card_id_from_field(self, input_string):
@@ -110,12 +122,6 @@ class AnkiCommunicator:
         if 'error' in response_json and response_json['error']:
             raise Exception(f'Failed to fetch card info: {response_json["error"]}')
         return response_json['result']
-
-
-    def __get_cards_id_in_n_days(self, n):
-        query = f'prop:due={n}'
-        response = self.__invoke('findCards', {'query': query})
-        return response
 
 
 class AnkiCardWriter(ABC):
