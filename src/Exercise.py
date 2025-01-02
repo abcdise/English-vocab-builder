@@ -460,7 +460,7 @@ class DialogueCompletionExercise(Exercise):
             length_of_gap = get_gap_length(solution)
             dialogue_A = conversation[0].replace(matching_part, f'\\fillin[{matching_part}][{length_of_gap:.2f}in]')
             dialogue_B = conversation[1].replace(matching_part, f'\\fillin[{matching_part}][{length_of_gap:.2f}in]')
-            assert dialogue_A != conversation[0] and dialogue_B != conversation[1], f'Error: Replacement of {matching_part} failed.'
+            assert dialogue_A != conversation[0] or dialogue_B != conversation[1], f'Error: Replacement of {matching_part} failed.'
             question = '\\begin{dialogue} ' + '\\speak{A} ' + dialogue_A + ' \\speak{B} ' + dialogue_B + ' \\end{dialogue}'
             question += f' \\textit{{Hint: {hint}}}'
             exercise_list.append((question, solution, topic))
