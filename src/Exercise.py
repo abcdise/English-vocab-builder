@@ -14,6 +14,7 @@ class Exercise(ABC):
 
     def __init__(self, word_entries:dict):
         self.word_entries = word_entries
+        self.flattened_entries = self._flatten_word_entries(self.word_entries)
         self.word_list = list(self.word_entries.keys())
         self.generation_prompt = None
         self.exercise_dict: dict = dict() # A dictionary to store the exercise. The keys are usually 'exercise', 'solution', etc..
@@ -57,48 +58,6 @@ class Exercise(ABC):
         formatted_output = ' '.join([''.join(unit) for unit in units])
         
         return formatted_output
-
-
-    def _string_processing(self, text):
-        '''
-        Parse strings
-        '''
-        text = self.__unify_quotes(text)
-        text = self.__replace_en_dashes(text)
-        text = self.__replace_quotes(text)
-        text = self.__replace_pounds(text)
-        return text
-    
-
-    def __unify_quotes(self, text):
-        text = text.replace("’", "'")
-        text = text.replace("‘", "'")
-        text = text.replace("“", '"')
-        text = text.replace("”", '"')
-        return text
-                            
-
-    def __replace_quotes(self, text):
-        text_list = text.split(' ')
-        text_list_new = []
-        for word in text_list:
-            if word.startswith("'"):
-                word = '`' + word[1:]
-            if word.startswith('"'):
-                word = '``' + word[1:]
-            if word.endswith('"'):
-                word = word[:-1] + "''"
-            text_list_new.append(word)
-        return ' '.join(text_list_new)
-
-
-    def __replace_pounds(self, text):
-        return text.replace('£', r'\pounds')
-
-
-    def __replace_en_dashes(self, text):
-        return text.replace('–', '--')
-    
 
     def _write_box(self, word_list:list):
         shuffled_word_list = deepcopy(word_list)
@@ -295,6 +254,53 @@ class SentenceCorrectionExercise(Exercise):
         return flattened_entries
 
 
+class UsagePatternExercise(Exercise):
+    def __init__(self, word_entries:dict):
+        super().__init__(word_entries=word_entries)
+        keys = ['exercise', 'solution']
+        self.exercise_dict = dict.fromkeys(keys)
+        self.create_prompt()
+
+    
+    def create_prompt(self):
+        # Create a list of dictionaries for the prompt
+        random.shuffle(self.flattened_entries)
+        prompt = prompts.pattern_prompt + '\n' + '```json' + '\n'
+        prompt += f'{json.dumps(self.flattened_entries, ensure_ascii=False)}' + '\n'
+        prompt += '```'
+        self.generation_prompt = prompt
+        print(f'There will be {len(self.flattened_entries)} questions in the exercise.')
+
+    
+    def generate_exercise(self, text: str):
+        imported_dict = json.loads(text)
+        self.exercise_dict['exercise'], self.exercise_dict['solution'] = self._generate_exercise(dicts=imported_dict)
+    
+
+    def _generate_exercise(self, dicts: list):
+        exercise = ''
+        solution = r'\begin{enumerate}' + '\n'
+        for dictionary in dicts:
+            term = dictionary['term']
+            random.shuffle(dictionary['elements'])
+            elements = [term] + dictionary['elements']
+            sentence = string_processing_for_latex(dictionary['sentence'])
+            exercise += '\\question ' + r' \qquad '.join(elements) + '\n\n' + r'\vspace*{10in}' + '\n\n'
+            solution += '\\item ' + sentence + '\n'
+        solution += r'\end{enumerate}' + '\n'
+        return exercise, solution
+
+    
+    def _flatten_word_entries(self, word_entries: dict):
+        flattened_entries = []
+        for word in word_entries:
+            for entries in word_entries[word]:
+                definition = entries['definition']
+                for pattern in entries['patterns']:
+                    flattened_entries.append({'term': word, 'definition': definition, 'usage pattern': pattern['usage']})
+        return flattened_entries
+
+
 class VocabMultipleChoiceExercise(Exercise):
     def __init__(self, word_entries:dict):
         super().__init__(word_entries=word_entries)
@@ -369,16 +375,18 @@ class CollocationFillInTheGap(Exercise):
     
     def create_prompt(self):
         # Create a list of dictionaries for the prompt
-        flattened_entries = self._flatten_word_entries(self.word_entries)
-        random.shuffle(flattened_entries)
+        random.shuffle(self.flattened_entries)
         prompt = prompts.collocation_prompt + '\n'
-        prompt += f'{json.dumps(flattened_entries, ensure_ascii=False)}'
+        prompt += f'{json.dumps(self.flattened_entries, ensure_ascii=False)}'
         self.generation_prompt = prompt
-        print(f'There will be {len(flattened_entries)} questions in the exercise.')
+        print(f'There will be {len(self.flattened_entries)} questions in the exercise.')
 
     
     def generate_exercise(self, text: str):
         imported_dict = json.loads(text)
+        for i, dictionary in enumerate(imported_dict):
+            word = dictionary['word']
+            dictionary['category'] = self.flattened_entries[i][word]['category']
         self.exercise_dict['exercise'], self.exercise_dict['solution'] = self._generate_exercise(dicts=imported_dict)
 
     
@@ -386,6 +394,7 @@ class CollocationFillInTheGap(Exercise):
         exercise_list = [] # A list to store the questions and solutions
         for dictionary in dicts:
             key = dictionary['key']
+            category = dictionary['category']
             example = string_processing_for_latex(dictionary['new example'])
             collocation = dictionary['matching part']
             incomplete_collocation, sol_list = replace_term(
@@ -396,6 +405,7 @@ class CollocationFillInTheGap(Exercise):
             if incomplete_collocation != collocation:
                 question = example.replace(collocation, incomplete_collocation)
                 assert question != example, f'Error: Replacement failed.'
+                question = f' \\textit{{[{category}]}}' + question
                 exercise_list.append((question, ', '.join(sol_list)))
         random.shuffle(exercise_list)
         ex = ''
@@ -417,14 +427,13 @@ class CollocationFillInTheGap(Exercise):
                         for collocation in collocations[category]:
                             example = collocation['example']['English']
                             key = collocation['key']
-                            flattened_entries.append({word: {'key': key, 'example': example}})
+                            flattened_entries.append({word: {'key': key, 'category': category, 'example': example}})
         return flattened_entries
 
 
 class DialogueCompletionExercise(Exercise):
     def __init__(self, word_entries:dict):
         super().__init__(word_entries=word_entries)
-        self.flattened_entries = self._flatten_word_entries(self.word_entries)
         keys = ['exercise', 'solution']
         self.exercise_dict = dict.fromkeys(keys)
         self.create_prompt()
@@ -507,8 +516,8 @@ class ExerciseFactory:
             return FillInTheGapExercise(word_entries=word_entries)
         elif exercise_type == 'Translation':
             return TranslationExercise(word_entries=word_entries)
-        elif exercise_type == 'Correction':
-            return SentenceCorrectionExercise(word_entries=word_entries)
+        elif exercise_type == 'Usage pattern':
+            return UsagePatternExercise(word_entries=word_entries)
         elif exercise_type == 'Spelling multiple choice':
             return VocabMultipleChoiceExercise(word_entries=word_entries)
         elif exercise_type == 'Collocation fill in the gap':
