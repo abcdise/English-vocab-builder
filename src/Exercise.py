@@ -282,10 +282,11 @@ class UsagePatternExercise(Exercise):
         solution = r'\begin{enumerate}' + '\n'
         for dictionary in dicts:
             term = dictionary['term']
-            random.shuffle(dictionary['elements'])
-            elements = [term] + dictionary['elements']
+            elements = dictionary['elements'] + dictionary['additional elements']
+            random.shuffle(elements)
+            elements = [term] + elements
             sentence = string_processing_for_latex(dictionary['sentence'])
-            exercise += '\\question ' + r' \qquad '.join(elements) + '\n\n' + r'\vspace*{10in}' + '\n\n'
+            exercise += '\\question ' + r' \qquad '.join(elements) + '\n\n' + r'\vspace*{10ex}' + '\n\n'
             solution += '\\item ' + sentence + '\n'
         solution += r'\end{enumerate}' + '\n'
         return exercise, solution

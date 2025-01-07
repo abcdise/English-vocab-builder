@@ -131,17 +131,16 @@ Example outputs:
 Try the following:
 '''
 
-pattern_prompt = r'''You will be provided with a list of JSON objects, each containing a term, its definition, and a usage pattern for the term. Your task is to create a short sentence using the term and the provided usage pattern. Then identify the elements of the sentence beside the pattern. Ensure your responses strictly follow British spelling conventions and are formatted in JSON structure as shown in the example below.
-
+pattern_prompt = r'''You will be provided with a list of JSON objects, each containing a term, its definition, and a usage pattern for the term. Your task is to create a short sentence using the term and the provided usage pattern. Then identify the elements of the sentence that correspond to the placeholders in the usage pattern (e.g., "someone", "something", "somewhere", "one's"). Ensure your responses strictly follow British spelling conventions and are formatted in JSON structure as shown in the example below.
 Example inputs:
-```json
+json
 [{"term": "remind", "definition": "to help someone remember something", "usage pattern": "someone reminds someone of something"}]
-```
+
 Example outputs:
-```json
-[{"term": "remind", "definition": "to help someone remember something", "usage pattern": "someone reminds someone of something", "sentence": "The letter reminds me of the time I spent with my grandmother.", "elements": ["the letter", "me", "the time I spent", "with my grandmother"]}]
-```
-In the last example, when we remove the usage pattern from the sentence, we get "The letter me the time I spent with my grandmother". The elements are "the letter", "me", "the time I spent" and "with my grandmother". Note that the elements should be lowercase.
+json
+[{"term": "remind", "definition": "to help someone remember something", "usage pattern": "someone reminds someone of something", "sentence": "The letter reminds me of the time I spent with my grandmother.", "elements": ["the letter", "me", "the time I spent"], "additional elements": ["with my grandmother"]}]
+
+In the last example, the words and phrases that replace placeholders in the usage pattern are identified as elements: "the letter" replaces "someone", "me" replaces "someone", "the time I spent" replaces "something", "with my grandmother" is an additional phrase providing context. Note that the elements should be lowercase.
 
 Try the following:
 '''
