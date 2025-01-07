@@ -89,6 +89,7 @@ Example outputs:
 ```json
 [{"term": "go with sth.", "definition": "If you say you will go with a dish, you mean you will order it.","dialogue": ["What would you like to order?","I think I'll go with the fish and chips."],"matching part": "go with the fish and chips"}, hint: "order fish and chips"]
 ```
+In the last example, the matching part of the dialogue is "go with the fish and chips", which is an excerpt from the second exchange. The hint "order fish and chips" is a rephrased version of the matching part.
 
 Try the following:
 '''
