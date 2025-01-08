@@ -69,7 +69,7 @@ def replace_term(original_string: str, old_value: str, new_value: str):
             new_string = ''.join(new_string_list)
         else:
             new_string = ''
-    assert new_string != original_string, "The replacement was not made."
+    assert new_string != original_string, f'No replacement made in the string: {original_string}'
     return new_string, old_value_list
 
 

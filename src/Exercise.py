@@ -195,7 +195,7 @@ class TranslationExercise(Exercise):
                     list_of_sentences.append(sentence)
                 collocations = definition_entry['collocations']
                 if 'noun' in collocations or 'idiom' in collocations:
-                    for collocation in collocations['noun'] + collocations['idiom']:
+                    for collocation in collocations.get('noun', []) + collocations.get('idiom', []):
                         sentence = collocation['example']
                         list_of_sentences.append(sentence)
             flattened_entries.append(random.choice(list_of_sentences))
