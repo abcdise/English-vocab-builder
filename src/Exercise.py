@@ -406,7 +406,7 @@ class CollocationFillInTheGap(Exercise):
             if incomplete_collocation != collocation:
                 question = example.replace(collocation, incomplete_collocation)
                 assert question != example, f'Error: Replacement failed.'
-                question = f' \\textit{{[{category}]}}' + question
+                question = f' \\textit{{[{category}]}} ' + question
                 exercise_list.append((question, ', '.join(sol_list)))
         random.shuffle(exercise_list)
         ex = ''
