@@ -13,5 +13,10 @@
         "schedule": "../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Schedules/EnglishPod.json",
         "cards": "../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Cards/EnglishPod.json",
         "notes": "../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Notes/EnglishPod.json"
+    },
+    "NCE": {
+        "schedule": "../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Schedules/NCE.json",
+        "cards": "../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Cards/NCE.json",
+        "notes": "../../../../../Library/Mobile Documents/com~apple~CloudDocs/Projects/Vocab Builder/English/Notes/NCE.json"
     }
 }
