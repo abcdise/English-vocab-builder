@@ -6,6 +6,4 @@ bs4
 breame
 jinja2
 spacy
-
-
-
+openai

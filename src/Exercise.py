@@ -6,6 +6,7 @@ import prompts
 import json
 import spacy
 from utils import replace_term, string_processing_for_latex, get_gap_length
+from AIAssistant import AIAssistant, DialogueCompletionAssistant
 
 nlp = spacy.load('en_core_web_sm')
 
@@ -18,6 +19,7 @@ class Exercise(ABC):
         self.word_list = list(self.word_entries.keys())
         self.generation_prompt = None
         self.exercise_dict: dict = dict() # A dictionary to store the exercise. The keys are usually 'exercise', 'solution', etc..
+        self.ai_assistant: AIAssistant = None
 
 
     @abstractmethod
@@ -435,28 +437,21 @@ class CollocationFillInTheGap(Exercise):
 class DialogueCompletionExercise(Exercise):
     def __init__(self, word_entries:dict):
         super().__init__(word_entries=word_entries)
+        self.ai_assistant = DialogueCompletionAssistant(model='deepseek-chat', base_url='https://api.deepseek.com', api_key = 'sk-1234567890')
         keys = ['exercise', 'solution']
         self.exercise_dict = dict.fromkeys(keys)
-        self.create_prompt()
+        print(f'There are {len(self.flattened_entries)} entries in the exercise.')
 
-    
-    def create_prompt(self):
-        # Create a list of dictionaries for the prompt
+
+    def generate_exercise(self):
         random.shuffle(self.flattened_entries)
         flattened_entries = [{'term': entry['term'], 'definition': entry['definition'], 'example': entry['example']} for entry in self.flattened_entries]
-        prompt = prompts.dialogue_completion_prompt + '\n'
-        prompt += r'```json' + '\n'
-        prompt += f'{json.dumps(flattened_entries, ensure_ascii=False)}'
-        prompt += r'```'
-        self.generation_prompt = prompt
-        print(f'There will be {len(flattened_entries)} questions in the exercise.')
-
-    
-    def generate_exercise(self, text: str):
-        imported_dict = json.loads(text)
-        for i, dictionary in enumerate(imported_dict):
-            dictionary.update(self.flattened_entries[i])
-        self.exercise_dict['exercise'], self.exercise_dict['solution'] = self._generate_exercise(dicts=imported_dict)
+        cache = []
+        for i, entry in enumerate(flattened_entries):
+            response_dict = self.ai_assistant.get_response(inputs=entry)
+            response_dict.update(self.flattened_entries[i])
+            cache.append(response_dict)
+        self.exercise_dict['exercise'], self.exercise_dict['solution'] = self._generate_exercise(dicts=cache)
 
     
     def _generate_exercise(self, dicts: list):
